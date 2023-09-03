@@ -1,0 +1,22 @@
+.App-logo{
+    height: 80px;
+}
+
+.App-header{
+    background-color: darkslategray;
+    height: 150px;
+    padding: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left-align{
+    display: flex;
+    align-items: center;
+}
+
+html, body {
+    height: 100%;
+}

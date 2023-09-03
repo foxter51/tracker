@@ -10,9 +10,7 @@ let corsOptions = {
 }
 
 app.use(cors(corsOptions))
-
 app.use(express.json())
-
 app.use(express.urlencoded({ extended: true }))
 
 const db = require('./models')
@@ -23,6 +21,13 @@ db.sequelize.sync()
     .catch((err) => {
         console.log('Failed to sync db: ' + err.message)
     })
+
+const apiRouter = express.Router()
+app.use('/api', apiRouter)
+
+apiRouter.use(require('./routes/auth.routes'))
+apiRouter.use(require('./routes/messages.routes'))
+apiRouter.use(require('./routes/user.routes'))
 
 const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
