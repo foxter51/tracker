@@ -2,7 +2,7 @@ const db = require('../models')
 const User = db.user
 const { generateToken } = require('../config/jwt.config')
 
-exports.registerUser = async (userData) => {
+async function registerUser(userData) {
     const { username, email, password, lastname, firstname } = userData
 
     try {
@@ -32,7 +32,7 @@ exports.registerUser = async (userData) => {
     }
 }
 
-exports.loginUser = async (username, password) => {
+async function loginUser(username, password) {
     try {
         const user = await User.findOne({ where: { username: username } })
 
@@ -44,4 +44,9 @@ exports.loginUser = async (username, password) => {
     } catch (err) {
         throw new Error(err.message)
     }
+}
+
+module.exports = {
+    registerUser,
+    loginUser
 }

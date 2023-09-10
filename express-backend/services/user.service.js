@@ -1,8 +1,7 @@
 const db = require('../models')
-const { findOne } = require("../controllers/user.controller");
 const User = db.user
 
-exports.findOne = async (userId) => {
+async function findOne(userId) {
     try{
         const user = await User.findByPk(userId)
 
@@ -16,7 +15,7 @@ exports.findOne = async (userId) => {
     }
 }
 
-exports.update = async (patchedUser, userId) => {
+async function update(patchedUser, userId) {
     try{
         const oldUser = await User.findByPk(userId)
 
@@ -47,7 +46,7 @@ exports.update = async (patchedUser, userId) => {
     }
 }
 
-exports.destroy = async (userId) => {
+async function destroy(userId) {
     try{
         await User.destroy({
             where: { id: userId }
@@ -55,4 +54,10 @@ exports.destroy = async (userId) => {
     } catch (err) {
         throw new Error(err.message)
     }
+}
+
+module.exports = {
+    findOne,
+    update,
+    destroy
 }
