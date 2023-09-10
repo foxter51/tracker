@@ -15,6 +15,15 @@ async function findOne(userId) {
     }
 }
 
+async function findAll() {
+    try{
+        const users = await User.findAll()
+        return { users }
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
 async function update(patchedUser, userId) {
     try{
         const oldUser = await User.findByPk(userId)
@@ -58,6 +67,7 @@ async function destroy(userId) {
 
 module.exports = {
     findOne,
+    findAll,
     update,
     destroy
 }

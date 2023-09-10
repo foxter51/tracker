@@ -11,7 +11,6 @@ async function register(req, res) {
             lastname,
             firstname,
         }
-
         const registeredUserToken = await authService.registerUser(userData)
         res.json(registeredUserToken)
     } catch (err) {
