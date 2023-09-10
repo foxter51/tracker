@@ -12,9 +12,5 @@ module.exports = (sequelize) => {
         },
     })
 
-    Project.prototype.addSprint = function (sprint) {
-        return this.addSprints(sprint)
-    }
-
     return Project
 }
