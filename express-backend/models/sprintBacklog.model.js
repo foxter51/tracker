@@ -13,9 +13,5 @@ module.exports = (sequelize) => {
         },
     })
 
-    SprintBacklog.prototype.addUserStory = function (userStory) {
-        return this.addUserStories(userStory)
-    }
-
     return SprintBacklog
 }

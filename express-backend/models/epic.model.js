@@ -24,9 +24,5 @@ module.exports = (sequelize) => {
         },
     })
 
-    Epic.prototype.addUserStory = function (userStory) {
-        return this.addUserStories(userStory)
-    }
-
     return Epic
 }

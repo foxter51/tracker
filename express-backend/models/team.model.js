@@ -8,9 +8,5 @@ module.exports = (sequelize) => {
         },
     })
 
-    Team.prototype.addUserAndRole = function (userAndRole) {
-        return this.addUsersAndRole(userAndRole)
-    }
-
     return Team
 }

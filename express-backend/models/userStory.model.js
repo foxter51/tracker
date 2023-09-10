@@ -24,9 +24,5 @@ module.exports = (sequelize) => {
         },
     })
 
-    UserStory.prototype.addTask = function (task) {
-        return this.addTasks(task)
-    }
-
     return UserStory
 }
