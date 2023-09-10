@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize")
 
 module.exports = (sequelize) => {
-    const UserStory = sequelize.define("UserStory", {
+    return sequelize.define("UserStory", {
         title: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -23,6 +23,4 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
     })
-
-    return UserStory
 }

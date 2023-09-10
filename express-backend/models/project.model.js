@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize")
 
 module.exports = (sequelize) => {
-    const Project = sequelize.define("Project", {
+    return sequelize.define("Project", {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -11,6 +11,4 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
     })
-
-    return Project
 }
