@@ -11,6 +11,15 @@ async function findOne(req, res) {
     }
 }
 
+async function findAll(req, res) {
+    try{
+        const users = await userService.findAll()
+        res.json(users)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 async function update(req, res) {
     const { id } = req.params
 
@@ -34,6 +43,7 @@ async function destroy(req, res) {
 
 module.exports = {
     findOne,
+    findAll,
     update,
     destroy
 }
