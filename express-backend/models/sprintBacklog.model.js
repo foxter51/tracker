@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize")
 
 module.exports = (sequelize) => {
-    const SprintBacklog = sequelize.define("SprintBacklog", {
+    return sequelize.define("SprintBacklog", {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -12,6 +12,4 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
     })
-
-    return SprintBacklog
 }
