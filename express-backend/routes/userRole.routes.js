@@ -1,7 +1,8 @@
+const  { authenticateToken } = require('../config/jwt.config')
 const userRoleController = require('../controllers/userRole.controller')
 
 let router = require('express').Router()
 
-router.post('/teams/:teamId/userRoles', userRoleController.create)
+router.post('/teams/:teamId/userRoles', authenticateToken, userRoleController.create)
 
 module.exports = router
