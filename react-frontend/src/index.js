@@ -4,7 +4,7 @@ import './index.css';
 import App from './components/App';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {BrowserRouter, Route, Routes, Navigate, Outlet} from "react-router-dom"
-import LoginForm from "./components/forms/LoginForm"
+import AuthPage from "./pages/AuthPage"
 import AuthService from "./services/AuthService"
 import UserPage from "./pages/UserPage"
 import Header from "./components/blocks/Header"
@@ -33,7 +33,7 @@ root.render(
         <Routes>
             <Route path="/" element={<Layout/>}>
                 <Route index element={<PrivateRoute><App/></PrivateRoute>}/>
-                <Route path="/auth" element={<LoginForm/>}/>
+                <Route path="/auth" element={<AuthPage/>}/>
                 <Route path="/users/:id" element={<PrivateRoute><UserPage/></PrivateRoute>}/>
             </Route>
         </Routes>
