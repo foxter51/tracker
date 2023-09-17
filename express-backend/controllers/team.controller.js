@@ -20,7 +20,30 @@ async function findAll(req, res) {
     }
 }
 
+async function findOne(req, res) {
+    const { id } = req.params
+
+    try {
+        const team = await teamService.findOne(id)
+        res.json(team)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
+async function destroy(req, res) {
+    const { id } = req.params
+
+    try{
+        await teamService.destroy(id)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
     create,
-    findAll
+    findAll,
+    findOne,
+    destroy
 }

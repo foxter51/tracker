@@ -3,6 +3,6 @@ const userRoleController = require('../controllers/userRole.controller')
 
 let router = require('express').Router()
 
-router.post('/teams/:teamId/userRoles', authenticateToken, userRoleController.create)
+router.post('/teams/userRoles', authenticateToken, userRoleController.create)
 
 module.exports = router
