@@ -3,8 +3,9 @@ import userService from '../services/UserService'
 import {useParams} from "react-router"
 import LoadingEffect from "../components/effects/LoadingEffect"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faCheck, faPen, faTrash} from '@fortawesome/free-solid-svg-icons'
+import {faTrash} from '@fortawesome/free-solid-svg-icons'
 import authService from "../services/AuthService"
+import EditableField from "../components/forms/EditableField"
 
 let equal = require('fast-deep-equal')
 
@@ -14,7 +15,7 @@ export default function UserPage() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    const {id} = useParams()
+    const { id } = useParams()
 
     const [editing, setEditing] = useState({
         firstname: false,
@@ -89,141 +90,80 @@ export default function UserPage() {
                     <div className="row">
                         <div className="col">Name</div>
                         <div className="col"><strong>{user.firstname} {user.lastname}</strong></div>
-                        {user.id === +authService.getAuthUserId() &&
-                            <>
-                                {editing.firstname && editing.lastname ?
-                                    <>
-                                        <div className="col-2">
-                                            <input className="form-control"
-                                                   type="text"
-                                                   value={user.firstname}
-                                                   maxLength="32"
-                                                   onChange={(e) => setUser({ ...user, firstname: e.target.value })}
-                                            />
-                                        </div>
 
-                                        <div className="col-2">
-                                            <input className="form-control"
-                                                   type="text"
-                                                   value={user.lastname}
-                                                   maxLength="32"
-                                                   onChange={(e) => setUser({ ...user, lastname: e.target.value })}
-                                            />
-                                        </div>
+                        <EditableField
+                            userId={user.id}
+                            value={user.firstname}
+                            field="firstname"
+                            type="text"
+                            maxLength="32"
+                            editing={editing}
+                            onEdit={handleEdit}
+                            onChange={(e) => setUser({ ...user, firstname: e.target.value })}
+                            onSubmit={submitUpdate}
+                        />
 
-                                        <div className="col-1">
-                                            <FontAwesomeIcon icon={faCheck} className="float-end" onClick={() => {
-                                                handleEdit('firstname')
-                                                handleEdit('lastname')
-                                                submitUpdate()
-                                            }}/>
-                                        </div>
-                                    </>
-                                    :
-                                    <div className="col-1">
-                                        <FontAwesomeIcon icon={faPen} className="float-end" onClick={() => {
-                                            handleEdit('firstname')
-                                            handleEdit('lastname')
-                                        }}/>
-                                    </div>
-                                }
-                            </>
-                        }
+                        <EditableField
+                            userId={user.id}
+                            value={user.lastname}
+                            field="lastname"
+                            type="text"
+                            maxLength="32"
+                            editing={editing}
+                            onEdit={handleEdit}
+                            onChange={(e) => setUser({ ...user, lastname: e.target.value })}
+                            onSubmit={submitUpdate}
+                        />
                     </div>
 
                     <div className="row">
                         <div className="col">Username</div>
                         <div className="col">{user.username}</div>
-                        {user.id === +authService.getAuthUserId() &&
-                            <>
-                                {editing.username ?
-                                    <>
-                                        <div className="col-2">
-                                            <input className="form-control"
-                                                   type="text"
-                                                   value={user.username}
-                                                   maxLength="32"
-                                                   onChange={(e) => setUser({ ...user, username: e.target.value })}
-                                            />
-                                        </div>
 
-                                        <div className="col-1">
-                                            <FontAwesomeIcon icon={faCheck} className="float-end" onClick={() => {
-                                                handleEdit('username')
-                                                submitUpdate()
-                                            }}/>
-                                        </div>
-                                    </>
-                                    :
-                                    <div className="col-1">
-                                        <FontAwesomeIcon icon={faPen} className="float-end" onClick={() => handleEdit('username')}/>
-                                    </div>
-                                }
-                            </>
-                        }
+                        <EditableField
+                            userId={user.id}
+                            value={user.username}
+                            field="username"
+                            type="text"
+                            maxLength="32"
+                            editing={editing}
+                            onEdit={handleEdit}
+                            onChange={(e) => setUser({ ...user, username: e.target.value })}
+                            onSubmit={submitUpdate}
+                        />
                     </div>
 
                     <div className="row">
                         <div className="col">E-mail</div>
                         <div className="col">{user.email}</div>
-                        {user.id === +authService.getAuthUserId() &&
-                            <>
-                                {editing.email ?
-                                    <>
-                                        <div className="col-2">
-                                            <input className="form-control"
-                                                   type="email"
-                                                   value={user.email}
-                                                   maxLength="32"
-                                                   onChange={(e) => setUser({ ...user, email: e.target.value })}
-                                            />
-                                        </div>
 
-                                        <div className="col-1">
-                                            <FontAwesomeIcon icon={faCheck} className="float-end" onClick={() => {
-                                                handleEdit('email')
-                                                submitUpdate()
-                                            }}/>
-                                        </div>
-                                    </>
-                                    :
-                                    <div className="col-1">
-                                        <FontAwesomeIcon icon={faPen} className="float-end" onClick={() => handleEdit('email')}/>
-                                    </div>
-                                }
-                            </>
-                        }
+                        <EditableField
+                            userId={user.id}
+                            value={user.email}
+                            field="email"
+                            type="email"
+                            maxLength="32"
+                            editing={editing}
+                            onEdit={handleEdit}
+                            onChange={(e) => setUser({ ...user, email: e.target.value })}
+                            onSubmit={submitUpdate}
+                        />
                     </div>
 
                     <div className="row">
                         <div className="col-2">Password</div>
-                        {user.id === +authService.getAuthUserId() &&
-                            <>
-                                {editing.password ?
-                                    <>
-                                        <div className="col-2">
-                                            <input className="form-control"
-                                                   type="password"
-                                                   value={user.password}
-                                                   maxLength="64"
-                                                   onChange={(e) => setUser({ ...user, password: e.target.value })}
-                                            />
-                                        </div>
 
-                                        <div className="col-1">
-                                            <FontAwesomeIcon icon={faCheck} className="float-end" onClick={() => {
-                                                handleEdit('password')
-                                                submitUpdate()
-                                            }}/>
-                                        </div>
-                                    </>
-                                    :
-                                    <div className="col-1">
-                                        <FontAwesomeIcon icon={faPen} className="float-end" onClick={() => handleEdit('password')}/>
-                                    </div>
-                                }
-                            </>
-                        }
+                        <EditableField
+                            userId={user.id}
+                            value={user.password}
+                            field="password"
+                            type="password"
+                            maxLength="64"
+                            editing={editing}
+                            onEdit={handleEdit}
+                            onChange={(e) => setUser({ ...user, password: e.target.value })}
+                            onSubmit={submitUpdate}
+                        />
                     </div>
 
                     <div className="row">
@@ -235,7 +175,7 @@ export default function UserPage() {
                                 <div>no teams</div>
                             }
                         </div>
-                        {user.id === +authService.getAuthUserId() &&<div className="col-1"/>}
+                        {user.id === +authService.getAuthUserId() && <div className="col-1"/>}
                     </div>
 
                     {user.id === +authService.getAuthUserId() &&
