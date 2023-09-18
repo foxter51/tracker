@@ -14,6 +14,19 @@ class UserService {
         }
     }
 
+    async getAllUsers() {
+        try{
+            return await request(
+                "GET",
+                "/users",
+                {}
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
+
     async updateUser(user) {
         try {
             return await request(
