@@ -94,6 +94,8 @@ export default function TeamForm() {
         }
     }
 
+    window.addEventListener("beforeunload", onCancel);
+
     const onSave = () => {
         setSave(true)
     }
