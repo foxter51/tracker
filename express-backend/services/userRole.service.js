@@ -11,10 +11,11 @@ async function create(userRolesData){
         throw new Error('Invalid number of team members')
     }
 
+    const createdUserRoles = []
     try{
-        const createdUserRoles = []
         let productOwnersCount = 0
         let scrumMastersCount = 0
+        let developersCount = 0
 
         for (const entry of userRolesData) {
             const { userId, roleId, teamId } = entry
@@ -41,6 +42,10 @@ async function create(userRolesData){
                 scrumMastersCount++
             }
 
+            if(role.scrumRole === 'Developer'){
+                developersCount++
+            }
+
             if(productOwnersCount > 1 || scrumMastersCount > 1){
                 throw new Error('Product Owner and Scrum Master must be a maximum of 1')
             }
@@ -56,8 +61,17 @@ async function create(userRolesData){
             createdUserRoles.push(savedUserRole)
         }
 
+        if (developersCount < 1 || productOwnersCount < 1 || scrumMastersCount < 1) {
+            throw new Error('At least 1 of each role is required')
+        }
+
         return { teamMembers: createdUserRoles }
     } catch (err) {
+
+        for (const entry of createdUserRoles){
+            await entry.destroy()
+        }
+
         throw new Error(err.message)
     }
 }
