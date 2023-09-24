@@ -9,7 +9,7 @@ import AuthService from "./services/AuthService"
 import UserPage from "./pages/UserPage"
 import Header from "./components/blocks/Header"
 import logo from "./logo.svg"
-import TeamForm from "./components/forms/TeamForm"
+import TeamCreatePage from "./pages/TeamCreatePage"
 import TeamPage from "./pages/TeamPage"
 
 function Layout() {
@@ -37,7 +37,7 @@ root.render(
                 <Route index element={<PrivateRoute><App/></PrivateRoute>}/>
                 <Route path="/auth" element={<AuthPage/>}/>
                 <Route path="/users/:id" element={<PrivateRoute><UserPage/></PrivateRoute>}/>
-                <Route path="/teams" element={<PrivateRoute><TeamForm/></PrivateRoute>}/>
+                <Route path="/teams" element={<PrivateRoute><TeamCreatePage/></PrivateRoute>}/>
                 <Route path="/teams/:id" element={<PrivateRoute><TeamPage/></PrivateRoute>}/>
             </Route>
         </Routes>
