@@ -27,6 +27,19 @@ class TeamService {
         }
     }
 
+    async getAllTeams(){
+        try{
+            return await request(
+                "GET",
+                "/teams",
+                {}
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
+
     async deleteTeam(id) {
         try {
             return await request(

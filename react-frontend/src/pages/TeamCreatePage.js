@@ -21,16 +21,14 @@ export default function TeamCreatePage() {
             {team && !team.userRoles &&
                 <TeamMembersForm
                     selectedUsers={selectedUsers}
-                    setSelectedUsers={setSelectedUsers}
-            />
+                    setSelectedUsers={setSelectedUsers}/>
             }
 
             {selectedUsers.length > 0 && !showPreview &&
                 <TeamMembersRolesForm selectedUsers={selectedUsers}
                                       team={team}
                                       setTeam={setTeam}
-                                      setShowPreview={setShowPreview}
-                />
+                                      setShowPreview={setShowPreview}/>
             }
 
             {showPreview && team.userRoles.length > 0 && <TeamPreview team={team}/>}

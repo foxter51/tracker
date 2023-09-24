@@ -30,6 +30,7 @@ export default function TeamPage() {
 
     return (
         <div>
+            <div>{error}</div>
             <div className="h2">Team: {team.name}</div>
             <div>
                 <div className="h4">Team Members</div>
