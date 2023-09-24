@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react"
 import { Multiselect } from "multiselect-react-dropdown"
 import UserService from "../../services/UserService"
 
-export default function TeamMembersForm() {
+export default function TeamMembersForm({selectedUsers, setSelectedUsers}) {
 
     const [users, setUsers] = useState([])
-    const [selectedUsers, setSelectedUsers] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 

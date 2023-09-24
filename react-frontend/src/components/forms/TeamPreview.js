@@ -17,6 +17,8 @@ export default function TeamPreview({team}) {
         }
     }
 
+    window.addEventListener("beforeunload", onCancel)
+
     const onSave = () => {
         setSave(true)
     }

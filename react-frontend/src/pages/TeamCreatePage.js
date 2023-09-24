@@ -5,7 +5,9 @@ import TeamMembersRolesForm from "../components/forms/TeamMembersRolesForm"
 import TeamPreview from "../components/forms/TeamPreview"
 
 export default function TeamCreatePage() {
+
     const [team, setTeam] = useState(null)
+    const [selectedUsers, setSelectedUsers] = useState([])
     const [showPreview, setShowPreview] = useState(false)
 
     return (
@@ -16,13 +18,18 @@ export default function TeamCreatePage() {
 
             {team && <div className="mb-5">Team created: {team.name}</div>}
 
-            {team && !team.userRoles && <TeamMembersForm/>}
+            {team && !team.userRoles &&
+                <TeamMembersForm
+                    selectedUsers={selectedUsers}
+                    setSelectedUsers={setSelectedUsers}
+            />
+            }
 
-            {TeamMembersForm.selectedUsers.length > 0 && !showPreview &&
-                <TeamMembersRolesForm selectedUsers={TeamMembersForm.selectedUsers}
+            {selectedUsers.length > 0 && !showPreview &&
+                <TeamMembersRolesForm selectedUsers={selectedUsers}
                                       team={team}
                                       setTeam={setTeam}
-                                      setShowShowPreview={setShowPreview}
+                                      setShowPreview={setShowPreview}
                 />
             }
 
