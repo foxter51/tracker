@@ -20,7 +20,7 @@ export default function TeamMembersForm({selectedUsers, setSelectedUsers}) {
             setLoading(false)
         }
         getAllUsers()
-    }, []);
+    }, [])
 
     const onUserSelect = (selectedList, selectedItem) => {
         setSelectedUsers(prev => [...prev, selectedItem])

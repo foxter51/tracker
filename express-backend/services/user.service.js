@@ -1,9 +1,15 @@
 const db = require('../models')
 const User = db.user
 
+const Team = db.team
+
 async function findOne(userId) {
     try{
-        const user = await User.findByPk(userId)
+        const user = await User.findByPk(userId, {
+            include: [
+                { model: Team }
+            ]
+        })
 
         if(!user){
             throw new Error('User not found')

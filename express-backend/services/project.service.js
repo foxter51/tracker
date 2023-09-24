@@ -3,10 +3,10 @@ const Project = db.project
 const Team = db.team
 
 async function create(projectData) {
-    const { name, description, team_id } = projectData
+    const { name, description, teamId } = projectData
 
     try{
-        const team = await Team.findByPk(team_id)
+        const team = await Team.findByPk(teamId)
 
         if(!team){
             throw new Error('Team not found')
@@ -29,7 +29,11 @@ async function create(projectData) {
 
 async function findOne(projectId) {
     try{
-        const project = await Project.findByPk(projectId)
+        const project = await Project.findByPk(projectId, {
+            include: [
+                { model: Team }
+            ]
+        })
 
         if(!project){
             throw new Error('Project not found')

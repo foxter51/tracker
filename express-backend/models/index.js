@@ -50,7 +50,7 @@ db.epic.hasMany(db.userStory, { as: 'userStories', onDelete: 'CASCADE' })
 db.productBacklog.hasMany(db.epic, { as: 'epics', onDelete: 'CASCADE' })
 
 
-db.user.belongsTo(db.team)
+db.user.belongsToMany(db.team, { through: db.userRole })
 
 db.userRole.belongsTo(db.user)
 db.userRole.belongsTo(db.team)

@@ -11,6 +11,8 @@ import Header from "./components/blocks/Header"
 import logo from "./logo.svg"
 import TeamCreatePage from "./pages/TeamCreatePage"
 import TeamPage from "./pages/TeamPage"
+import ProjectCreatePage from "./pages/ProjectCreatePage"
+import ProjectPage from "./pages/ProjectPage"
 
 function Layout() {
     return (
@@ -39,6 +41,8 @@ root.render(
                 <Route path="/users/:id" element={<PrivateRoute><UserPage/></PrivateRoute>}/>
                 <Route path="/teams" element={<PrivateRoute><TeamCreatePage/></PrivateRoute>}/>
                 <Route path="/teams/:id" element={<PrivateRoute><TeamPage/></PrivateRoute>}/>
+                <Route path="/projects" element={<PrivateRoute><ProjectCreatePage/></PrivateRoute>}/>
+                <Route path="/projects/:id" element={<PrivateRoute><ProjectPage/></PrivateRoute>}/>
             </Route>
         </Routes>
     </BrowserRouter>
