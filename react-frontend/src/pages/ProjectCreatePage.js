@@ -1,11 +1,13 @@
 import React, { useState } from "react"
 import ProjectService from "../services/ProjectService"
 import ProjectTeamForm from "../components/forms/ProjectTeamForm"
+import { Navigate } from "react-router"
 
 export default function ProjectCreatePage() {
 
     const [project, setProject] = useState(null)
     const [error, setError] = useState(null)
+    const [save, setSave] = useState(false)
 
     const onSubmitProject = async (e) => {
         e.preventDefault()
@@ -16,9 +18,14 @@ export default function ProjectCreatePage() {
                 teamId: project.teamId
             })
             setProject(response.data.project)
+            setSave(true)
         } catch (error) {
             setError(error.response.data.message)
         }
+    }
+
+    if(save){
+        return <Navigate to={`/projects/${project.id}`}/>
     }
 
     return (
@@ -37,7 +44,7 @@ export default function ProjectCreatePage() {
                     <textarea id="description" name="projectDescription" className="form-control" maxLength="512" required onChange={(e) => setProject({ ...project, description: e.target.value })}/>
                 </div>
                 <ProjectTeamForm project={project} setProject={setProject} />
-                <button className="btn btn-primary">Save</button>
+                <button className="btn btn-primary" >Save</button>
             </form>
         </div>
     )

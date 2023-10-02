@@ -14,6 +14,7 @@ export default function UserPage() {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [isSelf, setIsSelf] = useState(false)
 
     const { id } = useParams()
 
@@ -31,6 +32,7 @@ export default function UserPage() {
                 const response = await userService.getUser(id)
                 setOriginalUser(response.data.user)
                 setUser(response.data.user)
+                setIsSelf(response.data.user.id === authService.getAuthUserId())
                 setLoading(false)
             } catch (error) {
                 setError(error.response.data.message);
@@ -65,7 +67,7 @@ export default function UserPage() {
     const submitDelete = async () => {
         try {
             if(window.confirm('Are you sure you want to delete this user?')){
-                if (user.id === +authService.getAuthUserId()){
+                if (isSelf){
                     authService.logout()
                 }
                 await userService.deleteUser(user.id)
@@ -92,7 +94,6 @@ export default function UserPage() {
                         <div className="col"><strong>{user.firstname} {user.lastname}</strong></div>
 
                         <EditableField
-                            userId={user.id}
                             value={user.firstname}
                             field="firstname"
                             type="text"
@@ -101,10 +102,10 @@ export default function UserPage() {
                             onEdit={handleEdit}
                             onChange={(e) => setUser({ ...user, firstname: e.target.value })}
                             onSubmit={submitUpdate}
+                            isSelf={isSelf}
                         />
 
                         <EditableField
-                            userId={user.id}
                             value={user.lastname}
                             field="lastname"
                             type="text"
@@ -113,6 +114,7 @@ export default function UserPage() {
                             onEdit={handleEdit}
                             onChange={(e) => setUser({ ...user, lastname: e.target.value })}
                             onSubmit={submitUpdate}
+                            isSelf={isSelf}
                         />
                     </div>
 
@@ -121,7 +123,6 @@ export default function UserPage() {
                         <div className="col">{user.username}</div>
 
                         <EditableField
-                            userId={user.id}
                             value={user.username}
                             field="username"
                             type="text"
@@ -130,6 +131,7 @@ export default function UserPage() {
                             onEdit={handleEdit}
                             onChange={(e) => setUser({ ...user, username: e.target.value })}
                             onSubmit={submitUpdate}
+                            isSelf={isSelf}
                         />
                     </div>
 
@@ -138,7 +140,6 @@ export default function UserPage() {
                         <div className="col">{user.email}</div>
 
                         <EditableField
-                            userId={user.id}
                             value={user.email}
                             field="email"
                             type="email"
@@ -147,6 +148,7 @@ export default function UserPage() {
                             onEdit={handleEdit}
                             onChange={(e) => setUser({ ...user, email: e.target.value })}
                             onSubmit={submitUpdate}
+                            isSelf={isSelf}
                         />
                     </div>
 
@@ -154,7 +156,6 @@ export default function UserPage() {
                         <div className="col-2">Password</div>
 
                         <EditableField
-                            userId={user.id}
                             value={user.password}
                             field="password"
                             type="password"
@@ -163,6 +164,7 @@ export default function UserPage() {
                             onEdit={handleEdit}
                             onChange={(e) => setUser({ ...user, password: e.target.value })}
                             onSubmit={submitUpdate}
+                            isSelf={isSelf}
                         />
                     </div>
 
@@ -175,10 +177,10 @@ export default function UserPage() {
                                 <div>no teams</div>
                             }
                         </div>
-                        {user.id === +authService.getAuthUserId() && <div className="col-1"/>}
+                        {isSelf && <div className="col-1"/>}
                     </div>
 
-                    {user.id === +authService.getAuthUserId() &&
+                    {isSelf &&
                         <a href="#" className="text-danger text-decoration-none" onClick={() => {
                             submitDelete()
                         }}>

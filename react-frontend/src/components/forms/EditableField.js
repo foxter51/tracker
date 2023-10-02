@@ -1,13 +1,12 @@
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCheck, faPen } from "@fortawesome/free-solid-svg-icons"
-import authService from "../../services/AuthService"
 
-export default function EditableField({userId, value, field, type, maxLength, editing, onEdit, onChange, onSubmit}) {
+export default function EditableField({value, field, type, maxLength, editing, onEdit, onChange, onSubmit, isSelf}) {
 
     return (
         <>
-            {userId === +authService.getAuthUserId() &&
+            {isSelf &&
                 <>
                     {editing[field] ?
                         <>

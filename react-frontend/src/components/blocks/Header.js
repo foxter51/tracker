@@ -1,9 +1,11 @@
 import * as React from "react"
 import AuthService from "../../services/AuthService"
 import {Link} from "react-router-dom"
-import authService from "../../services/AuthService"
 
 export default function Header(props) {
+
+    const isAuthenticated = AuthService.isAuthenticated()
+
     return (
         <div className="App-header mb-5">
             <div className="left-side">
@@ -16,13 +18,13 @@ export default function Header(props) {
                 <li className="nav-item">
                     <Link to="/" className="nav-link">Home</Link>
                 </li>
-                {authService.isAuthenticated() && (
+                {isAuthenticated && (
                     <li className="nav-item">
-                        <Link to={`/users/${authService.getAuthUserId()}`} className="nav-link">My Profile</Link>
+                        <Link to={`/users/${AuthService.getAuthUserId()}`} className="nav-link">My Profile</Link>
                     </li>
                 )}
                 <li className="nav-item">
-                    { AuthService.isAuthenticated() ?
+                    { isAuthenticated ?
                         <a href="/" onClick={AuthService.logout} className="nav-link active">Logout</a>
                         : <Link to="/auth" className="nav-link active">Login</Link> }
                 </li>

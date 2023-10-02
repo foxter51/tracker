@@ -53,7 +53,7 @@ class AuthService {
     }
 
     getAuthUserId() {
-        return window.localStorage.getItem("user_id")
+        return +window.localStorage.getItem("user_id")
     }
 
     setAuthUserId(id) {

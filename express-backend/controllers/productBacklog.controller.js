@@ -18,6 +18,18 @@ async function create(req, res) {
     }
 }
 
+async function findOne(req, res) {
+    const { projectId } = req.params
+
+    try {
+        const productBacklog = await ProductBacklogService.findOne(projectId)
+        res.json(productBacklog)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
-    create
+    create,
+    findOne
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router"
-import teamService from "../services/TeamService"
+import TeamService from "../services/TeamService"
 import LoadingEffect from "../components/effects/LoadingEffect"
 
 export default function TeamPage() {
@@ -13,7 +13,7 @@ export default function TeamPage() {
     useEffect(() => {
         const fetchTeam = async () => {
             try {
-                const response = await teamService.getTeam(id)
+                const response = await TeamService.getTeam(id)
                 setTeam(response.data.team)
                 setLoading(false)
             } catch (error) {
