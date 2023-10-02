@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import teamService from "../../services/TeamService"
 import { Navigate } from "react-router"
 
-export default function TeamPreview({team}) {
+export default function TeamPreviewContent({team}) {
 
     const [cancel, setCancel] = useState(false)
     const [save, setSave] = useState(false)
@@ -35,7 +35,7 @@ export default function TeamPreview({team}) {
         <div>
             <div className="h2">Team Members</div>
             <div>{error}</div>
-            {team.userRoles.map(teamMember => (
+            {team.userRoles.map((teamMember) => (
                 <div className="card mb-1">
                     <div className="card-body">
                         <div className="row">

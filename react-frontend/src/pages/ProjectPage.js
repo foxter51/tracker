@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import ProjectService from "../services/ProjectService"
 import LoadingEffect from "../components/effects/LoadingEffect"
+import classNames from "classnames"
+import ProductBacklogContent from "../components/blocks/ProductBacklogContent"
 
 export default function ProjectPage() {
 
     const [project, setProject] = useState(null)
+    const [active, setActive] = useState('board')
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
@@ -44,22 +47,26 @@ export default function ProjectPage() {
                     </div>
                 </div>
             </div>
-            <ul className="nav nav-tabs" id="myTab" role="tablist">
-                <li className="nav-item" role="presentation">
-                    <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+            <ul className="nav nav-tabs">
+                <li className="nav-item">
+                    <button className={classNames("nav-link", active === "board" ? "active" : "")}
+                            onClick={() => setActive('board')} id="board-tab">Board</button>
                 </li>
-                <li className="nav-item" role="presentation">
-                    <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+                <li className="nav-item">
+                    <button className={classNames("nav-link", active === "productBacklog" ? "active" : "")}
+                            onClick={() => setActive('productBacklog')} id="board-tab">Product Backlog</button>
                 </li>
-                <li className="nav-item" role="presentation">
-                    <button className="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+                <li className="nav-item">
+                    <button className={classNames("nav-link", active === "sprintBacklog" ? "active" : "")}
+                            onClick={() => setActive('sprintBacklog')} id="board-tab">Sprint Backlog</button>
                 </li>
             </ul>
-            {/*TO DO*/}
-            <div className="tab-content" id="myTabContent">
-                <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
-                <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+            <div className="tab-content">
+                <div className={classNames("tab-pane fade", active === "board" ? "show active" : "")}>Board</div>
+                <div className={classNames("tab-pane fade", active === "productBacklog" ? "show active" : "")}>
+                    <ProductBacklogContent/>
+                </div>
+                <div className={classNames("tab-pane fade", active === "sprintBacklog" ? "show active" : "")}>Sprint Backlog</div>
             </div>
         </div>
     )

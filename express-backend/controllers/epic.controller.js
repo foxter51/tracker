@@ -20,6 +20,18 @@ async function create(req, res) {
     }
 }
 
+async function findAll(req, res) {
+    const { productBacklogId } = req.params
+
+    try {
+        const epics = await epicService.findAll(productBacklogId)
+        res.json(epics)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
-    create
+    create,
+    findAll
 }

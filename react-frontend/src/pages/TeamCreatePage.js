@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import TeamForm from "../components/forms/TeamForm"
 import TeamMembersForm from "../components/forms/TeamMembersForm"
 import TeamMembersRolesForm from "../components/forms/TeamMembersRolesForm"
-import TeamPreview from "../components/forms/TeamPreview"
+import TeamPreviewContent from "../components/blocks/TeamPreviewContent"
 
 export default function TeamCreatePage() {
 
@@ -31,7 +31,7 @@ export default function TeamCreatePage() {
                                       setShowPreview={setShowPreview}/>
             }
 
-            {showPreview && team.userRoles.length > 0 && <TeamPreview team={team}/>}
+            {showPreview && team.userRoles.length > 0 && <TeamPreviewContent team={team}/>}
         </div>
     )
 }
