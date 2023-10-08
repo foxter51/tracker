@@ -1,12 +1,12 @@
 import { request } from "../utils/axios_helper"
 
-class EpicService {
-    async createEpic(epic) {
+class UserStoryService {
+    async createUserStory(userStory) {
         try{
             return await request(
                 "POST",
-                `/productBacklogs/${epic.productBacklogId}/epics`,
-                epic
+                `/epics/${userStory.epicId}/userStories`,
+                userStory
             )
         } catch (err) {
             console.log(err)
@@ -14,12 +14,11 @@ class EpicService {
         }
     }
 
-    async getProductBacklogEpics(productBacklogId) {
-        try {
+    async getEpicUserStories(epicId){
+        try{
             return await request(
                 "GET",
-                `/productBacklogs/${productBacklogId}/epics`,
-                {}
+                `/epics/${epicId}/userStories`
             )
         } catch (err) {
             console.log(err)
@@ -28,5 +27,5 @@ class EpicService {
     }
 }
 
-const epicService = new EpicService()
-export default epicService
+const userStoryService = new UserStoryService()
+export default userStoryService
