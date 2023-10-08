@@ -1,10 +1,11 @@
 import React, { useState } from "react"
-import EpicService from "../../services/EpicService"
+import UserStoryService from "../../services/UserStoryService"
 import { Multiselect } from "multiselect-react-dropdown"
+import AuthService from "../../services/AuthService"
 
-export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
+export default function UserStoryForm({epicId, setShowUserStoryForm, addUserStory}) {
 
-    const [epic, setEpic] = useState(null)
+    const [userStory, setUserStory] = useState(null)
     const [error, setError] = useState(null)
     const [save, setSave] = useState(false)
 
@@ -30,18 +31,19 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
         {name: 'DONE'}
     ]
 
-    const onSubmitEpic = async (e) => {
+    const onSubmitUserStory = async (e) => {
         e.preventDefault()
         try{
-            const response = await EpicService.createEpic({
-                title: epic.title,
-                description: epic.description,
-                priority: epic.priority,
-                storyPoints: epic.storyPoints,
-                status: epic.status,
-                productBacklogId: productBacklogId
+            const response = await UserStoryService.createUserStory({
+                title: userStory.title,
+                description: userStory.description,
+                priority: userStory.priority,
+                storyPoints: userStory.storyPoints,
+                status: userStory.status,
+                ownerId: AuthService.getAuthUserId(),
+                epicId: epicId
             })
-            addEpic(response.data.epic)
+            addUserStory(response.data.userStory)
             setSave(true)
         } catch (error) {
             setError(error.response.data.message)
@@ -49,27 +51,27 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
     }
 
     if (save) {
-        setShowEpicForm(false)
+        setShowUserStoryForm(false)
     }
 
     return (
         <div className="mb-3">
             <div>
-                <div className="h1">Create Epic</div>
+                <div className="h1">Create User Story</div>
             </div>
             <div>{error}</div>
-            <form onSubmit={onSubmitEpic}>
+            <form onSubmit={onSubmitUserStory}>
                 <div className="mb-3">
-                    <label className="form-label" htmlFor="epicTitle">Epic Title</label>
-                    <input type="text" id="epicTitle" name="epicTitle" className="form-control" maxLength="32" required onChange={(e) => setEpic({...epic, title: e.target.value })}/>
+                    <label className="form-label" htmlFor="userStoryTitle">User Story Title</label>
+                    <input type="text" id="userStoryTitle" name="userStoryTitle" className="form-control" maxLength="32" required onChange={(e) => setUserStory({...userStory, title: e.target.value })}/>
                 </div>
                 <div className="mb-3">
-                    <label className="form-label" htmlFor="epicDescription">Epic Description</label>
-                    <input type="text" id="epicDescription" name="epicDescription" className="form-control" maxLength="32" required onChange={(e) => setEpic({...epic, description: e.target.value })}/>
+                    <label className="form-label" htmlFor="userStoryDescription">User Story Description</label>
+                    <input type="text" id="userStoryDescription" name="userStoryDescription" className="form-control" maxLength="32" required onChange={(e) => setUserStory({...userStory, description: e.target.value })}/>
                 </div>
                 <div className="mb-3 row">
                     <div className="col">
-                        Epic Priority
+                        User Story Priority
                     </div>
                     <div className="col">
                         <Multiselect
@@ -77,7 +79,7 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
                             selectedValues={[]}
                             singleSelect="true"
                             onSelect={(selectedList, selectedItem) =>
-                                setEpic({...epic, priority: selectedItem.name})
+                                setUserStory({...userStory, priority: selectedItem.name})
                             }
                             displayValue="name"
                         />
@@ -85,7 +87,7 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
                 </div>
                 <div className="mb-3 row">
                     <div className="col">
-                        Epic Story Points
+                        User Story Story Points
                     </div>
                     <div className="col">
                         <Multiselect
@@ -93,7 +95,7 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
                             selectedValues={[]}
                             singleSelect="true"
                             onSelect={(selectedList, selectedItem) =>
-                                setEpic({...epic, storyPoints: selectedItem.name})
+                                setUserStory({...userStory, storyPoints: selectedItem.name})
                             }
                             displayValue="name"
                         />
@@ -101,7 +103,7 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
                 </div>
                 <div className="mb-3 row">
                     <div className="col">
-                        Epic Status
+                        User Story Status
                     </div>
                     <div className="col">
                         <Multiselect
@@ -109,7 +111,7 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
                             selectedValues={[]}
                             singleSelect="true"
                             onSelect={(selectedList, selectedItem) =>
-                                setEpic({...epic, status: selectedItem.name})
+                                setUserStory({...userStory, status: selectedItem.name})
                             }
                             displayValue="name"
                         />

@@ -25,7 +25,7 @@ export default function ProjectPage() {
             }
         }
         fetchProject()
-    }, [id]);
+    }, [id])
 
     if(loading){
         return <LoadingEffect/>

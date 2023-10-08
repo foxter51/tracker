@@ -45,12 +45,6 @@ async function findOne(projectId) {
             where: {ProjectId: projectId},
             include: {
                 model: Epic, as: 'epics',
-                include: {
-                    model: UserStory, as: 'userStories',
-                    include: {
-                        model: Task, as: 'tasks'
-                    }
-                }
             }
         })
         return { productBacklog }
