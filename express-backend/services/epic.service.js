@@ -46,15 +46,7 @@ async function create(epicData) {
 
 async function findAll(productBacklogId) {
     try{
-        const epics = await Epic.findAll({
-            where: { ProductBacklogId: productBacklogId },
-            include: {
-                model: UserStory, as: 'userStories',
-                include: {
-                    model: Task, as: 'tasks'
-                }
-            }
-        })
+        const epics = await Epic.findAll({ where: { ProductBacklogId: productBacklogId } })
         return { epics }
     } catch (err) {
         throw new Error(err.message)

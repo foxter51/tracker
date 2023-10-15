@@ -3,6 +3,9 @@ import EpicContent from "./EpicContent"
 import EpicForm from "../forms/EpicForm"
 import classNames from "classnames"
 import statusColor from "../../utils/status_color"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
+import { Link } from "react-router-dom"
 
 export default function EpicList({productBacklogId, epics, addEpic, isProductOwner}) {
     const [activeEpic, setActiveEpic] = useState(null)
@@ -44,9 +47,16 @@ export default function EpicList({productBacklogId, epics, addEpic, isProductOwn
                             <>
                                 <div key={epic.id}
                                      className="list-group-item d-flex justify-content-between align-items-center"
-                                     onClick={() => onSetActiveEpic(epic)}>
-                                    <div>
-                                        {epic.title}
+                                >
+                                    <div className="d-flex align-items-center">
+                                        <Link to="" className="me-2">
+                                            <FontAwesomeIcon icon={faChevronDown}
+                                                             onClick={() => onSetActiveEpic(epic)}
+                                            />
+                                        </Link>
+                                        <div>
+                                            {epic.title}
+                                        </div>
                                     </div>
                                     <div className={classNames( statusColor(epic.status))}>
                                         {epic.status}

@@ -42,12 +42,7 @@ async function create(userStoryData) {
 
 async function findAll(epicId) {
     try {
-        const userStories = await UserStory.findAll({
-            where: { EpicId: epicId },
-            include: {
-                model: Task, as: 'tasks'
-            }
-        })
+        const userStories = await UserStory.findAll({ where: { EpicId: epicId } })
         return { userStories }
     } catch (err) {
         throw new Error(err.message)

@@ -2,7 +2,7 @@ const taskService = require('../services/task.service')
 
 async function create(req, res) {
     const { userStoryId } = req.params
-    const { title, description, priority, storyPoints, status, assigneeId } = req.body
+    const { title, description, priority, storyPoints, status } = req.body
 
     try {
         const taskData = {
@@ -11,7 +11,6 @@ async function create(req, res) {
             priority,
             storyPoints,
             status,
-            assigneeId,
             userStoryId
         }
         const task = await taskService.create(taskData)
@@ -21,6 +20,18 @@ async function create(req, res) {
     }
 }
 
+async function findAll(req, res) {
+    const { userStoryId } = req.params
+
+    try {
+        const tasks = await taskService.findAll(userStoryId)
+        res.json(tasks)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
-    create
+    create,
+    findAll
 }

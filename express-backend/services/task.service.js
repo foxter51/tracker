@@ -1,19 +1,12 @@
 const db = require('../models')
 const Task = db.task
-
-const User = db.user
+const UserStory = db.userStory
 
 async function create(taskData) {
-    const { title, description, priority, storyPoints, status, assigneeId, userStoryId } = taskData
+    const { title, description, priority, storyPoints, status, userStoryId } = taskData
 
     try{
-        const assignee = await User.findByPk(assigneeId)
-
-        if(!assignee){
-            throw new Error('User not found')
-        }
-
-        const userStory = await Task.findByPk(userStoryId)
+        const userStory = await UserStory.findByPk(userStoryId)
 
         if(!userStory){
             throw new Error('User Story not found')
@@ -27,7 +20,6 @@ async function create(taskData) {
             status,
         })
 
-        await task.setAssignee(assignee)
         await task.setUserStory(userStory)
 
         await task.save()
@@ -38,6 +30,16 @@ async function create(taskData) {
     }
 }
 
+async function findAll(userStoryId) {
+    try {
+        const tasks = await Task.findAll({ where: { UserStoryId: userStoryId } })
+        return { tasks }
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
 module.exports = {
-    create
+    create,
+    findAll
 }
