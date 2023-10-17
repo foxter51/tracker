@@ -6,13 +6,22 @@ import statusColor from "../../utils/status_color"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
+import EpicModal from "../modals/EpicModal"
 
 export default function EpicList({productBacklogId, epics, addEpic, isProductOwner}) {
     const [activeEpic, setActiveEpic] = useState(null)
     const [showEpicForm, setShowEpicForm] = useState(false)
 
+    const [selectedEpic, setSelectedEpic] = useState(null)
+    const [showEpicModal, setShowEpicModal] = useState(false)
+
     const onSetActiveEpic = (epic) => {
         epic === activeEpic ? setActiveEpic(null) : setActiveEpic(epic)
+    }
+
+    const showModal = (epic) => {
+        setSelectedEpic(epic)
+        setShowEpicModal(true)
     }
 
     return (
@@ -54,9 +63,9 @@ export default function EpicList({productBacklogId, epics, addEpic, isProductOwn
                                                              onClick={() => onSetActiveEpic(epic)}
                                             />
                                         </Link>
-                                        <div>
+                                        <Link to="" onClick={() => showModal(epic)}>
                                             {epic.title}
-                                        </div>
+                                        </Link>
                                     </div>
                                     <div className={classNames( statusColor(epic.status))}>
                                         {epic.status}
@@ -69,7 +78,15 @@ export default function EpicList({productBacklogId, epics, addEpic, isProductOwn
                                     />
                                 }
                             </>
-                        ))}
+                        ))
+                    }
+                    {showEpicModal &&
+                        <EpicModal
+                            epic={selectedEpic}
+                            show={showEpicModal}
+                            onClose={() => setShowEpicModal(false)}
+                        />
+                    }
                 </ul>
             </div>
         </div>

@@ -6,14 +6,23 @@ import UserStoryContent from "./UserStoryContent"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
+import UserStoryModal from "../modals/UserStoryModal"
 
 export default function UserStoriesList({epicId, isProductOwner, userStories, addUserStory}) {
 
     const [activeUserStory, setActiveUserStory] = useState(null)
     const [showUserStoryForm, setShowUserStoryForm] = useState(false)
 
+    const [selectedUserStory, setSelectedUserStory] = useState(null)
+    const [showUserStoryModal, setShowUserStoryModal] = useState(false)
+
     const onSetActiveUserStory = (userStory) => {
         userStory === activeUserStory ? setActiveUserStory(null) : setActiveUserStory(userStory)
+    }
+
+    const showModal = (userStory) => {
+        setSelectedUserStory(userStory)
+        setShowUserStoryModal(true)
     }
 
     return (
@@ -54,9 +63,9 @@ export default function UserStoriesList({epicId, isProductOwner, userStories, ad
                                                              onClick={() => onSetActiveUserStory(userStory)}
                                             />
                                         </Link>
-                                        <div>
+                                        <Link to="" onClick={() => showModal(userStory)}>
                                             {userStory.title}
-                                        </div>
+                                        </Link>
                                     </div>
                                     <div className={classNames( statusColor(userStory.status))}>
                                         {userStory.status}
@@ -69,7 +78,15 @@ export default function UserStoriesList({epicId, isProductOwner, userStories, ad
                                     />
                                 }
                             </>
-                        ))}
+                        ))
+                    }
+                    {showUserStoryModal &&
+                        <UserStoryModal
+                            userStory={selectedUserStory}
+                            show={showUserStoryModal}
+                            onClose={() => setShowUserStoryModal(false)}
+                        />
+                    }
                 </ul>
             </div>
 

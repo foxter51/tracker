@@ -2,6 +2,8 @@ const db = require('../models')
 const Task = db.task
 const UserStory = db.userStory
 
+const User = db.user
+
 async function create(taskData) {
     const { title, description, priority, storyPoints, status, userStoryId } = taskData
 
@@ -32,7 +34,13 @@ async function create(taskData) {
 
 async function findAll(userStoryId) {
     try {
-        const tasks = await Task.findAll({ where: { UserStoryId: userStoryId } })
+        const tasks = await Task.findAll({
+            where: { UserStoryId: userStoryId },
+            include: {
+                model: User,
+                as: 'assignee'
+            }
+        })
         return { tasks }
     } catch (err) {
         throw new Error(err.message)
