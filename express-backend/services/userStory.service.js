@@ -3,7 +3,6 @@ const UserStory = db.userStory
 
 const User = db.user
 const Epic = db.epic
-const Task = db.task
 
 async function create(userStoryData) {
     const { title, description, priority, storyPoints, status, ownerId, epicId } = userStoryData
@@ -42,7 +41,13 @@ async function create(userStoryData) {
 
 async function findAll(epicId) {
     try {
-        const userStories = await UserStory.findAll({ where: { EpicId: epicId } })
+        const userStories = await UserStory.findAll({
+            where: { EpicId: epicId },
+            include: {
+                model: User,
+                as: 'owner'
+            }
+        })
         return { userStories }
     } catch (err) {
         throw new Error(err.message)
