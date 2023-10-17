@@ -89,7 +89,7 @@ export default function UserPage() {
             </div>
             <div className="card col-8">
                 <div className="card-body">
-                    <div className="row">
+                    <div className="row align-items-center">
                         <div className="col">Name</div>
                         <div className="col"><strong>{user.firstname} {user.lastname}</strong></div>
 
@@ -118,7 +118,7 @@ export default function UserPage() {
                         />
                     </div>
 
-                    <div className="row">
+                    <div className="row align-items-center">
                         <div className="col">Username</div>
                         <div className="col">{user.username}</div>
 
@@ -135,7 +135,7 @@ export default function UserPage() {
                         />
                     </div>
 
-                    <div className="row">
+                    <div className="row align-items-center">
                         <div className="col">E-mail</div>
                         <div className="col">{user.email}</div>
 
@@ -152,7 +152,7 @@ export default function UserPage() {
                         />
                     </div>
 
-                    <div className="row">
+                    <div className="row align-items-center">
                         <div className="col-2">Password</div>
 
                         <EditableField
