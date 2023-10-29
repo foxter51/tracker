@@ -21,11 +21,22 @@ async function create(req, res) {
     }
 }
 
-async function findAll(req, res) {
+async function findAllByEpic(req, res) {
     const { epicId } = req.params
 
     try {
-        const userStories = await userStoryService.findAll(epicId)
+        const userStories = await userStoryService.findAllByEpic(epicId)
+        res.json(userStories)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
+async function findUnassignedUserStories(req, res) {
+    const { projectId } = req.params
+
+    try {
+        const userStories = await userStoryService.findUnassignedUserStories(projectId)
         res.json(userStories)
     } catch (err) {
         res.status(400).json({ message: err.message })
@@ -34,5 +45,6 @@ async function findAll(req, res) {
 
 module.exports = {
     create,
-    findAll
+    findAllByEpic,
+    findUnassignedUserStories
 }

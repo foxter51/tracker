@@ -34,12 +34,8 @@ export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
         e.preventDefault()
         try{
             const response = await TaskService.createTask({
-                title: task.title,
-                description: task.description,
-                priority: task.priority,
-                storyPoints: task.storyPoints,
-                status: task.status,
-                userStoryId: userStoryId
+                ...task,
+                userStoryId
             })
             addTask(response.data.task)
             setSave(true)

@@ -37,6 +37,7 @@ export default function EpicContent({epicId, isProductOwner}) {
                     isProductOwner={isProductOwner}
                     userStories={userStories}
                     addUserStory={addUserStory}
+                    isSprintBacklogEdit={false}
                 />
             </div>
         </div>

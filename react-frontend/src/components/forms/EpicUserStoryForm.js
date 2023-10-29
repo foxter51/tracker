@@ -3,7 +3,7 @@ import UserStoryService from "../../services/UserStoryService"
 import { Multiselect } from "multiselect-react-dropdown"
 import AuthService from "../../services/AuthService"
 
-export default function UserStoryForm({epicId, setShowUserStoryForm, addUserStory}) {
+export default function EpicUserStoryForm({epicId, setShowUserStoryForm, addUserStory}) {
 
     const [userStory, setUserStory] = useState(null)
     const [error, setError] = useState(null)
@@ -35,13 +35,9 @@ export default function UserStoryForm({epicId, setShowUserStoryForm, addUserStor
         e.preventDefault()
         try{
             const response = await UserStoryService.createUserStory({
-                title: userStory.title,
-                description: userStory.description,
-                priority: userStory.priority,
-                storyPoints: userStory.storyPoints,
-                status: userStory.status,
+                ...userStory,
                 ownerId: AuthService.getAuthUserId(),
-                epicId: epicId
+                epicId
             })
             addUserStory(response.data.userStory)
             setSave(true)

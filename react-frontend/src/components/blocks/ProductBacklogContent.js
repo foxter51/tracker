@@ -11,6 +11,7 @@ export default function ProductBacklogContent() {
     const [epics, setEpics] = useState([])
     const [isProductOwner, setIsProductOwner] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
     const { id } = useParams()
 
@@ -23,7 +24,7 @@ export default function ProductBacklogContent() {
                 setEpics(response.data.productBacklog.epics)
                 setLoading(false)
             } catch (error) {
-                console.log(error)
+                setError(error.response.data.message)
             }
         }
         fetchProductBacklogEpics()
@@ -40,6 +41,7 @@ export default function ProductBacklogContent() {
     return (
         <div className="container p-2">
             <div className="card">
+                {error}
                 <EpicList
                     productBacklogId={productBacklogId}
                     epics={epics}
