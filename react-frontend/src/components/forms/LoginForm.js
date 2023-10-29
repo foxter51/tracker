@@ -10,7 +10,6 @@ export default function LoginForm() {
         e.preventDefault()
         try{
             await AuthService.login(username, password)
-            console.log('gg')
         } catch (error) {
             setError(error.response.data.message)
         }

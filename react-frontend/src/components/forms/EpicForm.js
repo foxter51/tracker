@@ -34,12 +34,8 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
         e.preventDefault()
         try{
             const response = await EpicService.createEpic({
-                title: epic.title,
-                description: epic.description,
-                priority: epic.priority,
-                storyPoints: epic.storyPoints,
-                status: epic.status,
-                productBacklogId: productBacklogId
+                ...epic,
+                productBacklogId
             })
             addEpic(response.data.epic)
             setSave(true)

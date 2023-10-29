@@ -1,10 +1,11 @@
 const db = require('../models')
 const Sprint = db.sprint
 
+const SprintBacklog = db.sprintBacklog
 const Project = db.project
 
 async function create(sprintData) {
-    const { name, duration, goal, projectId } = sprintData
+    const { name, startDate, duration, goal, projectId } = sprintData
 
     try {
         const project = await Project.findByPk(projectId)
@@ -15,13 +16,16 @@ async function create(sprintData) {
 
         const sprint = await Sprint.create({
             name,
+            startDate,
             duration,
-            goal
+            goal,
+            ProjectId: projectId
         })
 
-        sprint.setProject(project)
-
-        await sprint.save()
+        await SprintBacklog.create({
+            storyPointsTotal: 0,
+            SprintId: sprint.id
+        })
 
         return { sprint }
     } catch (err) {
@@ -55,7 +59,24 @@ async function setNextSprint(projectId) {
     }
 }
 
+async function findAll(projectId) {
+    try {
+        const project = await Project.findByPk(projectId)
+
+        if (!project) {
+            throw new Error('Project not found')
+        }
+
+        const sprints = await project.getSprints()
+
+        return { sprints }
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
 module.exports = {
     create,
-    setNextSprint
+    setNextSprint,
+    findAll
 }

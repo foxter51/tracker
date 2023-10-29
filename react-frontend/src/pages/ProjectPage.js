@@ -4,6 +4,7 @@ import ProjectService from "../services/ProjectService"
 import LoadingEffect from "../components/effects/LoadingEffect"
 import classNames from "classnames"
 import ProductBacklogContent from "../components/blocks/ProductBacklogContent"
+import SprintsContent from "../components/blocks/SprintsContent"
 
 export default function ProjectPage() {
 
@@ -57,8 +58,8 @@ export default function ProjectPage() {
                             onClick={() => setActive('productBacklog')} id="board-tab">Product Backlog</button>
                 </li>
                 <li className="nav-item">
-                    <button className={classNames("nav-link", active === "sprintBacklog" ? "active" : "")}
-                            onClick={() => setActive('sprintBacklog')} id="board-tab">Sprint Backlog</button>
+                    <button className={classNames("nav-link", active === "sprints" ? "active" : "")}
+                            onClick={() => setActive('sprints')} id="board-tab">Sprints</button>
                 </li>
             </ul>
             <div className="tab-content">
@@ -66,7 +67,9 @@ export default function ProjectPage() {
                 <div className={classNames("tab-pane fade", active === "productBacklog" ? "show active" : "")}>
                     <ProductBacklogContent/>
                 </div>
-                <div className={classNames("tab-pane fade", active === "sprintBacklog" ? "show active" : "")}>Sprint Backlog</div>
+                <div className={classNames("tab-pane fade", active === "sprints" ? "show active" : "")}>
+                    <SprintsContent/>
+                </div>
             </div>
         </div>
     )

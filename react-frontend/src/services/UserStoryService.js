@@ -18,7 +18,21 @@ class UserStoryService {
         try{
             return await request(
                 "GET",
-                `/epics/${epicId}/userStories`
+                `/epics/${epicId}/userStories`,
+                {}
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
+
+    async getProjectUserStories(projectId){
+        try{
+            return await request(
+                "GET",
+                `/projects/${projectId}/userStories`,
+                {}
             )
         } catch (err) {
             console.log(err)
