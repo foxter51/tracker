@@ -1,40 +1,10 @@
-import React, { useState } from "react"
-import teamService from "../../services/TeamService"
-import { Navigate } from "react-router"
+import React from "react"
 
-export default function TeamPreviewContent({team}) {
-
-    const [cancel, setCancel] = useState(false)
-    const [save, setSave] = useState(false)
-    const [error, setError] = useState(null)
-
-    const onCancel = async () => {
-        try{
-            setCancel(true)
-            await teamService.deleteTeam(team.id)
-        } catch (error) {
-            setError(error.response.data.message)
-        }
-    }
-
-    window.addEventListener("beforeunload", onCancel)
-
-    const onSave = () => {
-        setSave(true)
-    }
-
-    if(cancel){
-        return <Navigate to="/"/>
-    }
-
-    if(save){
-        return <Navigate to={`/teams/${team.id}`}/>
-    }
+export default function TeamPreviewContent({team, onSave, onCancel}) {
 
     return(
         <div>
             <div className="h2">Team Members</div>
-            <div>{error}</div>
             {team.userRoles.map((teamMember) => (
                 <div className="card mb-1">
                     <div className="card-body">

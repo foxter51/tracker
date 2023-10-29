@@ -50,11 +50,11 @@ async function create(userRolesData){
                 throw new Error('Product Owner and Scrum Master must be a maximum of 1')
             }
 
-            const userRole = await UserRole.create({})
-
-            await userRole.setUser(user)
-            await userRole.setTeam(team)
-            await userRole.setRole(role)
+            const userRole = await UserRole.create({
+                UserId: user.id,
+                TeamId: team.id,
+                RoleId: role.id,
+            })
 
             const savedUserRole = await userRole.save()
 
