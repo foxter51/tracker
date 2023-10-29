@@ -5,8 +5,32 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faGripLines } from "@fortawesome/free-solid-svg-icons/faGripLines"
 import priorityColor from "../../utils/priority_color"
 import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import UserService from "../../services/UserService"
+import LoadingEffect from "../effects/LoadingEffect"
 
 export default function UserStoryModal({userStory, show, onClose}) {
+
+    const [userStoryOwner, setUserStoryOwner] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+        const fetchUserStoryOwner = async () => {
+            try {
+                const response = await UserService.getUser(userStory.ownerId)
+                setUserStoryOwner(response.data.user)
+                setLoading(false)
+            } catch (error) {
+                setError(error.response.data.message)
+            }
+        }
+        fetchUserStoryOwner()
+    }, [userStory.ownerId])
+
+    if(loading){
+        return <LoadingEffect/>
+    }
 
     return (
         <Modal
@@ -17,6 +41,7 @@ export default function UserStoryModal({userStory, show, onClose}) {
                 <Modal.Title>{userStory.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                {error}
                 <div className="row">
                     <div className="col">
                         <div className="h6">Description</div>
@@ -59,7 +84,7 @@ export default function UserStoryModal({userStory, show, onClose}) {
                         <div className="h6">Owner</div>
                     </div>
                     <div className="col">
-                        <Link to={`/users/${userStory.owner.id}`} className="h6">{userStory.owner.firstname} {userStory.owner.lastname}</Link>
+                        <Link to={`/users/${userStoryOwner.id}`} className="h6">{userStoryOwner.firstname} {userStoryOwner.lastname}</Link>
                     </div>
                 </div>
             </Modal.Body>
