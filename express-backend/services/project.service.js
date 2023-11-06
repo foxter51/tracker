@@ -53,9 +53,9 @@ async function create(projectData) {
 async function findOne(projectId) {
     try{
         const project = await Project.findByPk(projectId, {
-            include: [
-                { model: Team }
-            ]
+            include: {
+                model: Team
+            }
         })
 
         if(!project){
@@ -68,7 +68,31 @@ async function findOne(projectId) {
     }
 }
 
+async function findAllByUser(userId) {
+    try {
+        const projects = await Project.findAll({
+            include: {
+                model: Team,
+                include: {
+                    model: UserRole,
+                    as: 'userRoles',
+                    include: [
+                        { model: User,
+                            where: { id: userId }
+                        }
+                    ]
+                }
+            }
+        })
+
+        return { projects }
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
 module.exports = {
     create,
-    findOne
+    findOne,
+    findAllByUser
 }

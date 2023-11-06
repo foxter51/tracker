@@ -19,11 +19,11 @@ export default function AuthPage () {
             <div className="container d-flex justify-content-center">
                 <div className="card col-4">
                     <ul className="nav nav-pills nav-justified">
-                        <li className="nav-item">
+                        <li className="nav-item rounded">
                             <button className={classNames("nav-link", active === "login" ? "active" : "")} id="tab-login"
                                     onClick={() => setActive("login")}>Login</button>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item rounded">
                             <button className={classNames("nav-link", active === "register" ? "active" : "")} id="tab-register"
                                     onClick={() => setActive("register")}>Register</button>
                         </li>

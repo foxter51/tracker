@@ -26,6 +26,19 @@ class ProjectService {
             throw err
         }
     }
+
+    async getUserProjects(id) {
+        try {
+            return await request(
+                "GET",
+                `/projects/my/${id}`,
+                {}
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
 }
 
 const projectService = new ProjectService()

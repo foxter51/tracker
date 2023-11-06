@@ -23,7 +23,7 @@ export default function ProjectTeamForm({project, setProject}) {
     }, [])
 
     return (
-        <div className="mb-5">
+        <div className="mb-3">
             <div className="h2">Select Project Team</div>
             <div>{error}</div>
             <Multiselect

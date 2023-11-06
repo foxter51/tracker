@@ -88,9 +88,12 @@ export default function UserPage() {
                 <div>{error}</div>
             </div>
             <div className="card col-8">
+                <div className="card-header">
+                    <div className="h2">{user.lastname} {user.firstname}'s Profile</div>
+                </div>
                 <div className="card-body">
                     <div className="row align-items-center">
-                        <div className="col">Name</div>
+                        <div className="col">Fullname</div>
                         <div className="col"><strong>{user.firstname} {user.lastname}</strong></div>
 
                         <EditableField

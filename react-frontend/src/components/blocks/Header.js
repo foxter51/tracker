@@ -7,21 +7,31 @@ export default function Header(props) {
     const isAuthenticated = AuthService.isAuthenticated()
 
     return (
-        <div className="App-header mb-5">
+        <div className="App-header shadow-sm rounded mb-5 ms-1 me-1 mt-1">
             <div className="left-side">
                 <Link to="/" className="text-decoration-none text-white">
-                <img src={props.logoSrc} className="App-logo" alt="logo"/>
-                <h1>{props.pageTitle}</h1>
+                <div className="d-flex align-items-center">
+                    <img src={props.logoSrc} className="App-logo" alt="logo"/>
+                    <div className="h2 text-stroke">{props.pageTitle}</div>
+                </div>
                 </Link>
             </div>
-            <ul className="nav nav-pills">
-                <li className="nav-item">
+            <ul className="nav nav-pills align-items-center">
+                <li className="nav-item border rounded me-1">
                     <Link to="/" className="nav-link">Home</Link>
                 </li>
                 {isAuthenticated && (
-                    <li className="nav-item">
-                        <Link to={`/users/${AuthService.getAuthUserId()}`} className="nav-link">My Profile</Link>
-                    </li>
+                    <>
+                        <li className="nav-item border rounded me-1">
+                            <Link to={`/users/${AuthService.getAuthUserId()}`} className="nav-link">My Profile</Link>
+                        </li>
+                        <li className="nav-item border rounded me-1">
+                            <Link to={`/projects/my/${AuthService.getAuthUserId()}`} className="nav-link">My Projects</Link>
+                        </li>
+                        <li className="nav-item border rounded me-1">
+                            <Link to={`/teams/my/${AuthService.getAuthUserId()}`} className="nav-link">My Teams</Link>
+                        </li>
+                    </>
                 )}
                 <li className="nav-item">
                     { isAuthenticated ?

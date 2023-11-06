@@ -13,6 +13,8 @@ import TeamCreatePage from "./pages/TeamCreatePage"
 import TeamPage from "./pages/TeamPage"
 import ProjectCreatePage from "./pages/ProjectCreatePage"
 import ProjectPage from "./pages/ProjectPage"
+import UserProjectsPage from "./pages/UserProjectsPage"
+import UserTeamsPage from "./pages/UserTeamsPage"
 
 function Layout() {
     return (
@@ -43,6 +45,8 @@ root.render(
                 <Route path="/teams/:id" element={<PrivateRoute><TeamPage/></PrivateRoute>}/>
                 <Route path="/projects" element={<PrivateRoute><ProjectCreatePage/></PrivateRoute>}/>
                 <Route path="/projects/:id" element={<PrivateRoute><ProjectPage/></PrivateRoute>}/>
+                <Route path="/projects/my/:id" element={<PrivateRoute><UserProjectsPage/></PrivateRoute>}/>
+                <Route path="/teams/my/:id" element={<PrivateRoute><UserTeamsPage/></PrivateRoute>}/>
             </Route>
         </Routes>
     </BrowserRouter>
