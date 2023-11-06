@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './components/App';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './index.css'
+import App from './components/App'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {BrowserRouter, Route, Routes, Navigate, Outlet} from "react-router-dom"
 import AuthPage from "./pages/AuthPage"
@@ -26,12 +26,12 @@ function Layout() {
 }
 
 const PrivateRoute = ({ children }) => {
-    const isAuthenticated = !!AuthService.isAuthenticated()
+    const isAuthenticated = AuthService.isAuthenticated()
+    if(!isAuthenticated) localStorage.clear()
+    return isAuthenticated ? children : <Navigate to="/auth" />
+}
 
-    return isAuthenticated ? children : <Navigate to="/auth" />;
-};
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
     <BrowserRouter>
         <Routes>
@@ -46,4 +46,4 @@ root.render(
             </Route>
         </Routes>
     </BrowserRouter>
-);
+)
