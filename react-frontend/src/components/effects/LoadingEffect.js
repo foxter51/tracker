@@ -4,7 +4,7 @@ import React from "react"
 export default function LoadingEffect() {
     return (
         <div style={{textAlign: 'center'}}>
-            <BeatLoader color="#36d7b7" />
+            <BeatLoader color="#0c69cc" />
         </div>
     )
 }

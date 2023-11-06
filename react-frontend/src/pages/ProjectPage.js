@@ -49,15 +49,15 @@ export default function ProjectPage() {
                 </div>
             </div>
             <ul className="nav nav-tabs">
-                <li className="nav-item">
+                <li className="nav-item rounded-top">
                     <button className={classNames("nav-link", active === "board" ? "active" : "")}
                             onClick={() => setActive('board')} id="board-tab">Board</button>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item rounded-top">
                     <button className={classNames("nav-link", active === "productBacklog" ? "active" : "")}
                             onClick={() => setActive('productBacklog')} id="board-tab">Product Backlog</button>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item rounded-top">
                     <button className={classNames("nav-link", active === "sprints" ? "active" : "")}
                             onClick={() => setActive('sprints')} id="board-tab">Sprints</button>
                 </li>

@@ -18,11 +18,11 @@ export default function LoginForm() {
     return (
         <form onSubmit={onSubmitLogin}>
             <div>{error}</div>
-            <div className="form-outline">
+            <div className="form-outline mb-2">
                 <label className="form-label" htmlFor="loginName">Username</label>
                 <input type="text" id="loginName" name="username" className="form-control" maxLength="32" required onChange={(e) => setUsername(e.target.value)}/>
             </div>
-            <div className="form-outline">
+            <div className="form-outline mb-2">
                 <label className="form-label" htmlFor="loginPassword">Password</label>
                 <input type="password" id="loginPassword" name="password" className="form-control" maxLength="64" required onChange={(e) => setPassword(e.target.value)}/>
             </div>

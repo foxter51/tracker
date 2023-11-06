@@ -1,22 +1,57 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
 .App-logo{
     height: 80px;
 }
 
 .App-header{
-    background-color: darkslategray;
-    height: 150px;
+    background-color: #e9ecec;
+    height: 80px;
     padding: 20px;
-    color: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.left-align{
-    display: flex;
-    align-items: center;
+.text-stroke {
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.35);
+}
+
+.nav-link.active {
+    background-color: #96ccfc !important;
+}
+
+.nav-link.active:hover {
+    background-color: #5aaffa !important;
+    transition: background-color 1s;
+}
+
+.nav-item:hover {
+    background-color: #96ccfc !important;
+    transition: background-color 1s;
+}
+
+.btn-primary {
+    border: none !important;
+    background-color: #5bacff !important;
+}
+
+.btn-danger {
+    border: none !important;
+    background-color: #da6a67 !important;
+}
+
+.btn-primary:hover {
+    background-color: #027efd !important;
+    transition: background-color 1s;
+}
+
+.btn-danger:hover {
+    border: none !important;
+    background-color: #d94743 !important;
 }
 
 html, body {
     height: 100%;
+    font-family: 'Open Sans', sans-serif;
 }

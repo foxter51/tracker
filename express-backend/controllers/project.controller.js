@@ -27,7 +27,19 @@ async function findOne(req, res) {
     }
 }
 
+async function findAllByUser(req, res) {
+    const { userId } = req.params
+
+    try {
+        const projects = await projectService.findAllByUser(userId)
+        res.json(projects)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
     create,
-    findOne
+    findOne,
+    findAllByUser
 }
