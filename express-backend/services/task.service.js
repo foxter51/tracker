@@ -47,7 +47,21 @@ async function findAll(userStoryId) {
     }
 }
 
+async function updateTaskStatus(taskId, status, assigneeId) {
+    try {
+        const task = await Task.findByPk(taskId)
+
+        const updatedTask = status !== "TO DO" ? await task.update({ status, assigneeId, returning: true }) :
+            await task.update({ status, assigneeId: null, returning: true })
+
+        return {task: updatedTask}
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
 module.exports = {
     create,
-    findAll
+    findAll,
+    updateTaskStatus
 }

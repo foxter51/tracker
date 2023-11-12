@@ -14,7 +14,7 @@ export default function TaskModal({task, show, onClose}) {
             onHide={onClose}
         >
             <Modal.Header closeButton>
-                <Modal.Title>{task.title}</Modal.Title>
+                <Modal.Title>Task: {task.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="row">

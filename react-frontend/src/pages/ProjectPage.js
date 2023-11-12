@@ -5,6 +5,8 @@ import LoadingEffect from "../components/effects/LoadingEffect"
 import classNames from "classnames"
 import ProductBacklogContent from "../components/blocks/ProductBacklogContent"
 import SprintsContent from "../components/blocks/SprintsContent"
+import ScrumBoard from "../components/blocks/ScrumBoard"
+import { Link } from "react-router-dom"
 
 export default function ProjectPage() {
 
@@ -44,7 +46,7 @@ export default function ProjectPage() {
                     </div>
                     <div className="row">
                         <div className="col">Team</div>
-                        <div className="col">{project.Team.name}</div>
+                        <div className="col"><Link to={`/teams/${project.Team.id}`}>{project.Team.name}</Link></div>
                     </div>
                 </div>
             </div>
@@ -63,7 +65,11 @@ export default function ProjectPage() {
                 </li>
             </ul>
             <div className="tab-content">
-                <div className={classNames("tab-pane fade", active === "board" ? "show active" : "")}>Board</div>
+                <div className={classNames("tab-pane fade", active === "board" ? "show active" : "")}>
+                    <ScrumBoard
+                        sprintId="11"
+                    />
+                </div>
                 <div className={classNames("tab-pane fade", active === "productBacklog" ? "show active" : "")}>
                     <ProductBacklogContent/>
                 </div>

@@ -13,7 +13,7 @@ export default function EpicModal({epic, show, onClose}) {
             onHide={onClose}
         >
             <Modal.Header closeButton>
-                <Modal.Title>{epic.title}</Modal.Title>
+                <Modal.Title>Epic: {epic.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="row">

@@ -38,7 +38,7 @@ export default function UserStoryModal({userStory, show, onClose}) {
             onHide={onClose}
         >
             <Modal.Header closeButton>
-                <Modal.Title>{userStory.title}</Modal.Title>
+                <Modal.Title>User Story: {userStory.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {error}

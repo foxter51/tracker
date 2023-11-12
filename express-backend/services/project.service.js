@@ -54,7 +54,10 @@ async function findOne(projectId) {
     try{
         const project = await Project.findByPk(projectId, {
             include: {
-                model: Team
+                model: Team,
+                include: {
+                    model: UserRole, as: 'userRoles',
+                }
             }
         })
 
