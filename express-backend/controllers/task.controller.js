@@ -31,7 +31,20 @@ async function findAll(req, res) {
     }
 }
 
+async function updateTaskStatus(req, res) {
+    const { taskId } = req.params
+    const { status, assigneeId } = req.body
+
+    try {
+        const task = await taskService.updateTaskStatus(taskId, status, assigneeId)
+        res.json(task)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
     create,
-    findAll
+    findAll,
+    updateTaskStatus
 }

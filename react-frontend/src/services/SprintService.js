@@ -26,6 +26,19 @@ class SprintService {
             throw err
         }
     }
+
+    async findAllSprintTasksByStatus(sprintId, status) {
+        try{
+            return await request(
+                "GET",
+                `/sprints/${sprintId}/tasks?status=${status}`,
+                {}
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
 }
 
 const sprintService = new SprintService()

@@ -8,7 +8,7 @@ export default function SprintModal({sprint, show, onClose}) {
             onHide={onClose}
         >
             <Modal.Header closeButton>
-                <Modal.Title>{sprint.name}</Modal.Title>
+                <Modal.Title>Sprint: {sprint.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="row">

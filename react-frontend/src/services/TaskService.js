@@ -26,6 +26,19 @@ class TaskService {
             throw err
         }
     }
+
+    async updateTaskStatus(taskId, status, assigneeId) {
+        try {
+            return await request(
+                "PATCH",
+                `/tasks/${taskId}`,
+                { status, assigneeId }
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
 }
 
 const taskService = new TaskService()
