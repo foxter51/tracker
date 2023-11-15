@@ -33,7 +33,7 @@ export default function Header(props) {
                         </li>
                     </>
                 )}
-                <li className="nav-item">
+                <li className="nav-item border rounded">
                     { isAuthenticated ?
                         <a href="/" onClick={AuthService.logout} className="nav-link active">Logout</a>
                         : <Link to="/auth" className="nav-link active">Login</Link> }
