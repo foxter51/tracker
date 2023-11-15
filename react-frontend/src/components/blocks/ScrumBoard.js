@@ -102,9 +102,18 @@ export default function ScrumBoard({sprintId}) {
         if(destination.droppableId !== 'toDo') {
             draggedItem.assigneeId = currentUser.id
             draggedItem.assignee = currentUser
+
+            if(destination.droppableId === 'done') {
+                draggedItem.status = 'DONE'
+            } else if (destination.droppableId === 'inReview') {
+                draggedItem.status = 'IN REVIEW'
+            } else {
+                draggedItem.status = 'IN PROGRESS'
+            }
         } else {
             draggedItem.assigneeId = null
             draggedItem.assignee = null
+            draggedItem.status = 'TO DO'
         }
 
         const destinationList = getList(destination.droppableId)
