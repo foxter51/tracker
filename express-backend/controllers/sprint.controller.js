@@ -32,10 +32,11 @@ async function findAll(req, res) {
 
 async function findAllSprintTasksByStatus(req, res) {
     const { sprintId } = req.params
+    const { assigneeId } = req.params
     const { status } = req.query
 
     try {
-        const tasks = await sprintService.findAllSprintTasksByStatus(sprintId, status)
+        const tasks = await sprintService.findAllSprintTasksByStatus(sprintId, assigneeId, status)
         res.json(tasks)
     } catch (err) {
         res.status(400).json({ message: err.message })

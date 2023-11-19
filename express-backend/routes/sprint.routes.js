@@ -5,6 +5,6 @@ let router = require('express').Router()
 
 router.post('/projects/:projectId/sprints', authenticateToken, SprintController.create)
 router.get('/projects/:projectId/sprints', authenticateToken, SprintController.findAll)
-router.get('/sprints/:sprintId/tasks',  SprintController.findAllSprintTasksByStatus)
+router.get('/sprints/:sprintId/assignee/:assigneeId/tasks',  SprintController.findAllSprintTasksByStatus)
 
 module.exports = router

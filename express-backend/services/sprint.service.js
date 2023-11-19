@@ -78,8 +78,13 @@ async function findAll(projectId) {
     }
 }
 
-async function findAllSprintTasksByStatus(sprintId, status) {
+async function findAllSprintTasksByStatus(sprintId, assigneeId, status) {
     try {
+        const where = {}
+        if (assigneeId !== 'null') {
+            where.assigneeId = assigneeId
+        }
+
         const sprint = await Sprint.findByPk(sprintId, {
             include: {
                 model: SprintBacklog,
@@ -87,7 +92,7 @@ async function findAllSprintTasksByStatus(sprintId, status) {
                     model: UserStory, as: 'userStories',
                     include: [{
                         model: Task, as: 'tasks',
-                        where: { status },
+                        where: { status, ...where },
                         include: {
                             model: User, as: 'assignee',
                             attributes: ['id', 'lastname', 'firstname']

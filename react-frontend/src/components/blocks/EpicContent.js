@@ -14,8 +14,8 @@ export default function EpicContent({epicId, isProductOwner}) {
                 const response = await UserStoryService.getEpicUserStories(epicId)
                 setUserStories(response.data.userStories)
                 setLoading(false)
-            } catch (error) {
-                console.log(error)
+            } catch (err) {
+                console.log(err)
             }
         }
         fetchUserStories()

@@ -14,8 +14,8 @@ export default function UserStoryContent({userStoryId, isProductOwner}) {
                 const response = await TaskService.getUserStoryTasks(userStoryId)
                 setTasks(response.data.tasks)
                 setLoading(false)
-            } catch (error) {
-                console.log(error)
+            } catch (err) {
+                console.log(err)
             }
         }
         fetchTasks()

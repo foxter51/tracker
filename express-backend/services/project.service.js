@@ -57,6 +57,9 @@ async function findOne(projectId) {
                 model: Team,
                 include: {
                     model: UserRole, as: 'userRoles',
+                    include: [
+                        { model: User, Role },
+                    ]
                 }
             }
         })
