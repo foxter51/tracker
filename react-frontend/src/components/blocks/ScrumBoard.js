@@ -8,6 +8,7 @@ import UserService from "../../services/UserService"
 import { useParams } from "react-router"
 import ProjectService from "../../services/ProjectService"
 import TaskService from "../../services/TaskService"
+import DevelopersListTab from "./DevelopersListTab"
 
 export default function ScrumBoard({sprintId}) {
 
@@ -15,8 +16,10 @@ export default function ScrumBoard({sprintId}) {
     const [inProgressTasks, setInProgressTasks] = useState([])
     const [inReviewTasks, setInReviewTasks] = useState([])
     const [doneTasks, setDoneTasks] = useState([])
+
     const [currentUser, setCurrentUser] = useState(null)
     const [currentProject, setCurrentProject] = useState(null)
+    const [assigneeId, setAssigneeId] = useState(null)
 
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -26,10 +29,13 @@ export default function ScrumBoard({sprintId}) {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const toDoResponse = await SprintService.findAllSprintTasksByStatus(sprintId, "TO DO")
-                const inProgressResponse = await SprintService.findAllSprintTasksByStatus(sprintId, "IN PROGRESS")
-                const inReviewResponse = await SprintService.findAllSprintTasksByStatus(sprintId, "IN REVIEW")
-                const doneResponse = await SprintService.findAllSprintTasksByStatus(sprintId, "DONE")
+                const storedAssigneeId = window.localStorage.getItem(`project${id}BoardUserFilter`)
+                setAssigneeId(storedAssigneeId)
+
+                const toDoResponse = await SprintService.findAllSprintTasksByStatus(sprintId, "TO DO", storedAssigneeId)
+                const inProgressResponse = await SprintService.findAllSprintTasksByStatus(sprintId, "IN PROGRESS", storedAssigneeId)
+                const inReviewResponse = await SprintService.findAllSprintTasksByStatus(sprintId, "IN REVIEW", storedAssigneeId)
+                const doneResponse = await SprintService.findAllSprintTasksByStatus(sprintId, "DONE", storedAssigneeId)
                 const userResponse = await UserService.getUser(AuthService.getAuthUserId())
                 const projectResponse = await ProjectService.getProject(id)
 
@@ -152,6 +158,21 @@ export default function ScrumBoard({sprintId}) {
         }
     }
 
+    const filterTasksByAssignee = (assigneeId) => {
+        if (assigneeId === null) {
+            window.localStorage.removeItem(`project${currentProject.id}BoardUserFilter`)
+            window.location.reload()
+        } else {
+            setToDoTasks(toDoTasks.filter(task => task.assigneeId === assigneeId))
+            setInProgressTasks(inProgressTasks.filter(task => task.assigneeId === assigneeId))
+            setInReviewTasks(inReviewTasks.filter(task => task.assigneeId === assigneeId))
+            setDoneTasks(doneTasks.filter(task => task.assigneeId === assigneeId))
+
+            window.localStorage.setItem(`project${currentProject.id}BoardUserFilter`, assigneeId)
+            setAssigneeId(assigneeId)
+        }
+    }
+
     if (loading) {
         return <LoadingEffect/>
     }
@@ -160,7 +181,11 @@ export default function ScrumBoard({sprintId}) {
         <div className="container p-2">
             <div className="card">
                 <div className="card-header">
-                    <div className="h2">Users ... Sprints</div>
+                    <DevelopersListTab
+                        team={currentProject.Team}
+                        filterTasksByAssignee={filterTasksByAssignee}
+                        selectedAssigneeId={assigneeId}
+                    />
                     {error}
                 </div>
                 <div className="card-body">

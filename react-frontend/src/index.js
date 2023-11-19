@@ -29,7 +29,12 @@ function Layout() {
 
 const PrivateRoute = ({ children }) => {
     const isAuthenticated = AuthService.isAuthenticated()
-    if(!isAuthenticated) localStorage.clear()
+
+    if(!isAuthenticated) {
+        window.localStorage.removeItem("auth_token")
+        window.localStorage.removeItem("user_id")
+    }
+
     return isAuthenticated ? children : <Navigate to="/auth" />
 }
 

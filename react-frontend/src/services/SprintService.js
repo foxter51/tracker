@@ -27,11 +27,11 @@ class SprintService {
         }
     }
 
-    async findAllSprintTasksByStatus(sprintId, status) {
+    async findAllSprintTasksByStatus(sprintId, status, assigneeId) {
         try{
             return await request(
                 "GET",
-                `/sprints/${sprintId}/tasks?status=${status}`,
+                `/sprints/${sprintId}/assignee/${assigneeId}/tasks?status=${status}`,
                 {}
             )
         } catch (err) {

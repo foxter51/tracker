@@ -16,8 +16,8 @@ export default function SprintBacklogContent({sprint}) {
                 setSprintBacklogId(response.data.sprintBacklog.id)
                 setUserStories(response.data.sprintBacklog.userStories)
                 setLoading(false)
-            } catch (error) {
-                console.log(error)
+            } catch (err) {
+                console.log(err)
             }
         }
         fetchUserStories()

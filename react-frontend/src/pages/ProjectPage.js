@@ -46,7 +46,9 @@ export default function ProjectPage() {
                     </div>
                     <div className="row">
                         <div className="col">Team</div>
-                        <div className="col"><Link to={`/teams/${project.Team.id}`}>{project.Team.name}</Link></div>
+                        <div className="col">
+                            <Link className="text-decoration-none" to={`/teams/${project.Team.id}`}>{project.Team.name}</Link>
+                        </div>
                     </div>
                 </div>
             </div>

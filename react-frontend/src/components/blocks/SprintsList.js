@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { Fragment, useState } from "react"
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
@@ -52,10 +52,8 @@ export default function SprintsList({projectId, sprints, addSprint}) {
                     {sprints
                         .sort((a, b) => {return Date.parse(a.startDate) - Date.parse(b.startDate)})
                         .map((sprint) => (
-                            <>
-                                <div key={sprint.id}
-                                     className="list-group-item d-flex justify-content-between align-items-center"
-                                >
+                            <Fragment key={sprint.id}>
+                                <div className="list-group-item d-flex justify-content-between align-items-center">
                                     <div className="d-flex align-items-center">
                                         <Link to="" className="me-2">
                                             <FontAwesomeIcon icon={faChevronDown}
@@ -72,7 +70,7 @@ export default function SprintsList({projectId, sprints, addSprint}) {
                                         sprint={sprint}
                                     />
                                 }
-                            </>
+                            </Fragment>
                         ))
                     }
                     {showSprintModal &&

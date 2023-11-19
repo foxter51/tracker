@@ -67,7 +67,7 @@ export default function DragDropColumn({tasks, tasksType, tasksHeader}) {
                                                     </div>
                                                     <div className="float-end">
                                                         {task.assignee &&
-                                                            <Link to={`/users/${task.assignee.id}`}>
+                                                            <Link to={`/users/${task.assignee.id}`} className="text-decoration-none">
                                                                 {`${task.assignee.lastname} ${task.assignee.firstname}`}
                                                             </Link>
                                                         }
