@@ -29,6 +29,13 @@ export default function SprintBacklogUserStoriesForm({sprintBacklogId, addUserSt
         fetchUserStories()
     }, [id])
 
+    useEffect(() => {
+        if(save) {
+            setShowSprintBacklogUserStoryForm(false)
+            setSave(false)
+        }
+    }, [save, setShowSprintBacklogUserStoryForm])
+
     const onSubmitUserStories = async (e) => {
         e.preventDefault()
         try{
@@ -52,10 +59,6 @@ export default function SprintBacklogUserStoriesForm({sprintBacklogId, addUserSt
 
     if(loading) {
         return <LoadingEffect/>
-    }
-
-    if(save) {
-        setShowSprintBacklogUserStoryForm(false)
     }
 
     return (

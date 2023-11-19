@@ -43,8 +43,19 @@ async function findAllSprintTasksByStatus(req, res) {
     }
 }
 
+async function destroy(req, res) {
+    const { sprintId } = req.params
+
+    try{
+        await sprintService.destroy(sprintId)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
     create,
     findAll,
-    findAllSprintTasksByStatus
+    findAllSprintTasksByStatus,
+    destroy
 }

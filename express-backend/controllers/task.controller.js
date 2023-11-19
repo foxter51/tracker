@@ -43,8 +43,19 @@ async function updateTaskStatus(req, res) {
     }
 }
 
+async function destroy(req, res) {
+    const { taskId } = req.params
+
+    try{
+        await taskService.destroy(taskId)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
     create,
     findAll,
-    updateTaskStatus
+    updateTaskStatus,
+    destroy
 }

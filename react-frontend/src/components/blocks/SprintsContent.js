@@ -29,6 +29,10 @@ export default function SprintsContent() {
         setSprints([...sprints, sprint])
     }
 
+    const removeSprint = (sprintId) => {
+        setSprints(prevState => prevState.filter(sprint => sprint.id !== sprintId))
+    }
+
     if(loading){
         return <LoadingEffect/>
     }
@@ -41,6 +45,7 @@ export default function SprintsContent() {
                     projectId={id}
                     sprints={sprints}
                     addSprint={addSprint}
+                    removeSprint={removeSprint}
                 />
             </div>
         </div>

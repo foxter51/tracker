@@ -60,8 +60,19 @@ async function updateTaskStatus(taskId, status, assigneeId) {
     }
 }
 
+async function destroy(taskId) {
+    try {
+        await Task.destroy({
+            where: { id: taskId }
+        })
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
 module.exports = {
     create,
     findAll,
-    updateTaskStatus
+    updateTaskStatus,
+    destroy
 }

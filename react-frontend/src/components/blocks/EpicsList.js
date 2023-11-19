@@ -1,22 +1,41 @@
-import React, { useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import EpicContent from "./EpicContent"
 import EpicForm from "../forms/EpicForm"
 import classNames from "classnames"
 import statusColor from "../../utils/status_color"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
+import { faChevronDown, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 import EpicModal from "../modals/EpicModal"
+import EpicService from "../../services/EpicService"
 
-export default function EpicList({productBacklogId, epics, addEpic, isProductOwner}) {
+export default function EpicList({productBacklogId, epics, addEpic, isProductOwner, removeEpic}) {
     const [activeEpic, setActiveEpic] = useState(null)
     const [showEpicForm, setShowEpicForm] = useState(false)
 
     const [selectedEpic, setSelectedEpic] = useState(null)
     const [showEpicModal, setShowEpicModal] = useState(false)
 
+    const [removedEpicId, setRemovedEpicId] = useState(null)
+
+    useEffect(() => {
+        if (removedEpicId) {
+            removeEpic(removedEpicId)
+            setRemovedEpicId(null)
+        }
+    }, [removeEpic, removedEpicId])
+
     const onSetActiveEpic = (epic) => {
         epic === activeEpic ? setActiveEpic(null) : setActiveEpic(epic)
+    }
+
+    const onSubmitRemoveEpic = async (epicId) => {
+        try {
+            setRemovedEpicId(epicId)
+            await EpicService.removeEpic(epicId)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     const showModal = (epic) => {
@@ -53,10 +72,8 @@ export default function EpicList({productBacklogId, epics, addEpic, isProductOwn
                     {epics
                         .sort((a, b) => a.title.localeCompare(b.title))
                         .map((epic) => (
-                            <>
-                                <div key={epic.id}
-                                     className="list-group-item d-flex justify-content-between align-items-center"
-                                >
+                            <Fragment key={epic.id}>
+                                <div className="list-group-item d-flex justify-content-between align-items-center">
                                     <div className="d-flex align-items-center">
                                         <Link to="" className="me-2">
                                             <FontAwesomeIcon icon={faChevronDown}
@@ -67,8 +84,18 @@ export default function EpicList({productBacklogId, epics, addEpic, isProductOwn
                                             {epic.title}
                                         </Link>
                                     </div>
-                                    <div className={classNames( statusColor(epic.status))}>
-                                        {epic.status}
+                                    <div className="d-flex align-items-center">
+                                        <div className={classNames(classNames(statusColor(epic.status)),
+                                            isProductOwner ? "me-3" : "")}>
+                                            {epic.status}
+                                        </div>
+                                        {isProductOwner &&
+                                           <Link to="">
+                                               <FontAwesomeIcon icon={faTrash}
+                                                                onClick={() => onSubmitRemoveEpic(epic.id)}
+                                               />
+                                           </Link>
+                                        }
                                     </div>
                                 </div>
                                 {activeEpic?.id === epic.id &&
@@ -77,7 +104,7 @@ export default function EpicList({productBacklogId, epics, addEpic, isProductOwn
                                         isProductOwner={isProductOwner}
                                     />
                                 }
-                            </>
+                            </Fragment>
                         ))
                     }
                     {showEpicModal &&

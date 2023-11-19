@@ -1,5 +1,4 @@
 const db = require('../models')
-const { Op } = require("sequelize")
 const UserStory = db.userStory
 
 const User = db.user
@@ -108,8 +107,36 @@ async function findUnassignedUserStories(projectId) {
     }
 }
 
+async function destroy(userStoryId) {
+    try{
+        await UserStory.destroy({
+            where: { id: userStoryId }
+        })
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+async function removeFromSprintBacklog(userStoryId) {
+    try{
+        const userStory = await UserStory.findByPk(userStoryId)
+
+        if(!userStory){
+            throw new Error('User Story not found')
+        }
+
+        const updatedUserStory = await userStory.update({ SprintBacklogId: null, returning: true })
+
+        return { userStory: updatedUserStory }
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
 module.exports = {
     create,
     findAllByEpic,
-    findUnassignedUserStories
+    findUnassignedUserStories,
+    destroy,
+    removeFromSprintBacklog
 }

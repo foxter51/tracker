@@ -26,6 +26,19 @@ class EpicService {
             throw err
         }
     }
+
+    async removeEpic(epicId) {
+        try {
+            return await request(
+                "DELETE",
+                `/epics/${epicId}`,
+                {}
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
 }
 
 const epicService = new EpicService()

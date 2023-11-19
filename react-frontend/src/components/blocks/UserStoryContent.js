@@ -29,6 +29,10 @@ export default function UserStoryContent({userStoryId, isProductOwner}) {
         setTasks([...tasks, task])
     }
 
+    const removeTask = (taskId) => {
+        setTasks(prevState => prevState.filter(task => task.id !== taskId))
+    }
+
     return (
         <div className="container p-2">
             <div className="card">
@@ -37,6 +41,7 @@ export default function UserStoryContent({userStoryId, isProductOwner}) {
                     isProductOwner={isProductOwner}
                     tasks={tasks}
                     addTask={addTask}
+                    removeTask={removeTask}
                 />
             </div>
         </div>

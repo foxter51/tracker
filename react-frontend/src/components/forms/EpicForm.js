@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import EpicService from "../../services/EpicService"
 import { Multiselect } from "multiselect-react-dropdown"
 
@@ -7,6 +7,13 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
     const [epic, setEpic] = useState(null)
     const [error, setError] = useState(null)
     const [save, setSave] = useState(false)
+
+    useEffect(() => {
+        if (save) {
+            setShowEpicForm(false)
+            setSave(false)
+        }
+    }, [save, setShowEpicForm])
 
     const priorityOptions = [
         {name: 'LOW'},
@@ -42,10 +49,6 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
         } catch (error) {
             setError(error.response.data.message)
         }
-    }
-
-    if (save) {
-        setShowEpicForm(false)
     }
 
     return (

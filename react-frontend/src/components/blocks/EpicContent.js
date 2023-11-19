@@ -29,15 +29,21 @@ export default function EpicContent({epicId, isProductOwner}) {
         setUserStories([...userStories, userStory])
     }
 
+    const removeUserStory = (userStoryId) => {
+        setUserStories(prevState => prevState.filter(us => us.id !== userStoryId))
+    }
+
     return (
         <div className="container p-2">
             <div className="card">
                 <UserStoriesList
-                    epicId={epicId}
+                    parentId={epicId}
                     isProductOwner={isProductOwner}
+                    isDeveloper={false}
                     userStories={userStories}
                     addUserStory={addUserStory}
                     isSprintBacklogEdit={false}
+                    removeUserStory={removeUserStory}
                 />
             </div>
         </div>

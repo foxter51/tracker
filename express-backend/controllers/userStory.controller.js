@@ -43,8 +43,31 @@ async function findUnassignedUserStories(req, res) {
     }
 }
 
+async function destroy(req, res) {
+    const { userStoryId } = req.params
+
+    try{
+        await userStoryService.destroy(userStoryId)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
+async function removeFromSprintBacklog(req, res) {
+    const { userStoryId } = req.params
+
+    try {
+        const response = await userStoryService.removeFromSprintBacklog(userStoryId)
+        res.json(response)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
     create,
     findAllByEpic,
-    findUnassignedUserStories
+    findUnassignedUserStories,
+    destroy,
+    removeFromSprintBacklog
 }

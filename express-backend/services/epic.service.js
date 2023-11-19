@@ -1,8 +1,6 @@
 const db = require('../models')
 const Epic = db.epic
 const ProductBacklog = db.productBacklog
-const UserStory = db.userStory
-const Task = db.task
 
 async function create(epicData) {
     const { title, description, priority, storyPoints, status, productBacklogId } = epicData
@@ -53,7 +51,18 @@ async function findAll(productBacklogId) {
     }
 }
 
+async function destroy(epicId) {
+    try{
+        await Epic.destroy({
+            where: { id: epicId }
+        })
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
 module.exports = {
     create,
-    findAll
+    findAll,
+    destroy
 }
