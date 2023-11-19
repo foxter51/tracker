@@ -121,9 +121,20 @@ async function findAllSprintTasksByStatus(sprintId, assigneeId, status) {
     }
 }
 
+async function destroy(sprintId) {
+    try {
+        await Sprint.destroy({
+            where: { id: sprintId }
+        })
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
 module.exports = {
     create,
     setNextSprint,
     findAll,
-    findAllSprintTasksByStatus
+    findAllSprintTasksByStatus,
+    destroy
 }

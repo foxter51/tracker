@@ -1,10 +1,17 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import SprintService from "../../services/SprintService"
 
 export default function SprintForm({projectId, setShowSprintForm, addSprint}) {
     const [sprint, setSprint] = useState(null)
     const [error, setError] = useState(null)
     const [save, setSave] = useState(false)
+
+    useEffect(() => {
+        if (save) {
+            setShowSprintForm(false)
+            setSave(false)
+        }
+    }, [save, setShowSprintForm])
 
     const onSubmitSprint = async (e) => {
         e.preventDefault()
@@ -18,10 +25,6 @@ export default function SprintForm({projectId, setShowSprintForm, addSprint}) {
         } catch (error) {
             setError(error.response.data.message)
         }
-    }
-
-    if (save) {
-        setShowSprintForm(false)
     }
 
     return (

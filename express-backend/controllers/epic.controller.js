@@ -31,7 +31,18 @@ async function findAll(req, res) {
     }
 }
 
+async function destroy(req, res) {
+    const { epicId } = req.params
+
+    try{
+        await epicService.destroy(epicId)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
     create,
-    findAll
+    findAll,
+    destroy
 }

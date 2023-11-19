@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import UserStoryService from "../../services/UserStoryService"
 import { Multiselect } from "multiselect-react-dropdown"
 import AuthService from "../../services/AuthService"
@@ -8,6 +8,13 @@ export default function EpicUserStoryForm({epicId, setShowUserStoryForm, addUser
     const [userStory, setUserStory] = useState(null)
     const [error, setError] = useState(null)
     const [save, setSave] = useState(false)
+
+    useEffect(() => {
+        if (save) {
+            setShowUserStoryForm(false)
+            setSave(false)
+        }
+    }, [save, setShowUserStoryForm])
 
     const priorityOptions = [
         {name: 'LOW'},
@@ -44,10 +51,6 @@ export default function EpicUserStoryForm({epicId, setShowUserStoryForm, addUser
         } catch (error) {
             setError(error.response.data.message)
         }
-    }
-
-    if (save) {
-        setShowUserStoryForm(false)
     }
 
     return (

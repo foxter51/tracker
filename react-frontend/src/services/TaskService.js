@@ -39,6 +39,18 @@ class TaskService {
             throw err
         }
     }
+
+    async removeTask(taskId) {
+        try {
+            return await request(
+                "DELETE",
+                `/tasks/${taskId}`
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
 }
 
 const taskService = new TaskService()

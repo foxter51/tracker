@@ -34,6 +34,10 @@ export default function ProductBacklogContent() {
         setEpics([...epics, epic])
     }
 
+    const removeEpic = (epicId) => {
+        setEpics(prevState => prevState.filter(epic => epic.id !== epicId))
+    }
+
     if(loading){
         return <LoadingEffect/>
     }
@@ -47,6 +51,7 @@ export default function ProductBacklogContent() {
                     epics={epics}
                     addEpic={addEpic}
                     isProductOwner={isProductOwner}
+                    removeEpic={removeEpic}
                 />
             </div>
         </div>

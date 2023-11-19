@@ -1,12 +1,17 @@
-import React, { Fragment, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
+import { faChevronDown, faTrash } from "@fortawesome/free-solid-svg-icons"
 import SprintForm from "../forms/SprintForm"
 import SprintBacklogContent from "./SprintBacklogContent"
 import SprintModal from "../modals/SprintModal"
+import UserService from "../../services/UserService"
+import AuthService from "../../services/AuthService"
+import ProjectService from "../../services/ProjectService"
+import { useParams } from "react-router"
+import SprintService from "../../services/SprintService"
 
-export default function SprintsList({projectId, sprints, addSprint}) {
+export default function SprintsList({projectId, sprints, addSprint, removeSprint}) {
 
     const [activeSprint, setActiveSprint] = useState(null)
     const [showSprintForm, setShowSprintForm] = useState(false)
@@ -14,8 +19,42 @@ export default function SprintsList({projectId, sprints, addSprint}) {
     const [selectedSprint, setSelectedSprint] = useState(null)
     const [showSprintModal, setShowSprintModal] = useState(false)
 
+    const [isDeveloper, setIsDeveloper] = useState(false)
+
+    const [removedSprintId, setRemovedSprintId] = useState(null)
+
+    const { id } = useParams()
+
+    useEffect(() => {
+        const fetchIsDeveloper = async () => {
+            const userResponse = await UserService.getUser(AuthService.getAuthUserId())
+            const projectResponse = await ProjectService.getProject(id)
+
+            setIsDeveloper(projectResponse.data.project.Team.userRoles.some(role => {
+                return role.UserId === userResponse.data.user.id && role.RoleId === 3
+            }))
+        }
+        fetchIsDeveloper()
+    }, [id])
+
+    useEffect(() => {
+        if (removedSprintId) {
+            removeSprint(removedSprintId)
+            setRemovedSprintId(null)
+        }
+    }, [removeSprint, removedSprintId])
+
     const onSetActiveSprint = (sprint) => {
         sprint === activeSprint ? setActiveSprint(null) : setActiveSprint(sprint)
+    }
+
+    const onSubmitRemoveSprint = async (sprintId) => {
+        try {
+            setRemovedSprintId(sprintId)
+            await SprintService.deleteSprint(sprintId)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const showModal = (sprint) => {
@@ -27,7 +66,7 @@ export default function SprintsList({projectId, sprints, addSprint}) {
         <div>
             <div className="card-header d-flex justify-content-between align-items-center">
                 Sprints
-                {!showSprintForm &&
+                {!showSprintForm && isDeveloper &&
                     <button className="btn btn-primary" onClick={() => setShowSprintForm(true)}>
                         Create Sprint
                     </button>
@@ -64,6 +103,13 @@ export default function SprintsList({projectId, sprints, addSprint}) {
                                             {sprint.name}
                                         </Link>
                                     </div>
+                                    {isDeveloper &&
+                                        <Link to="">
+                                            <FontAwesomeIcon icon={faTrash}
+                                                             onClick={() => onSubmitRemoveSprint(sprint.id)}
+                                            />
+                                        </Link>
+                                    }
                                 </div>
                                 {activeSprint?.id === sprint.id &&
                                     <SprintBacklogContent

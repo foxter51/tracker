@@ -39,6 +39,19 @@ class SprintService {
             throw err
         }
     }
+
+    async deleteSprint(sprintId) {
+        try{
+            return await request(
+                "DELETE",
+                `/sprints/${sprintId}`,
+                {}
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
 }
 
 const sprintService = new SprintService()

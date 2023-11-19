@@ -1,20 +1,41 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import classNames from "classnames"
 import statusColor from "../../utils/status_color"
 import TaskForm from "../forms/TaskForm"
 import { Link } from "react-router-dom"
 import TaskModal from "../modals/TaskModal"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrash } from "@fortawesome/free-solid-svg-icons"
+import TaskService from "../../services/TaskService"
 
-export default function TasksList({userStoryId, isProductOwner, tasks, addTask}) {
+export default function TasksList({userStoryId, isProductOwner, tasks, addTask, removeTask}) {
 
     const [showTaskForm, setShowTaskForm] = useState(false)
 
     const [selectedTask, setSelectedTask] = useState(null)
     const [showTaskModal, setShowTaskModal] = useState(false)
 
+    const [removedTaskId, setRemovedTaskId] = useState(null)
+
+    useEffect(() => {
+        if (removedTaskId) {
+            removeTask(removedTaskId)
+            setRemovedTaskId(null)
+        }
+    }, [removeTask, removedTaskId])
+
     const showModal = (task) => {
         setSelectedTask(task)
         setShowTaskModal(true)
+    }
+
+    const onSubmitRemoveTask = async (taskId) => {
+        try {
+            setRemovedTaskId(taskId)
+            await TaskService.removeTask(taskId)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (
@@ -50,8 +71,18 @@ export default function TasksList({userStoryId, isProductOwner, tasks, addTask})
                                 <Link to="" onClick={() => showModal(task)}>
                                     {task.title}
                                 </Link>
-                                <div className={classNames( statusColor(task.status))}>
-                                    {task.status}
+                                <div className="d-flex align-items-center">
+                                    <div className={classNames(classNames(statusColor(task.status)),
+                                        isProductOwner ? "me-3" : "")}>
+                                        {task.status}
+                                    </div>
+                                    {isProductOwner &&
+                                        <Link to="">
+                                            <FontAwesomeIcon icon={faTrash}
+                                                             onClick={() => onSubmitRemoveTask(task.id)}
+                                            />
+                                        </Link>
+                                    }
                                 </div>
                             </div>
                         ))

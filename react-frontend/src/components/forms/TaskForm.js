@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Multiselect } from "multiselect-react-dropdown"
 import TaskService from "../../services/TaskService"
 
@@ -7,6 +7,13 @@ export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
     const [task, setTask] = useState(null)
     const [error, setError] = useState(null)
     const [save, setSave] = useState(false)
+
+    useEffect(() => {
+        if (save) {
+            setShowTaskForm(false)
+            setSave(false)
+        }
+    }, [save, setShowTaskForm])
 
     const priorityOptions = [
         {name: 'LOW'},
@@ -42,10 +49,6 @@ export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
         } catch (error) {
             setError(error.response.data.message)
         }
-    }
-
-    if (save) {
-        setShowTaskForm(false)
     }
 
     return (

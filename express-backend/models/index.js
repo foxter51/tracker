@@ -41,7 +41,7 @@ db.project.hasOne(db.sprint, { as: 'currentSprint', onDelete: 'CASCADE' })
 
 db.sprint.hasOne(db.sprintBacklog, { onDelete: 'CASCADE' })
 
-db.sprintBacklog.hasMany(db.userStory, { as: 'userStories', onDelete: 'CASCADE' })
+db.sprintBacklog.hasMany(db.userStory, { as: 'userStories' })
 
 db.userStory.hasMany(db.task, { as: 'tasks', onDelete: 'CASCADE' })
 

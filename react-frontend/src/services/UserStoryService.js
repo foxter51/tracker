@@ -39,6 +39,32 @@ class UserStoryService {
             throw err
         }
     }
+
+    async removeUserStory(userStoryId){
+        try{
+            return await request(
+                "DELETE",
+                `/userStories/${userStoryId}`,
+                {}
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
+
+    async removeUserStoryFromSprintBacklog(userStoryId){
+        try{
+            return await request(
+                "PATCH",
+                `/userStories/${userStoryId}`,
+                {}
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
 }
 
 const userStoryService = new UserStoryService()
