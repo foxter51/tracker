@@ -79,9 +79,11 @@ async function findAllByUser(userId) {
         const projects = await Project.findAll({
             include: {
                 model: Team,
+                required: true,
                 include: {
                     model: UserRole,
                     as: 'userRoles',
+                    required: true,
                     include: [
                         { model: User,
                             where: { id: userId }
