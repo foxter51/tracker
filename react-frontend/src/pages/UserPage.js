@@ -6,6 +6,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faTrash} from '@fortawesome/free-solid-svg-icons'
 import authService from "../services/AuthService"
 import EditableField from "../components/forms/EditableField"
+import { Link } from "react-router-dom"
+import ConfirmModal from "../components/modals/ConfirmModal"
 
 let equal = require('fast-deep-equal')
 
@@ -15,6 +17,9 @@ export default function UserPage() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [isSelf, setIsSelf] = useState(false)
+
+    const [showConfirmModal, setShowConfirmModal] = useState(false)
+    const [userToRemove, setUserToRemove] = useState(0)
 
     const { id } = useParams()
 
@@ -64,17 +69,22 @@ export default function UserPage() {
         }
     }
 
-    const submitDelete = async () => {
+    const onSubmitDelete = async () => {
         try {
-            if(window.confirm('Are you sure you want to delete this user?')){
-                if (isSelf){
-                    authService.logout()
-                }
-                await userService.deleteUser(user.id)
-            } else setError("Deletion canceled")
+            setShowConfirmModal(false)
+            if (isSelf){
+                authService.logout()
+            }
+            await userService.deleteUser(userToRemove)
+            setUserToRemove(0)
         } catch (error) {
             setError(error.response.data.message)
         }
+    }
+
+    const onCancelDelete = () => {
+        setUserToRemove(0)
+        setShowConfirmModal(false)
     }
 
     if(loading) {
@@ -184,11 +194,24 @@ export default function UserPage() {
                     </div>
 
                     {isSelf &&
-                        <a href="#" className="text-danger text-decoration-none" onClick={() => {
-                            submitDelete()
-                        }}>
-                           Delete account <FontAwesomeIcon icon={faTrash}/>
-                        </a>
+                        <Link to=""
+                              className="text-danger text-decoration-none"
+                              onClick={() => {
+                                  setUserToRemove(user.id)
+                                  setShowConfirmModal(true)
+                              }}
+                        >
+                            Delete account <FontAwesomeIcon icon={faTrash}/>
+                        </Link>
+                    }
+
+                    {showConfirmModal &&
+                        <ConfirmModal
+                            showModal={showConfirmModal}
+                            onConfirm={onSubmitDelete}
+                            onCancel={onCancelDelete}
+                            question="Are you sure you want to delete your account?"
+                        />
                     }
                 </div>
             </div>

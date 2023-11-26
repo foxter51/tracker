@@ -7,6 +7,7 @@ import TaskModal from "../modals/TaskModal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash } from "@fortawesome/free-solid-svg-icons"
 import TaskService from "../../services/TaskService"
+import ConfirmModal from "../modals/ConfirmModal"
 
 export default function TasksList({userStoryId, isProductOwner, tasks, addTask, removeTask}) {
 
@@ -14,6 +15,9 @@ export default function TasksList({userStoryId, isProductOwner, tasks, addTask, 
 
     const [selectedTask, setSelectedTask] = useState(null)
     const [showTaskModal, setShowTaskModal] = useState(false)
+
+    const [showConfirmModal, setShowConfirmModal] = useState(false)
+    const [taskToRemove, setTaskToRemove] = useState(0)
 
     const [removedTaskId, setRemovedTaskId] = useState(null)
 
@@ -24,18 +28,25 @@ export default function TasksList({userStoryId, isProductOwner, tasks, addTask, 
         }
     }, [removeTask, removedTaskId])
 
-    const showModal = (task) => {
+    const onShowTaskModal = (task) => {
         setSelectedTask(task)
         setShowTaskModal(true)
     }
 
-    const onSubmitRemoveTask = async (taskId) => {
+    const onSubmitRemoveTask = async () => {
         try {
-            setRemovedTaskId(taskId)
-            await TaskService.removeTask(taskId)
+            setShowConfirmModal(false)
+            setRemovedTaskId(taskToRemove)
+            await TaskService.removeTask(taskToRemove)
+            setTaskToRemove(0)
         } catch (err) {
             console.log(err)
         }
+    }
+
+    const onCancelRemoveTask = () => {
+        setTaskToRemove(0)
+        setShowConfirmModal(false)
     }
 
     return (
@@ -68,7 +79,7 @@ export default function TasksList({userStoryId, isProductOwner, tasks, addTask, 
                         .map((task) => (
                             <div key={task.id}
                                  className="list-group-item d-flex justify-content-between align-items-center">
-                                <Link to="" onClick={() => showModal(task)}>
+                                <Link to="" onClick={() => onShowTaskModal(task)}>
                                     {task.title}
                                 </Link>
                                 <div className="d-flex align-items-center">
@@ -79,7 +90,10 @@ export default function TasksList({userStoryId, isProductOwner, tasks, addTask, 
                                     {isProductOwner &&
                                         <Link to="">
                                             <FontAwesomeIcon icon={faTrash}
-                                                             onClick={() => onSubmitRemoveTask(task.id)}
+                                                             onClick={() => {
+                                                                 setTaskToRemove(task.id)
+                                                                 setShowConfirmModal(true)
+                                                             }}
                                             />
                                         </Link>
                                     }
@@ -92,6 +106,14 @@ export default function TasksList({userStoryId, isProductOwner, tasks, addTask, 
                             task={selectedTask}
                             show={showTaskModal}
                             onClose={() => setShowTaskModal(false)}
+                        />
+                    }
+                    {showConfirmModal &&
+                        <ConfirmModal
+                            showModal={showConfirmModal}
+                            onConfirm={onSubmitRemoveTask}
+                            onCancel={onCancelRemoveTask}
+                            question="Are you sure you want to delete this task?"
                         />
                     }
                 </ul>

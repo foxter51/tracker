@@ -16,7 +16,7 @@ export default function SprintModal({sprint, show, onClose}) {
                         <div className="h6">Start Date</div>
                     </div>
                     <div className="col">
-                        <div className="h6">{sprint.startDate}</div>
+                        <div className="h6">{sprint.startDate.substring(0, 10)}</div>
                     </div>
                 </div>
                 <div className="row">
@@ -24,7 +24,7 @@ export default function SprintModal({sprint, show, onClose}) {
                         <div className="h6">Duration</div>
                     </div>
                     <div className="col">
-                        <div className="h6">{sprint.duration}</div>
+                        <div className="h6">{sprint.duration} weeks</div>
                     </div>
                 </div>
                 <div className="row">

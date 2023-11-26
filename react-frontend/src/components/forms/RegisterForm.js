@@ -37,7 +37,7 @@ export default function RegisterForm() {
             </div>
             <div className="form-outline mb-2">
                 <label className="form-label" htmlFor="registerEmail">Email</label>
-                <input type="email" id="registerEmail" name="email" className="form-control" maxLength="32" required onChange={(e) => setUser({ ...user, email: e.target.value })}/>
+                <input type="email" id="registerEmail" name="email" className="form-control" maxLength="64" required onChange={(e) => setUser({ ...user, email: e.target.value })}/>
             </div>
             <div className="form-outline mb-2">
                 <label className="form-label" htmlFor="registerPassword">Password</label>

@@ -8,6 +8,7 @@ import { faChevronDown, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 import EpicModal from "../modals/EpicModal"
 import EpicService from "../../services/EpicService"
+import ConfirmModal from "../modals/ConfirmModal"
 
 export default function EpicList({productBacklogId, epics, addEpic, isProductOwner, removeEpic}) {
     const [activeEpic, setActiveEpic] = useState(null)
@@ -15,6 +16,9 @@ export default function EpicList({productBacklogId, epics, addEpic, isProductOwn
 
     const [selectedEpic, setSelectedEpic] = useState(null)
     const [showEpicModal, setShowEpicModal] = useState(false)
+
+    const [showConfirmModal, setShowConfirmModal] = useState(false)
+    const [epicToRemove, setEpicToRemove] = useState(0)
 
     const [removedEpicId, setRemovedEpicId] = useState(null)
 
@@ -29,16 +33,23 @@ export default function EpicList({productBacklogId, epics, addEpic, isProductOwn
         epic === activeEpic ? setActiveEpic(null) : setActiveEpic(epic)
     }
 
-    const onSubmitRemoveEpic = async (epicId) => {
+    const onSubmitRemoveEpic = async () => {
         try {
-            setRemovedEpicId(epicId)
-            await EpicService.removeEpic(epicId)
+            setShowConfirmModal(false)
+            setRemovedEpicId(epicToRemove)
+            await EpicService.removeEpic(epicToRemove)
+            setEpicToRemove(0)
         } catch (err) {
             console.log(err)
         }
     }
 
-    const showModal = (epic) => {
+    const onCancelRemoveEpic = () => {
+        setEpicToRemove(0)
+        setShowConfirmModal(false)
+    }
+
+    const onShowEpicModal = (epic) => {
         setSelectedEpic(epic)
         setShowEpicModal(true)
     }
@@ -80,7 +91,7 @@ export default function EpicList({productBacklogId, epics, addEpic, isProductOwn
                                                              onClick={() => onSetActiveEpic(epic)}
                                             />
                                         </Link>
-                                        <Link to="" onClick={() => showModal(epic)}>
+                                        <Link to="" onClick={() => onShowEpicModal(epic)}>
                                             {epic.title}
                                         </Link>
                                     </div>
@@ -92,7 +103,10 @@ export default function EpicList({productBacklogId, epics, addEpic, isProductOwn
                                         {isProductOwner &&
                                            <Link to="">
                                                <FontAwesomeIcon icon={faTrash}
-                                                                onClick={() => onSubmitRemoveEpic(epic.id)}
+                                                                onClick={() => {
+                                                                    setEpicToRemove(epic.id)
+                                                                    setShowConfirmModal(true)
+                                                                }}
                                                />
                                            </Link>
                                         }
@@ -112,6 +126,14 @@ export default function EpicList({productBacklogId, epics, addEpic, isProductOwn
                             epic={selectedEpic}
                             show={showEpicModal}
                             onClose={() => setShowEpicModal(false)}
+                        />
+                    }
+                    {showConfirmModal &&
+                        <ConfirmModal
+                            showModal={showConfirmModal}
+                            onConfirm={onSubmitRemoveEpic}
+                            onCancel={onCancelRemoveEpic}
+                            question="Are you sure you want to delete this epic?"
                         />
                     }
                 </ul>

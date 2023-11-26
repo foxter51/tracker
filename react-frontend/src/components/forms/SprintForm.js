@@ -43,7 +43,7 @@ export default function SprintForm({projectId, setShowSprintForm, addSprint}) {
                     <input type="date" id="sprintStartDate" name="sprintStartDate" className="form-control" required onChange={(e) => setSprint({...sprint, startDate: e.target.value })}/>
                 </div>
                 <div className="mb-3">
-                    <label className="form-label" htmlFor="sprintDuration">Sprint Duration</label>
+                    <label className="form-label" htmlFor="sprintDuration">Sprint Duration (weeks)</label>
                     <input type="number" id="sprintDuration" name="sprintDuration" className="form-control" required onChange={(e) => setSprint({...sprint, duration: e.target.value })}/>
                 </div>
                 <div className="mb-3">
