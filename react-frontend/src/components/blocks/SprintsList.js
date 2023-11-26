@@ -10,6 +10,7 @@ import AuthService from "../../services/AuthService"
 import ProjectService from "../../services/ProjectService"
 import { useParams } from "react-router"
 import SprintService from "../../services/SprintService"
+import ConfirmModal from "../modals/ConfirmModal"
 
 export default function SprintsList({projectId, sprints, addSprint, removeSprint}) {
 
@@ -20,6 +21,9 @@ export default function SprintsList({projectId, sprints, addSprint, removeSprint
     const [showSprintModal, setShowSprintModal] = useState(false)
 
     const [isDeveloper, setIsDeveloper] = useState(false)
+
+    const [showConfirmModal, setShowConfirmModal] = useState(false)
+    const [sprintToRemove, setSprintToRemove] = useState(0)
 
     const [removedSprintId, setRemovedSprintId] = useState(null)
 
@@ -48,16 +52,23 @@ export default function SprintsList({projectId, sprints, addSprint, removeSprint
         sprint === activeSprint ? setActiveSprint(null) : setActiveSprint(sprint)
     }
 
-    const onSubmitRemoveSprint = async (sprintId) => {
+    const onSubmitRemoveSprint = async () => {
+        setShowConfirmModal(false)
         try {
-            setRemovedSprintId(sprintId)
-            await SprintService.deleteSprint(sprintId)
+            setRemovedSprintId(sprintToRemove)
+            await SprintService.deleteSprint(sprintToRemove)
+            setSprintToRemove(0)
         } catch (error) {
             console.log(error)
         }
     }
 
-    const showModal = (sprint) => {
+    const onCancelRemoveSprint = () => {
+        setSprintToRemove(0)
+        setShowConfirmModal(false)
+    }
+
+    const onShowSprintModal = (sprint) => {
         setSelectedSprint(sprint)
         setShowSprintModal(true)
     }
@@ -99,14 +110,17 @@ export default function SprintsList({projectId, sprints, addSprint, removeSprint
                                                              onClick={() => onSetActiveSprint(sprint)}
                                             />
                                         </Link>
-                                        <Link to="" onClick={() => showModal(sprint)}>
+                                        <Link to="" onClick={() => onShowSprintModal(sprint)}>
                                             {sprint.name}
                                         </Link>
                                     </div>
                                     {isDeveloper &&
                                         <Link to="">
                                             <FontAwesomeIcon icon={faTrash}
-                                                             onClick={() => onSubmitRemoveSprint(sprint.id)}
+                                                             onClick={() => {
+                                                                 setSprintToRemove(sprint.id)
+                                                                 setShowConfirmModal(true)
+                                                             }}
                                             />
                                         </Link>
                                     }
@@ -124,6 +138,14 @@ export default function SprintsList({projectId, sprints, addSprint, removeSprint
                             sprint={selectedSprint}
                             show={showSprintModal}
                             onClose={() => setShowSprintModal(false)}
+                        />
+                    }
+                    {showConfirmModal &&
+                        <ConfirmModal
+                            showModal={showConfirmModal}
+                            onConfirm={onSubmitRemoveSprint}
+                            onCancel={onCancelRemoveSprint}
+                            question="Are you sure you want to delete this sprint?"
                         />
                     }
                 </ul>

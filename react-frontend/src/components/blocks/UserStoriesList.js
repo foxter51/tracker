@@ -9,6 +9,7 @@ import UserStoryModal from "../modals/UserStoryModal"
 import SprintBacklogUserStoriesForm from "../forms/SprintBacklogUserStoriesForm"
 import UserStoryService from "../../services/UserStoryService"
 import UserStoryContent from "./UserStoryContent"
+import ConfirmModal from "../modals/ConfirmModal"
 
 // parent id may be Epic or SprintBacklog
 export default function UserStoriesList({parentId, isProductOwner, isDeveloper, userStories, addUserStory, isSprintBacklogEdit, removeUserStory}) {
@@ -20,6 +21,10 @@ export default function UserStoriesList({parentId, isProductOwner, isDeveloper, 
 
     const [selectedUserStory, setSelectedUserStory] = useState(null)
     const [showUserStoryModal, setShowUserStoryModal] = useState(false)
+
+    const [showConfirmModalForProductBacklog, setShowConfirmModalForProductBacklog] = useState(false)
+    const [showConfirmModalForSprintBacklog, setShowConfirmModalForSprintBacklog] = useState(false)
+    const [userStoryToRemove, setUserStoryToRemove] = useState(0)
 
     const [removedUserStoryId, setRemovedUserStoryId] = useState(null)
 
@@ -34,22 +39,36 @@ export default function UserStoriesList({parentId, isProductOwner, isDeveloper, 
         userStory === activeUserStory ? setActiveUserStory(null) : setActiveUserStory(userStory)
     }
 
-    const onSubmitRemoveUserStoryFromEpic = async (userStoryId) => {
+    const onSubmitRemoveUserStoryFromEpic = async () => {
         try {
-            setRemovedUserStoryId(userStoryId)
-            await UserStoryService.removeUserStory(userStoryId)
+            setShowConfirmModalForProductBacklog(false)
+            setRemovedUserStoryId(userStoryToRemove)
+            await UserStoryService.removeUserStory(userStoryToRemove)
+            setUserStoryToRemove(0)
         } catch (err) {
             console.log(err)
         }
     }
 
-    const onSubmitRemoveUserStoryFromSprintBacklog = async (userStoryId) => {
+    const onCancelRemoveUserStoryFromEpic = () => {
+        setUserStoryToRemove(0)
+        setShowConfirmModalForProductBacklog(false)
+    }
+
+    const onSubmitRemoveUserStoryFromSprintBacklog = async () => {
         try {
-            setRemovedUserStoryId(userStoryId)
-            await UserStoryService.removeUserStoryFromSprintBacklog(userStoryId)
+            setShowConfirmModalForSprintBacklog(false)
+            setRemovedUserStoryId(userStoryToRemove)
+            await UserStoryService.removeUserStoryFromSprintBacklog(userStoryToRemove)
+            setUserStoryToRemove(0)
         } catch (err) {
             console.log(err)
         }
+    }
+
+    const onCancelRemoveUserStoryFromSprintBacklog = () => {
+        setUserStoryToRemove(0)
+        setShowConfirmModalForSprintBacklog(false)
     }
 
     const showModal = (userStory) => {
@@ -130,14 +149,20 @@ export default function UserStoriesList({parentId, isProductOwner, isDeveloper, 
                                         {isProductOwner &&
                                             <Link to="">
                                                 <FontAwesomeIcon icon={faTrash}
-                                                                 onClick={() => onSubmitRemoveUserStoryFromEpic(userStory.id)}
+                                                                 onClick={() => {
+                                                                     setUserStoryToRemove(userStory.id)
+                                                                     setShowConfirmModalForProductBacklog(true)
+                                                                 }}
                                                 />
                                             </Link>
                                         }
                                         {isDeveloper &&
                                             <Link to="">
                                                 <FontAwesomeIcon icon={faTrash}
-                                                                 onClick={() => onSubmitRemoveUserStoryFromSprintBacklog(userStory.id)}
+                                                                 onClick={() => {
+                                                                     setUserStoryToRemove(userStory.id)
+                                                                     setShowConfirmModalForSprintBacklog(true)
+                                                                 }}
                                                 />
                                             </Link>
                                         }
@@ -157,6 +182,22 @@ export default function UserStoriesList({parentId, isProductOwner, isDeveloper, 
                             userStory={selectedUserStory}
                             show={showUserStoryModal}
                             onClose={() => setShowUserStoryModal(false)}
+                        />
+                    }
+                    {showConfirmModalForProductBacklog &&
+                        <ConfirmModal
+                            showModal={showConfirmModalForProductBacklog}
+                            onConfirm={onSubmitRemoveUserStoryFromEpic}
+                            onCancel={onCancelRemoveUserStoryFromEpic}
+                            question="Are you sure you want to delete this user story?"
+                        />
+                    }
+                    {showConfirmModalForSprintBacklog &&
+                        <ConfirmModal
+                            showModal={showConfirmModalForSprintBacklog}
+                            onConfirm={onSubmitRemoveUserStoryFromSprintBacklog}
+                            onCancel={onCancelRemoveUserStoryFromSprintBacklog}
+                            question="Are you sure you want to delete this user story?"
                         />
                     }
                 </ul>
