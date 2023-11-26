@@ -5,6 +5,7 @@ const ProductBacklog = db.productBacklog
 const UserRole = db.userRole
 const Role = db.role
 const User = db.user
+const Sprint = db.sprint
 
 async function create(projectData) {
     const { name, description, teamId } = projectData
@@ -53,15 +54,20 @@ async function create(projectData) {
 async function findOne(projectId) {
     try{
         const project = await Project.findByPk(projectId, {
-            include: {
-                model: Team,
-                include: {
-                    model: UserRole, as: 'userRoles',
-                    include: [
-                        { model: User, Role },
-                    ]
+            include: [
+                {
+                    model: Team,
+                    include: {
+                        model: UserRole, as: 'userRoles',
+                        include: [
+                            { model: User, Role },
+                        ]
+                    },
+                },
+                {
+                    model: Sprint, as: 'currentSprint',
                 }
-            }
+            ]
         })
 
         if(!project){
