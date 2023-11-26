@@ -23,8 +23,8 @@ async function setNextSprint(req, res){
     const { projectId } = req.params
 
     try {
-        const sprint = await sprintService.setNextSprint(projectId)
-        res.json(sprint)
+        const sprintEndDate = await sprintService.setNextSprint(projectId)
+        res.json(sprintEndDate)
     } catch (err) {
         res.status(400).json({ message: err.message })
     }
