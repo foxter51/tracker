@@ -6,6 +6,8 @@ export default function SprintForm({projectId, setShowSprintForm, addSprint}) {
     const [error, setError] = useState(null)
     const [save, setSave] = useState(false)
 
+    const minDate = new Date((new Date()).getTime() + (24 * 60 * 60 * 1000))
+
     useEffect(() => {
         if (save) {
             setShowSprintForm(false)
@@ -40,7 +42,7 @@ export default function SprintForm({projectId, setShowSprintForm, addSprint}) {
                 </div>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="sprintStartDate">Sprint Start Date</label>
-                    <input type="date" id="sprintStartDate" name="sprintStartDate" className="form-control" required onChange={(e) => setSprint({...sprint, startDate: e.target.value })}/>
+                    <input type="date" id="sprintStartDate" name="sprintStartDate" className="form-control" min={minDate.toISOString().split("T")[0]} required onChange={(e) => setSprint({...sprint, startDate: e.target.value })}/>
                 </div>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="sprintDuration">Sprint Duration (weeks)</label>

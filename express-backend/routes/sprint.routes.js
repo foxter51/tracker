@@ -7,5 +7,6 @@ router.post('/projects/:projectId/sprints', authenticateToken, SprintController.
 router.get('/projects/:projectId/sprints', authenticateToken, SprintController.findAll)
 router.get('/sprints/:sprintId/assignee/:assigneeId/tasks',  SprintController.findAllSprintTasksByStatus)
 router.delete('/sprints/:sprintId', authenticateToken, SprintController.destroy)
+router.patch('/projects/:projectId/nextSprint', authenticateToken, SprintController.setNextSprint)
 
 module.exports = router

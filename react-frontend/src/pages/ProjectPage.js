@@ -50,6 +50,12 @@ export default function ProjectPage() {
                             <Link className="text-decoration-none" to={`/teams/${project.Team.id}`}>{project.Team.name}</Link>
                         </div>
                     </div>
+                    {project.currentSprint &&
+                        <div className="row">
+                            <div className="col">Current Sprint</div>
+                            <div className="col">{project.currentSprint.name}</div>
+                        </div>
+                    }
                 </div>
             </div>
             <ul className="nav nav-tabs">
@@ -69,7 +75,7 @@ export default function ProjectPage() {
             <div className="tab-content">
                 <div className={classNames("tab-pane fade", active === "board" ? "show active" : "")}>
                     <ScrumBoard
-                        sprintId="11"
+                        project={project}
                     />
                 </div>
                 <div className={classNames("tab-pane fade", active === "productBacklog" ? "show active" : "")}>

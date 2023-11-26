@@ -5,12 +5,11 @@ import LoadingEffect from "../effects/LoadingEffect"
 import DragDropColumn from "./DragDropColumn"
 import AuthService from "../../services/AuthService"
 import UserService from "../../services/UserService"
-import { useParams } from "react-router"
-import ProjectService from "../../services/ProjectService"
 import TaskService from "../../services/TaskService"
 import DevelopersListTab from "./DevelopersListTab"
+import Timer from "./Timer"
 
-export default function ScrumBoard({sprintId}) {
+export default function ScrumBoard({ project }) {
 
     const [toDoTasks, setToDoTasks] = useState([])
     const [inProgressTasks, setInProgressTasks] = useState([])
@@ -18,40 +17,40 @@ export default function ScrumBoard({sprintId}) {
     const [doneTasks, setDoneTasks] = useState([])
 
     const [currentUser, setCurrentUser] = useState(null)
-    const [currentProject, setCurrentProject] = useState(null)
     const [assigneeId, setAssigneeId] = useState(null)
+
+    const [currentSprintEndDate, setCurrentSprintEndDate] = useState(null)
 
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    const { id } = useParams()
-
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const storedAssigneeId = window.localStorage.getItem(`project${id}BoardUserFilter`)
+                const storedAssigneeId = window.localStorage.getItem(`project${project.id}BoardUserFilter`)
                 setAssigneeId(storedAssigneeId)
 
-                const toDoResponse = await SprintService.findAllSprintTasksByStatus(sprintId, "TO DO", storedAssigneeId)
-                const inProgressResponse = await SprintService.findAllSprintTasksByStatus(sprintId, "IN PROGRESS", storedAssigneeId)
-                const inReviewResponse = await SprintService.findAllSprintTasksByStatus(sprintId, "IN REVIEW", storedAssigneeId)
-                const doneResponse = await SprintService.findAllSprintTasksByStatus(sprintId, "DONE", storedAssigneeId)
+                const currentSprintId = project.currentSprint?.id ?? -1
+
+                const toDoResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "TO DO", storedAssigneeId)
+                const inProgressResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "IN PROGRESS", storedAssigneeId)
+                const inReviewResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "IN REVIEW", storedAssigneeId)
+                const doneResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "DONE", storedAssigneeId)
                 const userResponse = await UserService.getUser(AuthService.getAuthUserId())
-                const projectResponse = await ProjectService.getProject(id)
 
                 setToDoTasks(toDoResponse.data.tasks)
                 setInProgressTasks(inProgressResponse.data.tasks)
                 setInReviewTasks(inReviewResponse.data.tasks)
                 setDoneTasks(doneResponse.data.tasks)
                 setCurrentUser(userResponse.data.user)
-                setCurrentProject(projectResponse.data.project)
+                if (project.currentSprint) setCurrentSprintEndDate(new Date((new Date(project.currentSprint.startDate)).getTime() + project.currentSprint.duration * 7 * 24 * 60 * 60 * 1000))
             } catch (error) {
                 setError(error.response.data.message)
             }
             setLoading(false)
         }
         fetchTasks()
-    }, [sprintId, id])
+    }, [project.currentSprint, project.currentSprint?.duration, project.currentSprint?.id, project.currentSprint?.startDate, project.id])
 
     const updateTaskStatus = async (taskId, rawStatus, assigneeId) => {
         let status
@@ -86,7 +85,7 @@ export default function ScrumBoard({sprintId}) {
 
         // restrict drag on conditions
         const draggedTask = getList(source.droppableId)[source.index]
-        const isCurrentUserDeveloper = currentProject.Team.userRoles.some(role => {
+        const isCurrentUserDeveloper = project.Team.userRoles.some(role => {
             return role.UserId === currentUser.id && role.RoleId === 3
         })
 
@@ -160,7 +159,7 @@ export default function ScrumBoard({sprintId}) {
 
     const filterTasksByAssignee = (assigneeId) => {
         if (assigneeId === null) {
-            window.localStorage.removeItem(`project${currentProject.id}BoardUserFilter`)
+            window.localStorage.removeItem(`project${project.id}BoardUserFilter`)
             window.location.reload()
         } else {
             setToDoTasks(toDoTasks.filter(task => task.assigneeId === assigneeId))
@@ -168,8 +167,17 @@ export default function ScrumBoard({sprintId}) {
             setInReviewTasks(inReviewTasks.filter(task => task.assigneeId === assigneeId))
             setDoneTasks(doneTasks.filter(task => task.assigneeId === assigneeId))
 
-            window.localStorage.setItem(`project${currentProject.id}BoardUserFilter`, assigneeId)
+            window.localStorage.setItem(`project${project.id}BoardUserFilter`, assigneeId)
             setAssigneeId(assigneeId)
+        }
+    }
+
+    const onStartSprints = async () => {
+        try {
+            await SprintService.setNextSprint(project.id)
+            window.location.reload()
+        } catch (error) {
+            setError(error.response.data.message)
         }
     }
 
@@ -180,13 +188,29 @@ export default function ScrumBoard({sprintId}) {
     return (
         <div className="container p-2">
             <div className="card">
-                <div className="card-header">
+                <div className="card-header d-flex justify-content-between align-items-center">
                     <DevelopersListTab
-                        team={currentProject.Team}
+                        team={project.Team}
                         filterTasksByAssignee={filterTasksByAssignee}
                         selectedAssigneeId={assigneeId}
                     />
                     {error}
+                    {!project.currentSprint &&
+                        <button className="btn btn-success float-end" onClick={() => onStartSprints()}>
+                            Start
+                        </button>
+                    }
+                    {project.currentSprint &&
+                        <div className="d-flex">
+                            <div className="me-1">
+                                Time to next sprint:
+                            </div>
+                            <Timer
+                                expiryTimestamp={currentSprintEndDate}
+                                // expiryTimestamp={new Date((new Date()).getTime() + 60 * 1000)}  // for testing
+                            />
+                        </div>
+                    }
                 </div>
                 <div className="card-body">
                     <div className="row">

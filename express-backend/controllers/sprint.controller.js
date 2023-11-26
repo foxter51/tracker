@@ -19,6 +19,17 @@ async function create(req, res){
     }
 }
 
+async function setNextSprint(req, res){
+    const { projectId } = req.params
+
+    try {
+        const sprintEndDate = await sprintService.setNextSprint(projectId)
+        res.json(sprintEndDate)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 async function findAll(req, res) {
     const { projectId } = req.params
 
@@ -55,6 +66,7 @@ async function destroy(req, res) {
 
 module.exports = {
     create,
+    setNextSprint,
     findAll,
     findAllSprintTasksByStatus,
     destroy
