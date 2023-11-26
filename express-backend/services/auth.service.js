@@ -1,6 +1,7 @@
 const db = require('../models')
 const User = db.user
 const { generateToken } = require('../config/jwt.config')
+const dns = require('dns')
 
 async function registerUser(userData) {
     const { username, email, password, lastname, firstname } = userData
@@ -13,7 +14,20 @@ async function registerUser(userData) {
             throw new Error('Username is already taken')
         }
 
+        let validDomainName
+
+        await checkDomain(email.split('@')[1]).then(() => {
+            validDomainName = true
+        }).catch(() => {
+            validDomainName = false
+        }).finally(() => {
+            if (!validDomainName) {
+                throw new Error('Invalid email domain')
+            }
+        })
+
         user = await User.findOne({ where: { email: email } })
+
         if (user) {
             throw new Error('Email is already taken')
         }
@@ -44,6 +58,18 @@ async function loginUser(username, password) {
     } catch (err) {
         throw new Error(err.message)
     }
+}
+
+function checkDomain(domain) {
+    return new Promise((resolve, reject) => {
+        dns.resolve(domain, 'MX', (err) => {
+            if (err) {
+                reject(err)
+            } else {
+                resolve()
+            }
+        })
+    })
 }
 
 module.exports = {
