@@ -101,10 +101,10 @@ async function approveGoogleLogin(code) {
         if (!user) {  // if the user doesn't exist -> create a new one
 
             const usernamesCount = await User.count({  // if the same username exists
-                where: { username: username }
+                where: { username: {[Op.like]: `${username}%`} }
             })
 
-            username += usernamesCount  //then add its number to the end
+            if(+usernamesCount !== 0) username += usernamesCount  //then add its number to the end
 
             user = await User.create({
                 username,
