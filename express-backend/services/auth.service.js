@@ -92,18 +92,20 @@ async function approveGoogleLogin(code) {
         await client.setCredentials(response.tokens)
 
         const userData = await getUserData(client.credentials.access_token)
-        const username = userData.email.split('@')[0]
+        let username = userData.email.split('@')[0]
 
-        let user = await User.findOne({
-            where: {
-                [Op.or]: [
-                    { email: userData.email },
-                    { username: username },
-                ]
-            }
+        let user = await User.findOne({  // if the same email exists -> get the user
+            where: { email: userData.email }
         })
 
-        if (!user) {
+        if (!user) {  // if the user doesn't exist -> create a new one
+
+            const usernamesCount = await User.count({  // if the same username exists
+                where: { username: username }
+            })
+
+            username += usernamesCount  //then add its number to the end
+
             user = await User.create({
                 username,
                 email: userData.email,
@@ -111,8 +113,6 @@ async function approveGoogleLogin(code) {
                 firstname: userData.given_name,
             })
         }
-
-        console.log(user)
 
         return { token: generateToken(user.username), id: user.id }
     } catch (err) {
