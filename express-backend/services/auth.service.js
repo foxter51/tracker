@@ -2,6 +2,8 @@ const db = require('../models')
 const User = db.user
 const { generateToken } = require('../config/jwt.config')
 const dns = require('dns')
+const { OAuth2Client } = require("google-auth-library")
+const { Op } = require("sequelize")
 
 async function registerUser(userData) {
     const { username, email, password, lastname, firstname } = userData
@@ -60,6 +62,69 @@ async function loginUser(username, password) {
     }
 }
 
+async function doRequestGoogleUrl() {
+    const redirectUrl = 'http://localhost:8081/auth/google'
+
+    const client = new OAuth2Client(
+        process.env.GOOGLE_OAUTH_CLIENT_ID,
+        process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+        redirectUrl
+    )
+
+    return client.generateAuthUrl({
+        access_type: 'offline',
+        scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'],
+        prompt: 'consent',
+    })
+}
+
+async function approveGoogleLogin(code) {
+    try {
+        const redirectUrl = 'http://localhost:8081/auth/google'
+
+        const client = new OAuth2Client(
+            process.env.GOOGLE_OAUTH_CLIENT_ID,
+            process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+            redirectUrl
+        )
+
+        const response = await client.getToken(code)
+        await client.setCredentials(response.tokens)
+
+        const userData = await getUserData(client.credentials.access_token)
+        const username = userData.email.split('@')[0]
+
+        let user = await User.findOne({
+            where: {
+                [Op.or]: [
+                    { email: userData.email },
+                    { username: username },
+                ]
+            }
+        })
+
+        if (!user) {
+            user = await User.create({
+                username,
+                email: userData.email,
+                lastname: userData.family_name,
+                firstname: userData.given_name,
+            })
+        }
+
+        console.log(user)
+
+        return { token: generateToken(user.username), id: user.id }
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+async function getUserData(access_token) {
+    const response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`)
+    return await response.json()
+}
+
 function checkDomain(domain) {
     return new Promise((resolve, reject) => {
         dns.resolve(domain, 'MX', (err) => {
@@ -74,5 +139,7 @@ function checkDomain(domain) {
 
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    doRequestGoogleUrl,
+    approveGoogleLogin
 }

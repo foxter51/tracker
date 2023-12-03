@@ -15,6 +15,7 @@ import ProjectCreatePage from "./pages/ProjectCreatePage"
 import ProjectPage from "./pages/ProjectPage"
 import UserProjectsPage from "./pages/UserProjectsPage"
 import UserTeamsPage from "./pages/UserTeamsPage"
+import AuthLoadingPage from "./pages/AuthLoadingPage"
 
 function Layout() {
     return (
@@ -45,6 +46,7 @@ root.render(
             <Route path="/" element={<Layout/>}>
                 <Route index element={<PrivateRoute><App/></PrivateRoute>}/>
                 <Route path="/auth" element={<AuthPage/>}/>
+                <Route path="/auth/google" element={<AuthLoadingPage/>}/>
                 <Route path="/users/:id" element={<PrivateRoute><UserPage/></PrivateRoute>}/>
                 <Route path="/teams" element={<PrivateRoute><TeamCreatePage/></PrivateRoute>}/>
                 <Route path="/teams/:id" element={<PrivateRoute><TeamPage/></PrivateRoute>}/>

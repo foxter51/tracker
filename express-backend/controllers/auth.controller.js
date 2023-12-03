@@ -29,7 +29,29 @@ async function login(req, res) {
     }
 }
 
+async function doRequestGoogleUrl(req, res) {
+    try {
+        const url = await authService.doRequestGoogleUrl()
+        res.json({ url })
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
+async function approveGoogleLogin(req, res) {
+    const code = req.query.code
+
+    try {
+        const authenticatedUserToken = await authService.approveGoogleLogin(code)
+        res.json(authenticatedUserToken)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
     register,
     login,
+    doRequestGoogleUrl,
+    approveGoogleLogin
 }

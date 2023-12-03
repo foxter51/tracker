@@ -37,6 +37,34 @@ class AuthService {
         }
     }
 
+    async doGoogleRequestUrl() {
+        try {
+            return await request(
+                "POST",
+                "/login/google",
+                {}
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
+
+    async approveGoogleAuthorization(code) {
+        try {
+            const response = await request(
+                "POST",
+                `/login/google/approve?code=${code}`,
+                {}
+            )
+            this.setAuthUserId(response.data.id)
+            this.setAuthToken(response.data.token)
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
+
     logout() {
         window.localStorage.removeItem("auth_token")
         window.localStorage.removeItem("user_id")
