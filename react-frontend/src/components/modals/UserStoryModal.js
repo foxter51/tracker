@@ -5,11 +5,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faGripLines } from "@fortawesome/free-solid-svg-icons/faGripLines"
 import priorityColor from "../../utils/priority_color"
 import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import UserService from "../../services/UserService"
 import LoadingEffect from "../effects/LoadingEffect"
+import { ThemeContext } from "../effects/Theme"
 
 export default function UserStoryModal({userStory, show, onClose}) {
+
+    const {theme} = useContext(ThemeContext)
 
     const [userStoryOwner, setUserStoryOwner] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -36,6 +39,7 @@ export default function UserStoryModal({userStory, show, onClose}) {
         <Modal
             show={show}
             onHide={onClose}
+            className={`${theme}`}
         >
             <Modal.Header closeButton>
                 <Modal.Title>User Story: {userStory.title}</Modal.Title>

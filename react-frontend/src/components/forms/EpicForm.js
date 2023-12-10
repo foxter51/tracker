@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import EpicService from "../../services/EpicService"
 import { Multiselect } from "multiselect-react-dropdown"
+import getStyledMultiselect from "../../utils/multiselect_style"
 
 export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
 
@@ -79,6 +80,7 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
                                 setEpic({...epic, priority: selectedItem.name})
                             }
                             displayValue="name"
+                            style={getStyledMultiselect()}
                         />
                     </div>
                 </div>
@@ -95,6 +97,7 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
                                 setEpic({...epic, storyPoints: selectedItem.name})
                             }
                             displayValue="name"
+                            style={getStyledMultiselect()}
                         />
                     </div>
                 </div>
@@ -111,6 +114,7 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
                                 setEpic({...epic, status: selectedItem.name})
                             }
                             displayValue="name"
+                            style={getStyledMultiselect()}
                         />
                     </div>
                 </div>

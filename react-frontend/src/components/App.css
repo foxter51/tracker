@@ -1,9 +1,11 @@
+/*custom styles*/
+
 .App-logo{
     height: 80px;
 }
 
 .App-header{
-    background-color: #e9ecec;
+    background-color: var(--background-header);
     height: 80px;
     padding: 20px;
     display: flex;
@@ -16,7 +18,7 @@
 }
 
 .nav-link.active {
-    background-color: #96ccfc !important;
+    background-color: var(--nav-link-active-background) !important;
 }
 
 .nav-link.active:hover {
@@ -31,7 +33,7 @@
 
 .btn-primary {
     border: none !important;
-    background-color: #5bacff !important;
+    background-color: var(--btn-primary-background) !important;
 }
 
 .btn-danger {
@@ -52,3 +54,100 @@
 html, body {
     height: 100%;
 }
+
+/*custom styles end*/
+
+/*themes switch*/
+
+:root {
+    --background-header-dark: #262929;
+    --background-header-light: #e9ecec;
+
+    --app-background-dark: var(--bs-dark);
+    --app-background-light: white;
+
+    --text-dark: white;
+    --text-light: black;
+
+    --list-group-item-border-light: #e6d3d3;
+    --list-group-item-border-dark: #424a4a;
+
+    --card-header-background-dark: #143939;
+    --card-header-background-light: var(--bs-light);
+
+    --card-body-background-dark: #113232;
+    --card-body-background-light: white;
+
+    --modal-background-dark: #303838;
+    --modal-background-light: white;
+
+    --switcher-icons-color-dark: white;
+    --switcher-icons-color-light: black;
+
+    --nav-link-active-background-dark: #346b6b;
+    --nav-link-active-background-light: #96ccfc;
+
+    --btn-primary-background-dark: #264e4e;
+    --btn-primary-background-light: #5bacff;
+}
+
+.light {
+    --background-header: var(--background-header-light);
+    --app-background: var(--app-background-light);
+    --text: var(--text-light);
+    --list-group-item-border-color: var(--list-group-item-border-light);
+    --card-header-background: var(--card-header-background-light);
+    --card-body-background: var(--card-body-background-light);
+    --modal-background: var(--modal-background-light);
+    --switcher-icons-color: var(--switcher-icons-color-light);
+    --nav-link-active-background: var(--nav-link-active-background-light);
+    --btn-primary-background: var(--btn-primary-background-light);
+}
+
+.dark {
+    --background-header: var(--background-header-dark);
+    --app-background: var(--app-background-dark);
+    --text: var(--text-dark);
+    --list-group-item-border-color: var(--list-group-item-border-dark);
+    --card-header-background: var(--card-header-background-dark);
+    --card-body-background: var(--card-body-background-dark);
+    --modal-background: var(--modal-background-dark);
+    --switcher-icons-color: var(--switcher-icons-color-dark);
+    --nav-link-active-background: var(--nav-link-active-background-dark);
+    --btn-primary-background: var(--btn-primary-background-dark);
+}
+
+.app {
+    color: var(--text);
+    background-color: var(--app-background);
+}
+
+.modal-content {
+    color: var(--text) !important;
+    background-color: var(--modal-background) !important;
+}
+
+.card {
+    color: var(--text) !important;
+    background-color: var(--card-body-background) !important;
+}
+
+.card-header {
+    background-color: var(--card-header-background) !important;
+}
+
+.list-group-item {
+    background-color: var(--card-body-background) !important;
+    border-color: var(--list-group-item-border-color) !important;
+}
+
+input:not(#themeSwitcher), textarea {
+    color: var(--text) !important;
+    background-color: var(--card-body-background) !important;
+}
+
+.switcherIcons {
+    color: var(--switcher-icons-color);
+}
+
+/*themes switch end*/

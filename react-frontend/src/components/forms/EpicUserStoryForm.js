@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import UserStoryService from "../../services/UserStoryService"
 import { Multiselect } from "multiselect-react-dropdown"
 import AuthService from "../../services/AuthService"
+import getStyledMultiselect from "../../utils/multiselect_style"
 
 export default function EpicUserStoryForm({epicId, setShowUserStoryForm, addUserStory}) {
 
@@ -81,6 +82,7 @@ export default function EpicUserStoryForm({epicId, setShowUserStoryForm, addUser
                                 setUserStory({...userStory, priority: selectedItem.name})
                             }
                             displayValue="name"
+                            style={getStyledMultiselect()}
                         />
                     </div>
                 </div>
@@ -97,6 +99,7 @@ export default function EpicUserStoryForm({epicId, setShowUserStoryForm, addUser
                                 setUserStory({...userStory, storyPoints: selectedItem.name})
                             }
                             displayValue="name"
+                            style={getStyledMultiselect()}
                         />
                     </div>
                 </div>
@@ -113,6 +116,7 @@ export default function EpicUserStoryForm({epicId, setShowUserStoryForm, addUser
                                 setUserStory({...userStory, status: selectedItem.name})
                             }
                             displayValue="name"
+                            style={getStyledMultiselect()}
                         />
                     </div>
                 </div>

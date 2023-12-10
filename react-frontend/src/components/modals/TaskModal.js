@@ -5,13 +5,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faGripLines } from "@fortawesome/free-solid-svg-icons/faGripLines"
 import priorityColor from "../../utils/priority_color"
 import { Link } from "react-router-dom"
+import { useContext } from "react"
+import { ThemeContext } from "../effects/Theme"
 
 export default function TaskModal({task, show, onClose}) {
+
+    const {theme} = useContext(ThemeContext)
 
     return (
         <Modal
             show={show}
             onHide={onClose}
+            className={`${theme}`}
         >
             <Modal.Header closeButton>
                 <Modal.Title>Task: {task.title}</Modal.Title>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Multiselect } from "multiselect-react-dropdown"
 import UserService from "../../services/UserService"
+import getStyledMultiselect from "../../utils/multiselect_style"
 
 export default function TeamMembersForm({selectedUsers, setSelectedUsers}) {
 
@@ -44,6 +45,7 @@ export default function TeamMembersForm({selectedUsers, setSelectedUsers}) {
                 onSelect={onUserSelect}
                 onRemove={onUserRemove}
                 displayValue="username"
+                style={getStyledMultiselect()}
             />
         </div>
     )

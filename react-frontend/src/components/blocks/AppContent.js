@@ -2,14 +2,12 @@ import * as React from "react"
 import WelcomeContent from "./WelcomeContent"
 import AuthContent from "./AuthContent"
 
-export default class AppContent extends React.Component {
+export default function AppContent () {
 
-    render() {
-        return (
-            <div className="container">
-                <WelcomeContent/>
-                <AuthContent/>
-            </div>
-        )
-    }
+    return (
+        <div className="container">
+            <WelcomeContent/>
+            <AuthContent/>
+        </div>
+    )
 }

@@ -4,6 +4,7 @@ import { Multiselect } from "multiselect-react-dropdown"
 import LoadingEffect from "../effects/LoadingEffect"
 import UserStoryService from "../../services/UserStoryService"
 import { useParams } from "react-router"
+import getStyledMultiselect from "../../utils/multiselect_style"
 
 export default function SprintBacklogUserStoriesForm({sprintBacklogId, addUserStory, setShowSprintBacklogUserStoryForm}) {
 
@@ -76,6 +77,7 @@ export default function SprintBacklogUserStoriesForm({sprintBacklogId, addUserSt
                         onSelect={onUserStorySelect}
                         onRemove={onUserStoryRemove}
                         displayValue="title"
+                        style={getStyledMultiselect()}
                     />
                 </div>
                 <button className="btn btn-primary" type="submit">Add User Stories</button>
