@@ -4,13 +4,18 @@ import statusColor from "../../utils/status_color"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faGripLines } from "@fortawesome/free-solid-svg-icons/faGripLines"
 import priorityColor from "../../utils/priority_color"
+import { useContext } from "react"
+import { ThemeContext } from "../effects/Theme"
 
 export default function EpicModal({epic, show, onClose}) {
+
+    const {theme} = useContext(ThemeContext)
 
     return (
         <Modal
             show={show}
             onHide={onClose}
+            className={`${theme}`}
         >
             <Modal.Header closeButton>
                 <Modal.Title>Epic: {epic.title}</Modal.Title>

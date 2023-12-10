@@ -1,11 +1,16 @@
 import { Modal } from "react-bootstrap"
+import { useContext } from "react"
+import { ThemeContext } from "../effects/Theme"
 
 export default function SprintModal({sprint, show, onClose}) {
+
+    const {theme} = useContext(ThemeContext)
 
     return (
         <Modal
             show={show}
             onHide={onClose}
+            className={`${theme}`}
         >
             <Modal.Header closeButton>
                 <Modal.Title>Sprint: {sprint.name}</Modal.Title>

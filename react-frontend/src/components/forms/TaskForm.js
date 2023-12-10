@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Multiselect } from "multiselect-react-dropdown"
 import TaskService from "../../services/TaskService"
+import getStyledMultiselect from "../../utils/multiselect_style"
 
 export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
 
@@ -79,6 +80,7 @@ export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
                                 setTask({...task, priority: selectedItem.name})
                             }
                             displayValue="name"
+                            style={getStyledMultiselect()}
                         />
                     </div>
                 </div>
@@ -95,6 +97,7 @@ export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
                                 setTask({...task, storyPoints: selectedItem.name})
                             }
                             displayValue="name"
+                            style={getStyledMultiselect()}
                         />
                     </div>
                 </div>
@@ -111,6 +114,7 @@ export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
                                 setTask({...task, status: selectedItem.name})
                             }
                             displayValue="name"
+                            style={getStyledMultiselect()}
                         />
                     </div>
                 </div>

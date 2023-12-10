@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Multiselect } from "multiselect-react-dropdown"
 import TeamService from "../../services/TeamService"
+import getStyledMultiselect from "../../utils/multiselect_style"
 
 export default function ProjectTeamForm({project, setProject}) {
 
@@ -35,6 +36,7 @@ export default function ProjectTeamForm({project, setProject}) {
                     setProject({...project, teamId: selectedItem.id})
                 }
                 displayValue="name"
+                style={getStyledMultiselect()}
             />
         </div>
     )

@@ -3,6 +3,7 @@ import { Multiselect } from "multiselect-react-dropdown"
 import UserRoleService from "../../services/UserRoleService"
 import TeamService from "../../services/TeamService"
 import LoadingEffect from "../effects/LoadingEffect"
+import getStyledMultiselect from "../../utils/multiselect_style"
 
 export default function TeamMembersRolesForm({selectedUsers, team, setTeam, setShowPreview}) {
 
@@ -65,6 +66,7 @@ export default function TeamMembersRolesForm({selectedUsers, team, setTeam, setS
                                         onRoleSelect(selectedList, selectedItem, user.id)
                                     }
                                     displayValue="name"
+                                    style={getStyledMultiselect()}
                                 />
                             </div>
                         </div>

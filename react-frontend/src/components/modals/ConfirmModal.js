@@ -1,11 +1,16 @@
 import { Modal } from "react-bootstrap"
+import { ThemeContext } from "../effects/Theme"
+import { useContext } from "react"
 
 export default function ConfirmModal({ showModal, onConfirm, onCancel, question }) {
+
+    const {theme} = useContext(ThemeContext)
 
     return (
         <Modal
             show={showModal}
             onHide={onCancel}
+            className={`${theme}`}
         >
             <Modal.Header closeButton>
                 <Modal.Title>{question}</Modal.Title>
