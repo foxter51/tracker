@@ -1,8 +1,11 @@
+require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
-require('dotenv').config()
-
 const app = express()
+const http = require('http')
+const server = http.createServer(app)
+let io = require('./config/socket')
+io.listen(server)
 
 let corsOptions = {
     origin: 'http://localhost:8081'
@@ -38,7 +41,29 @@ apiRouter.use(require('./routes/sprintBacklog.routes'))
 apiRouter.use(require('./routes/role.routes'))
 apiRouter.use(require('./routes/userStory.routes'))
 
+io.on("connection", () => {
+    console.log("Client connected!");
+})
+
+io.on('connection', (socket) => {
+    socket.on('task update', data => {
+        console.log('Updating user story status')
+        io.emit('user story update', {
+            userStoryId: data.userStoryId,
+            status: data.status
+        })
+    })
+
+    socket.on('user story update', data => {
+        console.log('Updating epic status')
+        io.emit('epic update', {
+            epicId: data.epicId,
+            status: data.status
+        })
+    })
+})
+
 const PORT = process.env.PORT || 8080
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`)
 })

@@ -29,10 +29,9 @@ async function create(userStoryData) {
             priority,
             storyPoints,
             status,
+            EpicId: epicId,
+            ownerId
         })
-
-        await userStory.setOwner(owner)
-        await userStory.setEpic(epic)
 
         await userStory.save()
 
@@ -109,9 +108,8 @@ async function findUnassignedUserStories(projectId) {
 
 async function destroy(userStoryId) {
     try{
-        await UserStory.destroy({
-            where: { id: userStoryId }
-        })
+        const userStory = await UserStory.findByPk(userStoryId)
+        await userStory.destroy()
     } catch (err) {
         throw new Error(err.message)
     }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import LoadingEffect from "../effects/LoadingEffect"
 import TaskService from "../../services/TaskService"
 import TasksList from "./TasksList"
+import { socket } from "../../utils/socket"
 
 export default function UserStoryContent({userStoryId, isProductOwner}) {
 
@@ -20,6 +21,28 @@ export default function UserStoryContent({userStoryId, isProductOwner}) {
         }
         fetchTasks()
     }, [userStoryId])
+
+    useEffect(() => {
+        socket.on('task update', (data) => {
+            const updatedTask = tasks.find(task => task.id === data.taskId)
+            if (updatedTask) {
+                updatedTask.status = data.taskStatus
+
+                setTasks(prevTasks => {
+                    return prevTasks.map(task => {
+                        if (task.id === updatedTask.id) {
+                            return updatedTask
+                        }
+                        return task
+                    })
+                })
+            }
+
+            return () => {
+                socket.off('user story update')
+            }
+        })
+    })
 
     if(loading){
         return <LoadingEffect/>

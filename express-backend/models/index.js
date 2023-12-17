@@ -1,4 +1,5 @@
 const dbConfig = require('../config/db.config.js')
+const io = require('../config/socket')
 
 const Sequelize = require('sequelize')
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -72,5 +73,63 @@ db.task.belongsTo(db.user, { as: 'assignee' })
 
 db.productBacklog.belongsTo(db.project)
 db.productBacklog.belongsTo(db.user, { as: 'owner' })
+
+db.task.afterUpdate(async task => await updateUserStoryStatus(task))
+db.task.afterCreate(async task => await updateUserStoryStatus(task))
+db.task.beforeDestroy(async task => await updateUserStoryStatus(task, true))
+
+db.userStory.afterCreate(async userStory => await updateEpicStatus(userStory))
+db.userStory.afterUpdate(async userStory => await updateEpicStatus(userStory))
+db.userStory.beforeDestroy(async userStory => await updateEpicStatus(userStory, true))
+
+const updateUserStoryStatus = async (task, skip = false) => {
+    const userStoryId = task.UserStoryId
+    const userStory = await db.userStory.findByPk(userStoryId)
+
+    let storyTasks = await userStory.getTasks()
+    if(skip) storyTasks = storyTasks.filter(t => t.id !== task.id)
+
+    const statuses = new Set(storyTasks.map(task => task.status))
+
+    if(statuses.size === 1) {
+        const status = storyTasks[0].status
+        await userStory.update({ status })
+    } else if (Array.from(statuses).some(status => status === 'TO DO')) {
+        await userStory.update({ status: 'TO DO' })
+    } else if (Array.from(statuses).some(status => status === 'IN PROGRESS')) {
+        await userStory.update({ status: 'IN PROGRESS' })
+    } else if (Array.from(statuses).some(status => status === 'IN REVIEW')) {
+        await userStory.update({ status: 'IN REVIEW' })
+    } else {
+        await userStory.update({ status: 'DONE' })
+    }
+
+    io.emit('task update', { userStoryId, userStoryStatus: userStory.status, taskId: task.id, taskStatus: task.status })
+}
+
+const updateEpicStatus = async (userStory, skip = false) => {
+    const epicId = userStory.EpicId
+    const epic = await db.epic.findByPk(epicId)
+
+    let epicUserStories = await epic.getUserStories()
+    if(skip) epicUserStories = epicUserStories.filter(story => story.id !== userStory.id)
+
+    const statuses = new Set(epicUserStories.map(story => story.status))
+
+    if(statuses.size === 1) {
+        const status = epicUserStories[0].status
+        await epic.update({ status })
+    } else if (Array.from(statuses).some(status => status === 'TO DO')) {
+        await epic.update({ status: 'TO DO' })
+    } else if (Array.from(statuses).some(status => status === 'IN PROGRESS')) {
+        await epic.update({ status: 'IN PROGRESS' })
+    } else if (Array.from(statuses).some(status => status === 'IN REVIEW')) {
+        await epic.update({ status: 'IN REVIEW' })
+    } else {
+        await epic.update({ status: 'DONE' })
+    }
+
+    io.emit('user story update', { epicId, epicStatus: epic.status })
+}
 
 module.exports = db

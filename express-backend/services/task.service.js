@@ -20,9 +20,8 @@ async function create(taskData) {
             priority,
             storyPoints,
             status,
+            UserStoryId: userStoryId
         })
-
-        await task.setUserStory(userStory)
 
         await task.save()
 
@@ -62,9 +61,8 @@ async function updateTaskStatus(taskId, status, assigneeId) {
 
 async function destroy(taskId) {
     try {
-        await Task.destroy({
-            where: { id: taskId }
-        })
+        const task = await Task.findByPk(taskId)
+        await task.destroy()
     } catch (err) {
         throw new Error(err.message)
     }
