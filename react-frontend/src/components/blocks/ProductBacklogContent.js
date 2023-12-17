@@ -4,6 +4,7 @@ import LoadingEffect from "../effects/LoadingEffect"
 import { useParams } from "react-router"
 import AuthService from "../../services/AuthService"
 import EpicList from "./EpicsList"
+import { socket } from "../../utils/socket"
 
 export default function ProductBacklogContent() {
 
@@ -29,6 +30,28 @@ export default function ProductBacklogContent() {
         }
         fetchProductBacklogEpics()
     }, [id])
+
+    useEffect(() => {
+        socket.on('user story update', (data) => {
+            const updatedEpic = epics.find(epic => epic.id === data.epicId)
+            if (updatedEpic) {
+                updatedEpic.status = data.epicStatus
+
+                setEpics(prevEpics => {
+                    return prevEpics.map(epic => {
+                        if (epic.id === updatedEpic.id) {
+                            return updatedEpic
+                        }
+                        return epic
+                    })
+                })
+            }
+
+            return () => {
+                socket.off('user story update')
+            }
+        })
+    })
 
     const addEpic = (epic) => {
         setEpics([...epics, epic])
