@@ -27,7 +27,7 @@ function Layout() {
 
     return (
         <Fragment className={`${theme}`} >
-            <Header pageTitle = "Tracker" logoSrc={logo} />
+            <Header pageTitle = "TrackedPath" logoSrc={logo} />
             <div className={`app container ${theme}`}>
                 <Outlet/>
             </div>
@@ -52,7 +52,7 @@ root.render(
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout/>}>
-                    <Route index element={<PrivateRoute><App/></PrivateRoute>}/>
+                    <Route index element={<App/>}/>
                     <Route path="/auth" element={<AuthPage/>}/>
                     <Route path="/auth/google" element={<AuthLoadingPage/>}/>
                     <Route path="/users/:id" element={<PrivateRoute><UserPage/></PrivateRoute>}/>
