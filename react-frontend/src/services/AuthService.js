@@ -1,4 +1,5 @@
 import {request} from "../utils/axios_helper"
+import Cookies from 'js-cookie'
 
 class AuthService {
 
@@ -66,30 +67,29 @@ class AuthService {
     }
 
     logout() {
-        window.localStorage.removeItem("auth_token")
-        window.localStorage.removeItem("user_id")
-        window.location.reload()
+        Cookies.remove("auth_token")
+        Cookies.remove("user_id")
     }
 
     getAuthToken() {
-        return window.localStorage.getItem("auth_token")
+        return Cookies.get('auth_token')
     }
 
     setAuthToken(token) {
-        window.localStorage.setItem("auth_token", token)
+        Cookies.set('auth_token', token, { expires: 0.5, secure: false })
         window.location.reload()
     }
 
     getAuthUserId() {
-        return +window.localStorage.getItem("user_id")
+        return +Cookies.get("user_id")
     }
 
     setAuthUserId(id) {
-        window.localStorage.setItem("user_id", id)
+        Cookies.set('user_id', id, { expires: 0.5, secure: false })
     }
 
     isAuthenticated() {
-        return this.getAuthToken() !== null
+        return this.getAuthToken() !== undefined && this.getAuthToken() !== null && this.getAuthToken() !== "null"
     }
 }
 
