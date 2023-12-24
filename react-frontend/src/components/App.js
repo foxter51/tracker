@@ -1,10 +1,10 @@
 import './App.css'
-import AppContent from "./blocks/AppContent"
+import RootContent from "./blocks/RootContent"
 
 export default function App(){
     return (
         <div>
-            <AppContent/>
+            <RootContent/>
         </div>
     )
 }
