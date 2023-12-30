@@ -2,10 +2,9 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const app = express()
-const http = require('http')
-const server = http.createServer(app)
+const PORT = process.env.PORT || 8080
+const server = createHttpServer()
 let io = require('./config/socket')
-io.listen(server)
 
 let corsOptions = {
     origin: 'http://localhost:8081'
@@ -28,7 +27,6 @@ const apiRouter = express.Router()
 app.use('/api', apiRouter)
 
 apiRouter.use(require('./routes/auth.routes'))
-apiRouter.use(require('./routes/messages.routes'))
 apiRouter.use(require('./routes/user.routes'))
 apiRouter.use(require('./routes/teams.routes'))
 apiRouter.use(require('./routes/project.routes'))
@@ -40,6 +38,8 @@ apiRouter.use(require('./routes/sprint.routes'))
 apiRouter.use(require('./routes/sprintBacklog.routes'))
 apiRouter.use(require('./routes/role.routes'))
 apiRouter.use(require('./routes/userStory.routes'))
+
+io.listen(server)
 
 io.on("connection", () => {
     console.log("Client connected!");
@@ -63,7 +63,11 @@ io.on('connection', (socket) => {
     })
 })
 
-const PORT = process.env.PORT || 8080
-server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`)
-})
+function createHttpServer() {
+    const httpServer = app.listen(PORT, () => {
+        console.log(`Server started at http://localhost:${PORT}`)
+    })
+    return httpServer
+}
+
+module.exports = app
