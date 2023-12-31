@@ -1,10 +1,10 @@
 const teamService = require('../services/team.service')
 
 async function create(req, res) {
-    const { name } = req.body
+    const { teamData, userRolesData } = req.body
 
     try {
-        const team = await teamService.create(name)
+        const team = await teamService.create(teamData, userRolesData)
         res.json(team)
     } catch (err) {
         res.status(400).json({ message: err.message })

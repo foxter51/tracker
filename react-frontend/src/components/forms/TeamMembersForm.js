@@ -3,7 +3,7 @@ import { Multiselect } from "multiselect-react-dropdown"
 import UserService from "../../services/UserService"
 import getStyledMultiselect from "../../utils/multiselect_style"
 
-export default function TeamMembersForm({selectedUsers, setSelectedUsers}) {
+export default function TeamMembersForm({ selectedUsers, setSelectedUsers, setSelectedUserRoles }) {
 
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(false)
@@ -28,6 +28,9 @@ export default function TeamMembersForm({selectedUsers, setSelectedUsers}) {
     }
 
     const onUserRemove = (selectedList, removedItem) => {
+        setSelectedUserRoles(prev => {
+            return prev.filter(userRole => userRole.userId !== removedItem.id)
+        })
         setSelectedUsers(prev =>
             prev.filter(user => user.id !== removedItem.id)
         )

@@ -3,14 +3,18 @@ const Team = db.team
 const UserRole = db.userRole
 const User = db.user
 const Role = db.role
+const userRoleService = require('../services/userRole.service')
 
-async function create(teamName) {
+async function create(teamData, userRolesData) {
+    let team
     try {
-        const team = await Team.create({
-            name: teamName
+        team = await Team.create({
+            name: teamData.name
         })
+        await userRoleService.create(team.id, userRolesData)
         return { team }
     } catch (err) {
+        if (team) await team.destroy()
         throw new Error(err.message)
     }
 }
