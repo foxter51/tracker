@@ -5,10 +5,16 @@ const User = db.user
 const Team = db.team
 const Role = db.role
 
-async function create(userRolesData){
+async function create(teamId, userRolesData){
 
     if(userRolesData.length > 8 || userRolesData.length < 3){
         throw new Error('Invalid number of team members')
+    }
+
+    const team = await Team.findByPk(teamId)
+
+    if (!team) {
+        throw new Error('Team not found')
     }
 
     const createdUserRoles = []
@@ -18,17 +24,13 @@ async function create(userRolesData){
         let developersCount = 0
 
         for (const entry of userRolesData) {
-            const { userId, roleId, teamId } = entry
-
+            const { userId, roleId } = entry
+            
             const user = await User.findByPk(userId)
-            const team = await Team.findByPk(teamId)
             const role = await Role.findByPk(roleId)
 
             if(!user){
                 throw new Error('User not found')
-            }
-            if(!team){
-                throw new Error('Team not found')
             }
             if(!role){
                 throw new Error('Role not found')

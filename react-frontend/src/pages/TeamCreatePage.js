@@ -2,72 +2,75 @@ import React, { useState } from "react"
 import TeamForm from "../components/forms/TeamForm"
 import TeamMembersForm from "../components/forms/TeamMembersForm"
 import TeamMembersRolesForm from "../components/forms/TeamMembersRolesForm"
-import TeamPreviewContent from "../components/blocks/TeamPreviewContent"
-import teamService from "../services/TeamService"
+import TeamService from "../services/TeamService"
 import { Navigate } from "react-router"
+import LoadingEffect from "../components/effects/LoadingEffect"
 
 export default function TeamCreatePage() {
 
     const [team, setTeam] = useState(null)
     const [selectedUsers, setSelectedUsers] = useState([])
-    const [showPreview, setShowPreview] = useState(false)
+    const [selectedUserRoles, setSelectedUserRoles] = useState([])
 
     const [cancel, setCancel] = useState(false)
-    const [save, setSave] = useState(false)
+    const [saved, setSaved] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
-    // TODO fix delete team on page close
+    const onSubmitTeam = async () => {
+        try {
+            setLoading(true)
+            const response = await TeamService.createTeam(team, selectedUserRoles)
+            setTeam(response.data.team)
+            setSaved(true)
+        } catch (err) {
+            console.log(err)
+            setError(err.response.data.message)
+        }
+        setLoading(false)
+    }
 
     const onCancel = async () => {
-        try{
-            setCancel(true)
-            await teamService.deleteTeam(team.id)
-        } catch (error) {
-            setError(error.response.data.message)
-        }
+        setCancel(true)
     }
 
-    const onSave = () => {
-        setSave(true)
+    if (cancel) {
+        return <Navigate to="/" />
     }
 
-    if(cancel){
-        return <Navigate to="/"/>
+    if (saved) {
+        return <Navigate to={`/teams/${team.id}`} />
     }
 
-    if(save){
-        return <Navigate to={`/teams/${team.id}`}/>
+    if (loading) {
+        return <LoadingEffect />
     }
 
     return (
         <div>
             <div className="h1">Create Team</div>
 
-            <div>{error}</div>
-
             {!team && <TeamForm setTeam={setTeam}/>}
 
-            {team && <div className="mb-5">Team created: {team.name}</div>}
+            {team && <div>Team created: {team.name}</div>}
 
-            {team && !team.userRoles &&
+            <div className="text-danger mb-5">{error}</div>
+
+            {team &&
                 <TeamMembersForm
                     selectedUsers={selectedUsers}
-                    setSelectedUsers={setSelectedUsers}/>
+                    setSelectedUsers={setSelectedUsers}
+                    setSelectedUserRoles={setSelectedUserRoles}
+                    />
             }
 
-            {selectedUsers.length > 0 && !showPreview &&
+            {selectedUsers.length > 0 &&
                 <TeamMembersRolesForm selectedUsers={selectedUsers}
-                                      team={team}
-                                      setTeam={setTeam}
-                                      setShowPreview={setShowPreview}/>
-            }
-
-            {showPreview && team.userRoles.length > 0 &&
-                <TeamPreviewContent
-                    team={team}
-                    onSave={onSave}
-                    onCancel={onCancel}
-                />
+                                      selectedUserRoles={selectedUserRoles}
+                                      setSelectedUserRoles={setSelectedUserRoles}
+                                      onCancel={onCancel}
+                                      onSubmit={onSubmitTeam}
+                                      />
             }
         </div>
     )
