@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Draggable, Droppable } from "react-beautiful-dnd"
 import TaskModal from "../modals/TaskModal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBars } from "@fortawesome/free-solid-svg-icons/faBars"
+import { faBars, faUser } from "@fortawesome/free-solid-svg-icons"
 import classNames from "classnames"
 import priorityColor from "../../utils/priority_color"
 import UserStoryModal from "../modals/UserStoryModal"
@@ -47,7 +47,7 @@ export default function DragDropColumn({tasks, tasksType, tasksHeader}) {
                                                         <div className="row">
                                                             <div className="col">
                                                                 <div className="d-flex align-items-center">
-                                                                    <FontAwesomeIcon icon={faBars}/>
+                                                                    <FontAwesomeIcon icon={faBars} className="me-1"/>
                                                                     <div className="text-success" onClick={() => showModalUserStory(task.UserStory)}>
                                                                         {` ${task.UserStory.title}`}
                                                                     </div>
@@ -67,9 +67,12 @@ export default function DragDropColumn({tasks, tasksType, tasksHeader}) {
                                                     </div>
                                                     <div className="float-end">
                                                         {task.assignee &&
-                                                            <Link to={`/users/${task.assignee.id}`} className="text-decoration-none">
-                                                                {`${task.assignee.lastname} ${task.assignee.firstname}`}
-                                                            </Link>
+                                                            <div className="d-flex align-items-center">
+                                                                <FontAwesomeIcon icon={faUser} className="me-1"/>
+                                                                <Link to={`/users/${task.assignee.id}`} className="text-decoration-none">
+                                                                    {`${task.assignee.lastname} ${task.assignee.firstname}`}
+                                                                </Link>
+                                                            </div>
                                                         }
                                                     </div>
                                                 </div>
