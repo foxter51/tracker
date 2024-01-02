@@ -1,42 +1,11 @@
-require('dotenv').config()
-const express = require('express')
-const cors = require('cors')
-const app = express()
-const PORT = process.env.PORT || 8080
+const app = require('./app')
+require('./database')
+const routes = require('./routes')
+const { PORT } = require('./config')
 const server = createHttpServer()
-let io = require('./config/socket')
+const io = require('./config/socket')
 
-let corsOptions = {
-    origin: 'http://localhost:8081'
-}
-
-app.use(cors(corsOptions))
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-
-const db = require('./models')
-db.sequelize.sync()
-    .then(() => {
-        console.log('Synced db.')
-    })
-    .catch((err) => {
-        console.log('Failed to sync db: ' + err.message)
-    })
-
-const apiRouter = express.Router()
-app.use('/api', apiRouter)
-
-apiRouter.use(require('./routes/auth.routes'))
-apiRouter.use(require('./routes/user.routes'))
-apiRouter.use(require('./routes/teams.routes'))
-apiRouter.use(require('./routes/project.routes'))
-apiRouter.use(require('./routes/task.routes'))
-apiRouter.use(require('./routes/epic.routes'))
-apiRouter.use(require('./routes/productBacklog.routes'))
-apiRouter.use(require('./routes/sprint.routes'))
-apiRouter.use(require('./routes/sprintBacklog.routes'))
-apiRouter.use(require('./routes/role.routes'))
-apiRouter.use(require('./routes/userStory.routes'))
+app.use('/api', routes)
 
 io.listen(server)
 
@@ -68,5 +37,3 @@ function createHttpServer() {
     })
     return httpServer
 }
-
-module.exports = app
