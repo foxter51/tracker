@@ -24,18 +24,18 @@ export default function Header(props) {
                 </Link>
             </div>
             <ul className="nav nav-pills align-items-center">
-                <li className="nav-item border rounded me-1">
+                <li className="nav-item rounded me-1">
                     <Link to="/" className="nav-link">Home</Link>
                 </li>
                 {isAuthenticated && (
                     <>
-                        <li className="nav-item border rounded me-1">
+                        <li className="nav-item rounded me-1">
                             <Link to={`/users/${AuthService.getAuthUserId()}`} className="nav-link">My Profile</Link>
                         </li>
-                        <li className="nav-item border rounded me-1">
+                        <li className="nav-item rounded me-1">
                             <Link to={`/projects/my/${AuthService.getAuthUserId()}`} className="nav-link">My Projects</Link>
                         </li>
-                        <li className="nav-item border rounded me-1">
+                        <li className="nav-item rounded me-1">
                             <Link to={`/teams/my/${AuthService.getAuthUserId()}`} className="nav-link">My Teams</Link>
                         </li>
                     </>

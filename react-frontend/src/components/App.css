@@ -38,8 +38,13 @@
     -webkit-text-stroke: 1px rgba(0, 0, 0, 0.35);
 }
 
+.nav-link {
+    color: var(--text) !important;
+}
+
 .nav-link.active {
     background-color: var(--nav-link-active-background) !important;
+    border: var(--nav-link-active-border) 1px solid !important;
 }
 
 .nav-link.active:hover {
@@ -91,13 +96,16 @@ html, body {
     --text-light: black;
 
     --list-group-item-border-light: #e6d3d3;
-    --list-group-item-border-dark: #424a4a;
+    --list-group-item-border-dark: #96a7a7;
 
     --card-header-background-dark: #143939;
     --card-header-background-light: var(--bs-light);
 
     --card-body-background-dark: #113232;
     --card-body-background-light: white;
+
+    --card-border-dark: #e6d3d3;
+    --card-border-light: #a3d5d5;
 
     --modal-background-dark: #303838;
     --modal-background-light: white;
@@ -107,6 +115,9 @@ html, body {
 
     --nav-link-active-background-dark: #346b6b;
     --nav-link-active-background-light: #96ccfc;
+    
+    --nav-link-active-border-dark: #f1fdfd;
+    --nav-link-active-border-light: #beb2f9;
 
     --btn-primary-background-dark: #264e4e;
     --btn-primary-background-light: #5bacff;
@@ -119,9 +130,11 @@ html, body {
     --list-group-item-border-color: var(--list-group-item-border-light);
     --card-header-background: var(--card-header-background-light);
     --card-body-background: var(--card-body-background-light);
+    --card-border-color: var(--card-border-light);
     --modal-background: var(--modal-background-light);
     --switcher-icons-color: var(--switcher-icons-color-light);
     --nav-link-active-background: var(--nav-link-active-background-light);
+    --nav-link-active-border: var(--nav-link-active-border-light);
     --btn-primary-background: var(--btn-primary-background-light);
 }
 
@@ -132,9 +145,11 @@ html, body {
     --list-group-item-border-color: var(--list-group-item-border-dark);
     --card-header-background: var(--card-header-background-dark);
     --card-body-background: var(--card-body-background-dark);
+    --card-border-color: var(--card-border-dark);
     --modal-background: var(--modal-background-dark);
     --switcher-icons-color: var(--switcher-icons-color-dark);
     --nav-link-active-background: var(--nav-link-active-background-dark);
+    --nav-link-active-border: var(--nav-link-active-border-dark);
     --btn-primary-background: var(--btn-primary-background-dark);
 }
 
@@ -151,6 +166,7 @@ html, body {
 .card {
     color: var(--text) !important;
     background-color: var(--card-body-background) !important;
+    border-color: var(--card-border-color) !important;
 }
 
 .card-header {
