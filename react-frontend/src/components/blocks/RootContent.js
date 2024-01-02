@@ -3,6 +3,7 @@ import Particles, { initParticlesEngine } from "@tsparticles/react"
 import { loadSlim } from "@tsparticles/slim"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { ThemeContext } from "../effects/Theme"
+import { TypeAnimation } from "react-type-animation"
 
 export default function RootContent () {
     const [init, setInit] = useState(false)
@@ -95,7 +96,12 @@ export default function RootContent () {
                            options={options}
                 />
                 <div className="App-name">
-                    TrackedPath
+                    <TypeAnimation
+                        sequence={['TrackedPath']}
+                        speed={20}
+                        cursor={false}
+                        style={{ userSelect: 'none' }}
+                    />
                 </div>
             </>
         )

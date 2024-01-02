@@ -55,7 +55,11 @@ async function update(patchedUser, userId) {
             throw new Error('User not found')
         }
 
-        return { user: await User.findByPk(userId) }
+        return { user: await User.findByPk(userId, {
+            include: [
+                { model: Team }
+            ]
+        }) }
     } catch (err) {
         throw new Error(err.message)
     }
