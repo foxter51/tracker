@@ -11,7 +11,20 @@ export default function TeamMembersRolesForm({ selectedUsers, selectedUserRoles,
     ]
 
     const onRoleSelect = (selectedList, selectedItem, userId) => {
-        setSelectedUserRoles(prev => [...prev, { userId, roleId: selectedItem.id }])
+        const existingUser = selectedUserRoles.find(ur => ur.userId === userId)
+
+        if (existingUser) {
+            setSelectedUserRoles(prev =>
+                prev.map(ur =>
+                    ur.userId === userId ? { ...ur, roleId: selectedItem.id } : ur
+                )
+            )
+        } else {
+            setSelectedUserRoles(prev => [
+                ...prev,
+                { userId, roleId: selectedItem.id }
+            ])
+        }
     }
 
     const onRoleRemove = (selectedList, removedItem, userId) => {
@@ -34,7 +47,7 @@ export default function TeamMembersRolesForm({ selectedUsers, selectedUserRoles,
                                     selectedValues={selectedUserRoles
                                         .filter(ur => ur.userId === user.id)
                                         .map(ur => roles.find(r => r.id === ur.roleId))}
-                                    singleSelect="true"
+                                    singleSelect={true}
                                     onSelect={(selectedList, selectedItem) =>
                                         onRoleSelect(selectedList, selectedItem, user.id, user.username)
                                     }
