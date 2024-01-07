@@ -49,7 +49,7 @@ async function create(teamId, userRolesData){
             }
 
             if(productOwnersCount > 1 || scrumMastersCount > 1){
-                throw new Error('Product Owner and Scrum Master must be a maximum of 1')
+                throw new Error('Product Owner and Scrum Master each must be a maximum of 1')
             }
 
             const userRole = await UserRole.create({
