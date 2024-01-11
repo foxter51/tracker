@@ -205,7 +205,7 @@ export default function UserPage() {
                     <div className="row">
                         <div className="col">Teams</div>
                         <div className="col-5">
-                            {user.Teams ?
+                            {user.Teams.length > 0 ?
                                 user.Teams.map(team => <div key={team.id}>{team.name}</div>)
                                 :
                                 <div>no teams</div>
