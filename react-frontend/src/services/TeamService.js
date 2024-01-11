@@ -1,12 +1,12 @@
 import { request } from "../utils/axios_helper"
 
 class TeamService {
-    async createTeam(teamData, userRolesData) {
+    async createTeam(teamData, userRolesData, authUserId) {
         try {
             return await request(
                 "POST",
                 "/teams",
-                {teamData, userRolesData}
+                {teamData, userRolesData, authUserId}
             )
         } catch (err) {
             console.log(err)

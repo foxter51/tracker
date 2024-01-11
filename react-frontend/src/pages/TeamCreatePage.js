@@ -5,6 +5,7 @@ import TeamMembersRolesForm from "../components/forms/TeamMembersRolesForm"
 import TeamService from "../services/TeamService"
 import { Navigate } from "react-router"
 import LoadingEffect from "../components/effects/LoadingEffect"
+import authService from "services/AuthService"
 
 export default function TeamCreatePage() {
 
@@ -20,7 +21,7 @@ export default function TeamCreatePage() {
     const onSubmitTeam = async () => {
         try {
             setLoading(true)
-            const response = await TeamService.createTeam(team, selectedUserRoles)
+            const response = await TeamService.createTeam(team, selectedUserRoles, authService.getAuthUserId())
             setTeam(response.data.team)
             setSaved(true)
         } catch (err) {
