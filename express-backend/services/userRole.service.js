@@ -5,7 +5,7 @@ const User = db.user
 const Team = db.team
 const Role = db.role
 
-async function create(teamId, userRolesData){
+async function create(teamId, userRolesData, authUserId) {
 
     if(userRolesData.length > 8 || userRolesData.length < 3){
         throw new Error('Invalid number of team members')
@@ -15,6 +15,10 @@ async function create(teamId, userRolesData){
 
     if (!team) {
         throw new Error('Team not found')
+    }
+
+    if (!userRolesData.some(user => user.userId === authUserId)) {
+        throw new Error('You cannot create a team without yourself as a member')
     }
 
     const createdUserRoles = []
