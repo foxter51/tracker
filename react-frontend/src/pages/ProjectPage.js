@@ -7,6 +7,8 @@ import ProductBacklogContent from "../components/blocks/ProductBacklogContent"
 import SprintsContent from "../components/blocks/SprintsContent"
 import ScrumBoard from "../components/blocks/ScrumBoard"
 import { Link } from "react-router-dom"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
 export default function ProjectPage() {
 
@@ -56,6 +58,15 @@ export default function ProjectPage() {
                             <div className="col">{project.currentSprint.name}</div>
                         </div>
                     }
+                    <div className="row">
+                        <div className="col">Github Repository</div>
+                        <div className="col">
+                            <a className="text-decoration-none d-flex align-items-center" href={project.githubLink}>
+                                <FontAwesomeIcon icon={faGithub} className="me-1"/>
+                                {project.githubRepoName}
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <ul className="nav nav-tabs">
