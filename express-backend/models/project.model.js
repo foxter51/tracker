@@ -10,5 +10,13 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        githubLink: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        githubRepoName: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
     })
 }

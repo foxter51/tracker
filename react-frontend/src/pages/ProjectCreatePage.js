@@ -15,7 +15,8 @@ export default function ProjectCreatePage() {
             const response = await ProjectService.createProject({
                 name: project.name,
                 description: project.description,
-                teamId: project.teamId
+                teamId: project.teamId,
+                githubLink: project.githubLink
             })
             setProject(response.data.project)
             setSave(true)
@@ -42,6 +43,10 @@ export default function ProjectCreatePage() {
                 <div className="form-outline mb-5">
                     <label className="form-label" htmlFor="description">Project description</label>
                     <textarea id="description" name="projectDescription" className="form-control" maxLength="512" required onChange={(e) => setProject({ ...project, description: e.target.value })}/>
+                </div>
+                <div className="form-outline mb-5">
+                    <label className="form-label" htmlFor="github">Github Repository Link</label>
+                    <input type="url" id="github" name="githubLink" className="form-control" maxLength="2048" required onChange={(e) => setProject({ ...project, githubLink: e.target.value })}/>
                 </div>
                 <ProjectTeamForm project={project} setProject={setProject} />
                 <button className="btn btn-primary" >Save</button>

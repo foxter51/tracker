@@ -1,13 +1,14 @@
 const projectService = require('../services/project.service')
 
 async function create(req, res) {
-    const { name, description, teamId } = req.body
+    const { name, description, teamId, githubLink } = req.body
 
     try {
         const projectData = {
             name,
             description,
-            teamId
+            teamId,
+            githubLink
         }
         const project = await projectService.create(projectData)
         res.json(project)

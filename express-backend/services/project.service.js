@@ -8,7 +8,7 @@ const User = db.user
 const Sprint = db.sprint
 
 async function create(projectData) {
-    const { name, description, teamId } = projectData
+    const { name, description, teamId, githubLink } = projectData
 
     try{
         const team = await Team.findByPk(teamId, {
@@ -21,6 +21,7 @@ async function create(projectData) {
                 ]
             }
         })
+        
         const owner = team.userRoles[0].User
 
         if(!team){
@@ -31,10 +32,24 @@ async function create(projectData) {
             throw new Error('Product Owner not found')
         }
 
+        let githubRepoName
+
+        if(!githubLink) {
+            throw new Error('Github link not found')
+        } else {
+            const { repoName } = await getGithubRepoNameByLink(githubLink)
+            if (!repoName) {
+                throw new Error('Invalid Github Link')
+            } else githubRepoName = repoName
+        }
+
         const project = await Project.create({
             name,
             description,
+            githubLink,
+            githubRepoName
         })
+
         const productBacklog = await ProductBacklog.create({
             name: 'default name',
             description: 'default description',
@@ -100,6 +115,15 @@ async function findAllByUser(userId) {
         })
 
         return { projects }
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+async function getGithubRepoNameByLink(githubLink) {
+    try {
+        const repoName = githubLink.split('/')[4].replace('.git', '')
+        return { repoName }
     } catch (err) {
         throw new Error(err.message)
     }
