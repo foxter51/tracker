@@ -7,5 +7,6 @@ router.post('/teams', authenticateToken, teamController.create)
 router.get('/teams', authenticateToken, teamController.findAll)
 router.get('/teams/:id', authenticateToken, teamController.findOne)
 router.delete('/teams/:id', authenticateToken, teamController.destroy)
+router.delete('/teams/:teamId/users/:userId', authenticateToken, teamController.removeUserFromTeam)
 
 module.exports = router

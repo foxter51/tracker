@@ -41,9 +41,20 @@ async function destroy(req, res) {
     }
 }
 
+async function removeUserFromTeam(req, res) {
+    const { teamId, userId } = req.params
+
+    try{
+        await teamService.removeUserFromTeam(teamId, userId)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
     create,
     findAll,
     findOne,
-    destroy
+    destroy,
+    removeUserFromTeam
 }

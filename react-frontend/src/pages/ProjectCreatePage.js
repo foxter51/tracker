@@ -34,7 +34,7 @@ export default function ProjectCreatePage() {
             <div>
                 <div className="h1">Create Project</div>
             </div>
-            <div>{error}</div>
+            <div className="text-danger">{error}</div>
             <form onSubmit={onSubmitProject}>
                 <div className="form-outline mb-5">
                     <label className="form-label" htmlFor="name">Project name</label>

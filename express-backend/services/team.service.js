@@ -51,9 +51,34 @@ async function destroy(teamId) {
     }
 }
 
+async function removeUserFromTeam(teamId, userId) {
+    try{
+        await UserRole.destroy({
+            where: { TeamId: teamId, UserId: userId }
+        })
+
+        const team = await Team.findByPk(teamId, {
+            include: [
+                { model: UserRole, as: 'userRoles' }
+            ]
+        })
+        
+        const teamUserRoles = team.userRoles
+
+        if(teamUserRoles.length === 0){
+            await Team.destroy({
+                where: { id: teamId }
+            })
+        }
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
 module.exports = {
     create,
     findAll,
     findOne,
-    destroy
+    destroy,
+    removeUserFromTeam
 }

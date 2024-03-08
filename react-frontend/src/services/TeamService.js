@@ -51,6 +51,18 @@ class TeamService {
             throw err
         }
     }
+
+    async removeUserFromTeam(teamId, userId) {
+        try {
+            return await request(
+                "DELETE",
+                `/teams/${teamId}/users/${userId}`,
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
 }
 
 const teamService = new TeamService()
