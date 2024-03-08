@@ -22,7 +22,7 @@ async function create(projectData) {
             }
         })
         
-        const owner = team.userRoles[0].User
+        const owner = team.userRoles[0]?.User
 
         if(!team){
             throw new Error('Team not found')
