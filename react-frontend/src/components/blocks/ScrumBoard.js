@@ -194,7 +194,7 @@ export default function ScrumBoard({ project }) {
                         filterTasksByAssignee={filterTasksByAssignee}
                         selectedAssigneeId={assigneeId}
                     />
-                    {error}
+                    <div className="text-danger">{ error }</div>
                     {!project.currentSprint &&
                         <button className="btn btn-success float-end" onClick={() => onStartSprints()}>
                             Start

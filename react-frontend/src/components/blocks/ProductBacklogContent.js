@@ -68,7 +68,7 @@ export default function ProductBacklogContent() {
     return (
         <div className="container p-2">
             <div className="card">
-                {error}
+                <div className="text-danger">{ error }</div>
                 <EpicList
                     productBacklogId={productBacklogId}
                     epics={epics}

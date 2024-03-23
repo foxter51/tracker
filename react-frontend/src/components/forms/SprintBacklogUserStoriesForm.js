@@ -66,9 +66,8 @@ export default function SprintBacklogUserStoriesForm({sprintBacklogId, addUserSt
         <div className="mb-3">
             <div>
                 <div className="h1">Add User Stories</div>
-                {error}
             </div>
-            <div>{error}</div>
+            <div className="text-danger">{ error }</div>
             <form onSubmit={onSubmitUserStories}>
                 <div className="mb-3">
                     <Multiselect

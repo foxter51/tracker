@@ -22,7 +22,7 @@ export default function RegisterForm() {
 
     return (
         <form onSubmit={onSubmitRegister}>
-            <div>{error}</div>
+            <div className="text-danger">{ error }</div>
             <div className="form-outline mb-2">
                 <label className="form-label" htmlFor="firstName">Firstname</label>
                 <input type="text" id="firstName" name="firstname" className="form-control" maxLength="32" required onChange={(e) => setUser({ ...user, firstname: e.target.value })}/>

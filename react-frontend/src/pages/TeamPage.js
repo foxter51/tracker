@@ -64,7 +64,7 @@ export default function TeamPage() {
 
     return (
         <div>
-            <div>{error}</div>
+            <div className="text-danger">{ error }</div>
             <div className="d-flex align-items-center">
                 <div className="h2 me-2">Team: { team.name }</div>
                 <div>
@@ -87,7 +87,7 @@ export default function TeamPage() {
                     <div className="card mb-1">
                         <div className="card-body">
                             <div className="row">
-                                <div className="col">{teamMember.User.username}</div>
+                                <Link to={`/users/${teamMember.User.id}`} className="col text-decoration-none">{teamMember.User.username}</Link>
                                 <div className="col">{teamMember.Role.scrumRole}</div>
                             </div>
                         </div>

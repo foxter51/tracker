@@ -57,7 +57,7 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
             <div>
                 <div className="h1">Create Epic</div>
             </div>
-            <div>{error}</div>
+            <div className="text-danger">{ error }</div>
             <form onSubmit={onSubmitEpic}>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="epicTitle">Epic Title</label>

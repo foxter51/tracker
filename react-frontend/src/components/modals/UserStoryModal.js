@@ -45,7 +45,7 @@ export default function UserStoryModal({userStory, show, onClose}) {
                 <Modal.Title>User Story: {userStory.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {error}
+                <div className="text-danger">{ error }</div>
                 <div className="row">
                     <div className="col">
                         <div className="h6">Description</div>

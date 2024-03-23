@@ -57,7 +57,7 @@ export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
             <div>
                 <div className="h1">Create Task</div>
             </div>
-            <div>{error}</div>
+            <div className="text-danger">{ error }</div>
             <form onSubmit={onSubmitTask}>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="taskTitle">Task Title</label>

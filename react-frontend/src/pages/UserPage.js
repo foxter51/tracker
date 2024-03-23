@@ -56,7 +56,8 @@ export default function UserPage() {
         }))
     }
 
-    const submitUpdate = async () => {
+    const submitUpdate = async (e) => {
+        e.preventDefault()
         try {
             if (!equal(originalUser, user)){
                 const response = await userService.updateUser(user)
@@ -96,7 +97,7 @@ export default function UserPage() {
         <div className="container d-flex justify-content-center">
             <div style={{marginRight: "auto"}}>
                 <div className="h1">Profile</div>
-                <div>{error}</div>
+                <div className="text-danger">{ error }</div>
             </div>
             <div className="card col-8">
                 <div className="card-header">
@@ -144,6 +145,8 @@ export default function UserPage() {
                         }
                     </div>
 
+                    <hr/>
+
                     <div className="row align-items-center">
                         <div className="col">Username</div>
                         <div className="col-6">{user.username}</div>
@@ -162,6 +165,8 @@ export default function UserPage() {
                             />
                         }
                     </div>
+
+                    <hr/>
 
                     <div className="row align-items-center">
                         <div className="col">E-mail</div>
@@ -182,13 +187,15 @@ export default function UserPage() {
                         }
                     </div>
 
+                    <hr/>
+
                     {user.password && isSelf &&
                         <div className="row d-flex justify-content-between align-items-center">
                             <div className="col-2">Password</div>
 
                             {editingEnabled &&
                                 <EditableField
-                                    value={user.password}
+                                    value=""
                                     field="password"
                                     type="password"
                                     maxLength="64"
@@ -202,21 +209,30 @@ export default function UserPage() {
                         </div>
                     }
 
+                    <hr/>
+
                     <div className="row">
                         <div className="col">Teams</div>
-                        <div className="col-5">
+                        <div className="col-6">
                             {user.Teams.length > 0 ?
-                                user.Teams.map(team => <div key={team.id}>{team.name}</div>)
+                                user.Teams.map(team => 
+                                    <div>
+                                        <Link to={ `/teams/${team.id}` } key={ team.id } className="text-primary text-decoration-none">
+                                            { team.name }
+                                        </Link>
+                                    </div>
+                                )
                                 :
                                 <div>no teams</div>
                             }
                         </div>
-                        {isSelf && <div className="col-1"/>}
                     </div>
+
+                    <hr/>
 
                     {isSelf &&
                         <Link to=""
-                              className="text-danger text-decoration-none"
+                              className="text-danger text-decoration-none float-end"
                               onClick={() => {
                                   setUserToRemove(user.id)
                                   setShowConfirmModal(true)

@@ -17,7 +17,7 @@ export default function LoginForm() {
 
     return (
         <form onSubmit={onSubmitLogin}>
-            <div>{error}</div>
+            <div className="text-danger">{ error }</div>
             <div className="form-outline mb-2">
                 <label className="form-label" htmlFor="loginName">Username</label>
                 <input type="text" id="loginName" name="username" className="form-control" maxLength="32" required onChange={(e) => setUsername(e.target.value)}/>

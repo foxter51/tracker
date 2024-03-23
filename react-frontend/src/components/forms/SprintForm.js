@@ -34,7 +34,7 @@ export default function SprintForm({projectId, setShowSprintForm, addSprint}) {
             <div>
                 <div className="h1">Create Sprint</div>
             </div>
-            <div>{error}</div>
+            <div className="text-danger">{ error }</div>
             <form onSubmit={onSubmitSprint}>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="sprintTitle">Sprint Title</label>
@@ -46,7 +46,7 @@ export default function SprintForm({projectId, setShowSprintForm, addSprint}) {
                 </div>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="sprintDuration">Sprint Duration (weeks)</label>
-                    <input type="number" id="sprintDuration" name="sprintDuration" className="form-control" required onChange={(e) => setSprint({...sprint, duration: e.target.value })}/>
+                    <input type="number" id="sprintDuration" name="sprintDuration" className="form-control" min={1} required onChange={(e) => setSprint({...sprint, duration: e.target.value })}/>
                 </div>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="sprintGoal">Sprint Goal</label>

@@ -1,4 +1,5 @@
 const db = require('../models')
+const { checkDomain } = require('./auth.service')
 const User = db.user
 
 const Team = db.team
@@ -41,6 +42,18 @@ async function update(patchedUser, userId) {
         if(patchedUser.username !== oldUser.username && await User.findOne({ where: { username: patchedUser.username } })){
             throw new Error('Username is already taken')
         }
+
+        let validDomainName
+
+        await checkDomain(patchedUser.email.split('@')[1]).then(() => {
+            validDomainName = true
+        }).catch(() => {
+            validDomainName = false
+        }).finally(() => {
+            if (!validDomainName) {
+                throw new Error('Invalid email domain')
+            }
+        })
 
         if(patchedUser.email !== oldUser.email && await User.findOne({ where: { email: patchedUser.email } })){
             throw new Error('Email is already taken')

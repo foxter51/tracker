@@ -59,7 +59,7 @@ export default function EpicUserStoryForm({epicId, setShowUserStoryForm, addUser
             <div>
                 <div className="h1">Create User Story</div>
             </div>
-            <div>{error}</div>
+            <div className="text-danger">{ error }</div>
             <form onSubmit={onSubmitUserStory}>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="userStoryTitle">User Story Title</label>

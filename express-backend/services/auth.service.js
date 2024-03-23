@@ -141,5 +141,6 @@ module.exports = {
     registerUser,
     loginUser,
     doRequestGoogleUrl,
-    approveGoogleLogin
+    approveGoogleLogin,
+    checkDomain
 }
