@@ -33,7 +33,7 @@ export default function UserTeamsPage() {
         <div className="container d-flex justify-content-center">
             <div style={{marginRight: "auto"}}>
                 <div className="h1">My Teams</div>
-                <div>{error}</div>
+                <div className="text-danger">{ error }</div>
             </div>
             <UserTeamsList teams={teams}/>
         </div>

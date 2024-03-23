@@ -40,7 +40,7 @@ export default function SprintsContent() {
     return (
         <div className="container p-2">
             <div className="card">
-                {error}
+                <div className="text-danger">{ error }</div>
                 <SprintsList
                     projectId={id}
                     sprints={sprints}

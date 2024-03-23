@@ -23,6 +23,18 @@ async function create(userStoryData) {
             throw new Error('Epic not found')
         }
 
+        if (!priority) {
+            throw new Error('Priority not found')
+        }
+
+        if (!storyPoints) {
+            throw new Error('Story Points not found')
+        }
+
+        if (!status) {
+            throw new Error('Status not found')
+        }
+
         const userStory = await UserStory.create({
             title,
             description,

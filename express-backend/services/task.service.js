@@ -14,6 +14,18 @@ async function create(taskData) {
             throw new Error('User Story not found')
         }
 
+        if (!priority) {
+            throw new Error('Priority not found')
+        }
+
+        if (!storyPoints) {
+            throw new Error('Story Points not found')
+        }
+
+        if (!status) {
+            throw new Error('Status not found')
+        }
+
         const task = await Task.create({
             title,
             description,

@@ -32,7 +32,7 @@ export default function UserProjectsPage() {
         <div className="container d-flex justify-content-center">
             <div style={{marginRight: "auto"}}>
                 <div className="h1">My Projects</div>
-                <div>{error}</div>
+                <div className="text-danger">{ error }</div>
             </div>
             <UserProjectsList projects={projects}/>
         </div>

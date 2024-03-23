@@ -38,7 +38,7 @@ export default function ProjectPage() {
 
     return (
         <div>
-            <div>{error}</div>
+            <div className="text-danger">{ error }</div>
             <div className="h1">Project {project.name}</div>
             <div className="card mb-2">
                 <div className="card-body">

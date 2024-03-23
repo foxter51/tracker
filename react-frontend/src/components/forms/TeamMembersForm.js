@@ -39,7 +39,7 @@ export default function TeamMembersForm({ selectedUsers, setSelectedUsers, setSe
     return (
         <div className="mb-5">
             <div className="h2">Add Team Members</div>
-            <div>{error}</div>
+            <div className="text-danger">{ error }</div>
             <Multiselect
                 options={users}
                 selectedValues={selectedUsers}

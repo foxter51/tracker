@@ -21,12 +21,12 @@ async function create(projectData) {
                 ]
             }
         })
-        
-        const owner = team.userRoles[0]?.User
 
         if(!team){
             throw new Error('Team not found')
         }
+
+        const owner = team.userRoles[0]?.User
 
         if(!owner){
             throw new Error('Product Owner not found')
