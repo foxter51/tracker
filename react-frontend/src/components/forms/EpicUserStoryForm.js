@@ -63,11 +63,11 @@ export default function EpicUserStoryForm({epicId, setShowUserStoryForm, addUser
             <form onSubmit={onSubmitUserStory}>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="userStoryTitle">User Story Title</label>
-                    <input type="text" id="userStoryTitle" name="userStoryTitle" className="form-control" maxLength="32" required onChange={(e) => setUserStory({...userStory, title: e.target.value })}/>
+                    <input type="text" id="userStoryTitle" name="userStoryTitle" className="form-control" minLength="3" maxLength="32" required onChange={(e) => setUserStory({...userStory, title: e.target.value })}/>
                 </div>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="userStoryDescription">User Story Description</label>
-                    <input type="text" id="userStoryDescription" name="userStoryDescription" className="form-control" maxLength="32" required onChange={(e) => setUserStory({...userStory, description: e.target.value })}/>
+                    <textarea id="userStoryDescription" name="userStoryDescription" className="form-control" minLength="3" maxLength="512" required onChange={(e) => setUserStory({...userStory, description: e.target.value })}/>
                 </div>
                 <div className="mb-3 row">
                     <div className="col">

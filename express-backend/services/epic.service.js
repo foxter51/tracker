@@ -30,11 +30,8 @@ async function create(epicData) {
             priority,
             storyPoints,
             status,
+            ProductBacklogId: productBacklog.id
         })
-
-        await epic.setProductBacklog(productBacklog)
-
-        await epic.save()
 
         return { epic }
     } catch (err) {

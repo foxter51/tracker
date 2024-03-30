@@ -1,5 +1,6 @@
 const db = require('../models')
 const Project = db.project
+
 const Team = db.team
 const ProductBacklog = db.productBacklog
 const UserRole = db.userRole
@@ -12,14 +13,18 @@ async function create(projectData) {
 
     try{
         const team = await Team.findByPk(teamId, {
-            include: {
-                model: UserRole,
-                as: 'userRoles',
-                include: [
-                    {model: Role, where: { scrumRole: 'Product Owner' }},
-                    {model: User}
-                ]
-            }
+            include: [
+                {
+                    model: UserRole, as: 'userRoles',
+                    include: [
+                        {
+                            model: Role,
+                            where: { scrumRole: 'Product Owner' }
+                        },
+                        { model: User }
+                    ]
+                }
+            ]
         })
 
         if(!team){
@@ -72,16 +77,17 @@ async function findOne(projectId) {
             include: [
                 {
                     model: Team,
-                    include: {
-                        model: UserRole, as: 'userRoles',
-                        include: [
-                            { model: User, Role },
-                        ]
-                    },
+                    include: [
+                        {
+                            model: UserRole, as: 'userRoles',
+                            include: [
+                                { model: User },
+                                { model: Role }
+                            ]
+                        }
+                    ],
                 },
-                {
-                    model: Sprint, as: 'currentSprint',
-                }
+                { model: Sprint, as: 'currentSprint' }
             ]
         })
 
@@ -101,16 +107,16 @@ async function findAllByUser(userId) {
             include: {
                 model: Team,
                 required: true,
-                include: {
-                    model: UserRole,
-                    as: 'userRoles',
-                    required: true,
-                    include: [
-                        { model: User,
+                include: [
+                    {
+                        model: UserRole, as: 'userRoles',
+                        required: true,
+                        include: {
+                            model: User,
                             where: { id: userId }
                         }
-                    ]
-                }
+                    }
+                ]
             }
         })
 

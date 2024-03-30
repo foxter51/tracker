@@ -45,8 +45,6 @@ async function create(userStoryData) {
             ownerId
         })
 
-        await userStory.save()
-
         return { userStory }
     } catch (err) {
         throw new Error(err.message)
@@ -64,8 +62,7 @@ async function findAllByEpic(epicId) {
         const userStories = await UserStory.findAll({
             where: { EpicId: epicId },
             include: {
-                model: User,
-                as: 'owner'
+                model: User, as: 'owner'
             }
         })
         return { userStories }
@@ -80,9 +77,9 @@ async function findUnassignedUserStories(projectId) {
             where: { ProjectId: projectId },
             include: {
                 model: SprintBacklog,
-                include: {
-                    model: UserStory, as: 'userStories'
-                }
+                include: [
+                    { model: UserStory, as: 'userStories' }
+                ]
             }
         })
         
@@ -94,15 +91,19 @@ async function findUnassignedUserStories(projectId) {
 
         const productBacklogEpics = await ProductBacklog.findOne({
             where: { ProjectId: projectId },
-            include: {
-                model: Epic, as: 'epics',
-                include: {
-                    model: UserStory, as: 'userStories',
-                    include: {
-                        model: User, as: 'owner'
-                    }
+            include: [
+                {
+                    model: Epic, as: 'epics',
+                    include: [
+                        {
+                            model: UserStory, as: 'userStories',
+                            include: {
+                                model: User, as: 'owner'
+                            }
+                        }
+                    ]
                 }
-            }
+            ]
         })
         if (!productBacklogEpics) throw new Error('Product backlog not found')
 
@@ -120,8 +121,9 @@ async function findUnassignedUserStories(projectId) {
 
 async function destroy(userStoryId) {
     try{
-        const userStory = await UserStory.findByPk(userStoryId)
-        await userStory.destroy()
+        await UserStory.destroy({
+            where: { id: userStoryId }
+        })
     } catch (err) {
         throw new Error(err.message)
     }

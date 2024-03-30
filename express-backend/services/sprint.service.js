@@ -52,14 +52,14 @@ async function setNextSprint(projectId) {
         }
 
         const sortedSprints = project.sprints.sort((a, b) => {
-            return b.startDate - a.startDate
+            return a.startDate - b.startDate
         })
 
         let nextSprint
         let nextSprintIndex = -2
 
         if(project.currentSprint){  // if there is a current sprint
-            nextSprintIndex = sortedSprints.findIndex(sprint => sprint.startDate < project.currentSprint.startDate)
+            nextSprintIndex = sortedSprints.findIndex(sprint => sprint.startDate > project.currentSprint.startDate)
             if (nextSprintIndex === -1) nextSprint = null  // if there is no next sprint
             else nextSprint = sortedSprints[nextSprintIndex]  // if there is a next sprint
         } else nextSprint = sortedSprints[0]  // if the sprint is the first one
@@ -111,17 +111,21 @@ async function findAllSprintTasksByStatus(sprintId, assigneeId, status) {
         const sprint = await Sprint.findByPk(sprintId, {
             include: {
                 model: SprintBacklog,
-                include: [{
-                    model: UserStory, as: 'userStories',
-                    include: [{
-                        model: Task, as: 'tasks',
-                        where: { status, ...where },
-                        include: {
-                            model: User, as: 'assignee',
-                            attributes: ['id', 'lastname', 'firstname']
-                        }
-                    }]
-                }]
+                include: [
+                    {
+                        model: UserStory, as: 'userStories',
+                        include: [
+                                {
+                                    model: Task, as: 'tasks',
+                                    where: { status, ...where },
+                                    include: {
+                                        model: User, as: 'assignee',
+                                        attributes: ['id', 'lastname', 'firstname']
+                                    }
+                                }
+                        ]
+                    }
+                ]
             }
         })
 

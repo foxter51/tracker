@@ -4,8 +4,6 @@ const ProductBacklog = db.productBacklog
 const User = db.user
 const Project = db.project
 const Epic = db.epic
-const UserStory = db.userStory
-const Task = db.task
 
 async function create(productBacklogData) {
     const { name, description, ownerId, projectId } = productBacklogData
@@ -26,12 +24,9 @@ async function create(productBacklogData) {
         const productBacklog = await ProductBacklog.create({
             name,
             description,
+            ProjectId: projectId,
+            ownerId
         })
-
-        await productBacklog.setOwner(owner)
-        await productBacklog.setProject(project)
-
-        await productBacklog.save()
 
         return { productBacklog }
     } catch (err) {
@@ -42,10 +37,10 @@ async function create(productBacklogData) {
 async function findOne(projectId) {
     try{
         const productBacklog = await ProductBacklog.findOne({
-            where: {ProjectId: projectId},
-            include: {
-                model: Epic, as: 'epics',
-            }
+            where: { ProjectId: projectId },
+            include: [
+                { model: Epic, as: 'epics' }
+            ]
         })
         return { productBacklog }
     } catch (err) {

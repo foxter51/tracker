@@ -61,11 +61,11 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
             <form onSubmit={onSubmitEpic}>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="epicTitle">Epic Title</label>
-                    <input type="text" id="epicTitle" name="epicTitle" className="form-control" maxLength="32" required onChange={(e) => setEpic({...epic, title: e.target.value })}/>
+                    <input type="text" id="epicTitle" name="epicTitle" className="form-control" minLength="3" maxLength="32" required onChange={(e) => setEpic({...epic, title: e.target.value })}/>
                 </div>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="epicDescription">Epic Description</label>
-                    <input type="text" id="epicDescription" name="epicDescription" className="form-control" maxLength="32" required onChange={(e) => setEpic({...epic, description: e.target.value })}/>
+                    <textarea id="epicDescription" name="epicDescription" className="form-control" minLength="3" maxLength="512" required onChange={(e) => setEpic({...epic, description: e.target.value })}/>
                 </div>
                 <div className="mb-3 row">
                     <div className="col">

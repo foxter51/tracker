@@ -5,6 +5,9 @@ module.exports = (sequelize) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                len: [3, 32]
+            }
         },
         startDate: {
             type: DataTypes.DATE,
@@ -17,6 +20,9 @@ module.exports = (sequelize) => {
         goal: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                len: [3, 32]
+            }
         },
     })
 }

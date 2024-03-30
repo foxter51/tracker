@@ -32,7 +32,14 @@ async function findOne(teamId) {
     try {
         const team = await Team.findByPk(teamId, {
             include: [
-                { model: UserRole, as: 'userRoles', include: [User, Role] }
+                {
+                    model: UserRole,
+                    as: 'userRoles',
+                    include: [
+                        { model: User },
+                        { model: Role }
+                    ] 
+                }
             ]
         })
         return { team }

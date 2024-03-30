@@ -190,26 +190,27 @@ export default function UserPage() {
                     <hr/>
 
                     {user.password && isSelf &&
-                        <div className="row d-flex justify-content-between align-items-center">
-                            <div className="col-2">Password</div>
+                        <>
+                            <div className="row d-flex justify-content-between align-items-center">
+                                <div className="col-2">Password</div>
 
-                            {editingEnabled &&
-                                <EditableField
-                                    value=""
-                                    field="password"
-                                    type="password"
-                                    maxLength="64"
-                                    editing={editing}
-                                    onEdit={handleEdit}
-                                    onChange={(e) => setUser({ ...user, password: e.target.value })}
-                                    onSubmit={submitUpdate}
-                                    isSelf={isSelf}
-                                />
-                            }
-                        </div>
+                                { editingEnabled &&
+                                    <EditableField
+                                        value=""
+                                        field="password"
+                                        type="password"
+                                        maxLength="64"
+                                        editing={ editing }
+                                        onEdit={ handleEdit }
+                                        onChange={ (e) => setUser({ ...user, password: e.target.value }) }
+                                        onSubmit={ submitUpdate }
+                                        isSelf={ isSelf }
+                                    />
+                                }
+                            </div>
+                            <hr/>
+                        </>
                     }
-
-                    <hr/>
 
                     <div className="row">
                         <div className="col">Teams</div>
@@ -228,18 +229,19 @@ export default function UserPage() {
                         </div>
                     </div>
 
-                    <hr/>
-
                     {isSelf &&
-                        <Link to=""
-                              className="text-danger text-decoration-none float-end"
-                              onClick={() => {
-                                  setUserToRemove(user.id)
-                                  setShowConfirmModal(true)
-                              }}
-                        >
-                            Delete account <FontAwesomeIcon icon={faTrash}/>
-                        </Link>
+                        <>
+                            <hr/>
+                            <Link to=""
+                                className="text-danger text-decoration-none float-end"
+                                onClick={ () => {
+                                    setUserToRemove(user.id)
+                                    setShowConfirmModal(true)
+                                } }
+                            >
+                                Delete account <FontAwesomeIcon icon={ faTrash } />
+                            </Link>
+                        </>
                     }
 
                     {showConfirmModal &&
