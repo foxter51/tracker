@@ -5,10 +5,16 @@ module.exports = (sequelize) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                len: [3, 32]
+            }
         },
         description: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false,
+            validate: {
+                len: [3, 512]
+            }
         },
         githubLink: {
             type: DataTypes.STRING,

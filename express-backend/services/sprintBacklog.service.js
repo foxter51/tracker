@@ -16,11 +16,8 @@ async function create(sprintBacklogData) {
 
         const sprintBacklog = await SprintBacklog.create({
             totalStoryPoints,
+            SprintId: sprintId
         })
-
-        await sprintBacklog.setSprint(sprint)
-
-        await sprintBacklog.save()
 
         return { sprintBacklog }
     } catch (err) {

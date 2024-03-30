@@ -35,8 +35,6 @@ async function create(taskData) {
             UserStoryId: userStoryId
         })
 
-        await task.save()
-
         return { task }
     } catch (err) {
         throw new Error(err.message)
@@ -48,8 +46,7 @@ async function findAll(userStoryId) {
         const tasks = await Task.findAll({
             where: { UserStoryId: userStoryId },
             include: {
-                model: User,
-                as: 'assignee'
+                model: User, as: 'assignee'
             }
         })
         return { tasks }
@@ -62,7 +59,8 @@ async function updateTaskStatus(taskId, status, assigneeId) {
     try {
         const task = await Task.findByPk(taskId)
 
-        const updatedTask = status !== "TO DO" ? await task.update({ status, assigneeId, returning: true }) :
+        const updatedTask = status !== "TO DO" ?
+            await task.update({ status, assigneeId, returning: true }) :
             await task.update({ status, assigneeId: null, returning: true })
 
         return {task: updatedTask}
@@ -73,8 +71,9 @@ async function updateTaskStatus(taskId, status, assigneeId) {
 
 async function destroy(taskId) {
     try {
-        const task = await Task.findByPk(taskId)
-        await task.destroy()
+        await Task.destroy({
+            where: { id: taskId }
+        })
     } catch (err) {
         throw new Error(err.message)
     }

@@ -38,11 +38,11 @@ export default function ProjectCreatePage() {
             <form onSubmit={onSubmitProject}>
                 <div className="form-outline mb-5">
                     <label className="form-label" htmlFor="name">Project name</label>
-                    <input type="text" id="name" name="projectName" className="form-control" maxLength="32" required onChange={(e) => setProject({ ...project, name: e.target.value })}/>
+                    <input type="text" id="name" name="projectName" className="form-control" minLength="3" maxLength="32" required onChange={(e) => setProject({ ...project, name: e.target.value })}/>
                 </div>
                 <div className="form-outline mb-5">
                     <label className="form-label" htmlFor="description">Project description</label>
-                    <textarea id="description" name="projectDescription" className="form-control" maxLength="512" required onChange={(e) => setProject({ ...project, description: e.target.value })}/>
+                    <textarea id="description" name="projectDescription" className="form-control" minLength="3" maxLength="512" required onChange={(e) => setProject({ ...project, description: e.target.value })}/>
                 </div>
                 <div className="form-outline mb-5">
                     <label className="form-label" htmlFor="github">Github Repository Link</label>

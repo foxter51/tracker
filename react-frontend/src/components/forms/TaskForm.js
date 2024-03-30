@@ -61,11 +61,11 @@ export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
             <form onSubmit={onSubmitTask}>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="taskTitle">Task Title</label>
-                    <input type="text" id="taskTitle" name="taskTitle" className="form-control" maxLength="32" required onChange={(e) => setTask({...task, title: e.target.value })}/>
+                    <input type="text" id="taskTitle" name="taskTitle" className="form-control" minLength="3" maxLength="32" required onChange={(e) => setTask({...task, title: e.target.value })}/>
                 </div>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="taskDescription">Task Description</label>
-                    <input type="text" id="taskDescription" name="taskDescription" className="form-control" maxLength="32" required onChange={(e) => setTask({...task, description: e.target.value })}/>
+                    <textarea id="taskDescription" name="taskDescription" className="form-control" minLength="3" maxLength="512" required onChange={(e) => setTask({...task, description: e.target.value })}/>
                 </div>
                 <div className="mb-3 row">
                     <div className="col">

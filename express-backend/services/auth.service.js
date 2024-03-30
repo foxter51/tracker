@@ -1,9 +1,9 @@
 const db = require('../models')
 const User = db.user
 const { generateToken } = require('../config/jwt.config')
-const dns = require('dns')
 const { OAuth2Client } = require("google-auth-library")
 const { Op } = require("sequelize")
+const dns = require('dns')
 
 async function registerUser(userData) {
     const { username, email, password, lastname, firstname } = userData
@@ -11,9 +11,15 @@ async function registerUser(userData) {
     try {
         let user
 
-        user = await User.findOne({ where: { username: username } })
+        user = await User.findOne({ where: { username } })
         if (user) {
             throw new Error('Username is already taken')
+        }
+
+        user = await User.findOne({ where: { email } })
+
+        if (user) {
+            throw new Error('Email is already taken')
         }
 
         let validDomainName
@@ -27,12 +33,6 @@ async function registerUser(userData) {
                 throw new Error('Invalid email domain')
             }
         })
-
-        user = await User.findOne({ where: { email: email } })
-
-        if (user) {
-            throw new Error('Email is already taken')
-        }
 
         user = await User.create({
             username,
@@ -50,9 +50,9 @@ async function registerUser(userData) {
 
 async function loginUser(username, password) {
     try {
-        const user = await User.findOne({ where: { username: username } })
+        const user = await User.findOne({ where: { username } })
 
-        if (!user || !user.validPassword(password)) {
+        if (!user?.validPassword(password)) {
             throw new Error('Invalid username or password')
         }
 

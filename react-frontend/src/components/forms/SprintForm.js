@@ -38,7 +38,7 @@ export default function SprintForm({projectId, setShowSprintForm, addSprint}) {
             <form onSubmit={onSubmitSprint}>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="sprintTitle">Sprint Title</label>
-                    <input type="text" id="sprintTitle" name="sprintTitle" className="form-control" maxLength="32" required onChange={(e) => setSprint({...sprint, name: e.target.value })}/>
+                    <input type="text" id="sprintTitle" name="sprintTitle" className="form-control" minLength="3" maxLength="32" required onChange={(e) => setSprint({...sprint, name: e.target.value })}/>
                 </div>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="sprintStartDate">Sprint Start Date</label>
@@ -50,7 +50,7 @@ export default function SprintForm({projectId, setShowSprintForm, addSprint}) {
                 </div>
                 <div className="mb-3">
                     <label className="form-label" htmlFor="sprintGoal">Sprint Goal</label>
-                    <input type="text" id="sprintGoal" name="sprintGoal" className="form-control" required onChange={(e) => setSprint({...sprint, goal: e.target.value })}/>
+                    <input type="text" id="sprintGoal" name="sprintGoal" className="form-control" minLength="3" maxLength="32" required onChange={(e) => setSprint({...sprint, goal: e.target.value })}/>
                 </div>
                 <div className="d-flex justify-content-end">
                     <button type="submit" className="btn btn-primary">Create</button>
