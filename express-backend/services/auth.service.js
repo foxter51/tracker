@@ -52,7 +52,9 @@ async function loginUser(username, password) {
     try {
         const user = await User.findOne({ where: { username } })
 
-        if (!user?.validPassword(password)) {
+        const isValid = await user?.validPassword(password)
+
+        if (!isValid) {
             throw new Error('Invalid username or password')
         }
 
