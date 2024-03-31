@@ -2,8 +2,9 @@
   "name": "express-backend",
   "version": "1.0.0",
   "description": "express backend",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "nodemon server.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
