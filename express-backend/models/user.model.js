@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize")
-const bcrypt = require("bcrypt")
+const argon2 = require("argon2")
 
 module.exports = (sequelize) => {
     const User = sequelize.define("User", {
@@ -44,22 +44,20 @@ module.exports = (sequelize) => {
     }, {
         hooks: {
             beforeCreate: async (user) => {
-                if(user.password) {
-                    const salt = await bcrypt.genSaltSync(10, null)
-                    user.password = await bcrypt.hashSync(user.password, salt)
+                if (user.password) {
+                    user.password = await argon2.hash(user.password)
                 }
             },
             beforeUpdate: async (user) => {
-                if(user.password) {
-                    const salt = await bcrypt.genSaltSync(10, null)
-                    user.password = await bcrypt.hashSync(user.password, salt)
+                if (user.password) {
+                    user.password = await argon2.hash(user.password)
                 }
             },
         }
     })
 
-    User.prototype.validPassword = function (password) {
-        return bcrypt.compareSync(password, this.password)
+    User.prototype.validPassword = async function (password) {
+        return await argon2.verify(this.password, password)
     }
 
     return User
