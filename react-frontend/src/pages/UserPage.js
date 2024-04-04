@@ -172,7 +172,7 @@ export default function UserPage() {
                         <div className="col">E-mail</div>
                         <div className="col-6">{ originalUser.email }</div>
 
-                        {!user.isThirdPartyAuth && editingEnabled &&
+                        {!originalUser.isThirdPartyAuth && editingEnabled &&
                             <EditableField
                                 value={user.email}
                                 field="email"
@@ -189,7 +189,7 @@ export default function UserPage() {
 
                     <hr/>
 
-                    {!user.isThirdPartyAuth && isSelf &&
+                    {!originalUser.isThirdPartyAuth && isSelf &&
                         <>
                             <div className="row d-flex justify-content-between align-items-center">
                                 <div className="col-2">Password</div>
@@ -215,8 +215,8 @@ export default function UserPage() {
                     <div className="row">
                         <div className="col">Teams</div>
                         <div className="col-6">
-                            {user.Teams.length > 0 ?
-                                user.Teams.map(team => 
+                            {originalUser.Teams.length > 0 ?
+                                originalUser.Teams.map(team => 
                                     <div key={team.id}>
                                         <Link to={ `/teams/${team.id}` } key={ team.id } className="text-primary text-decoration-none">
                                             { team.name }
@@ -235,7 +235,7 @@ export default function UserPage() {
                             <Link to=""
                                 className="text-danger text-decoration-none float-end"
                                 onClick={ () => {
-                                    setUserToRemove(user.id)
+                                    setUserToRemove(originalUser.id)
                                     setShowConfirmModal(true)
                                 } }
                             >
