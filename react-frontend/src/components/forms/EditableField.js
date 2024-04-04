@@ -2,7 +2,7 @@ import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCheck, faPen } from "@fortawesome/free-solid-svg-icons"
 
-export default function EditableField({value, field, type, maxLength, editing, onEdit, onChange, onSubmit, isSelf}) {
+export default function EditableField({value, field, type, minLength, maxLength, editing, onEdit, onChange, onSubmit, isSelf}) {
 
     return (
         <div className="col-3 d-flex">
@@ -14,6 +14,7 @@ export default function EditableField({value, field, type, maxLength, editing, o
                                 <input className="form-control"
                                     type={ type }
                                     value={ value }
+                                    minLength={ minLength }
                                     maxLength={ maxLength }
                                     onChange={ onChange }
                                 />

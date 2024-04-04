@@ -67,17 +67,16 @@ export default function UserPage() {
             else setError("Everything is up-to-date")
         } catch (error) {
             setError(error.response.data.message)
-            setOriginalUser(originalUser)
         }
     }
 
     const onSubmitDelete = async () => {
         try {
             setShowConfirmModal(false)
-            if (isSelf){
+            await userService.deleteUser(userToRemove)
+            if (isSelf) {
                 authService.logout()
             }
-            await userService.deleteUser(userToRemove)
             setUserToRemove(0)
         } catch (error) {
             setError(error.response.data.message)
@@ -122,6 +121,7 @@ export default function UserPage() {
                                     value={user.firstname}
                                     field="firstname"
                                     type="text"
+                                    minLength="3"
                                     maxLength="32"
                                     editing={editing}
                                     onEdit={handleEdit}
@@ -134,6 +134,7 @@ export default function UserPage() {
                                     value={user.lastname}
                                     field="lastname"
                                     type="text"
+                                    minLength="3"
                                     maxLength="32"
                                     editing={editing}
                                     onEdit={handleEdit}
@@ -156,6 +157,7 @@ export default function UserPage() {
                                 value={user.username}
                                 field="username"
                                 type="text"
+                                minLength="3"
                                 maxLength="32"
                                 editing={editing}
                                 onEdit={handleEdit}
@@ -177,7 +179,8 @@ export default function UserPage() {
                                 value={user.email}
                                 field="email"
                                 type="email"
-                                maxLength="32"
+                                minLength="3"
+                                maxLength="64"
                                 editing={editing}
                                 onEdit={handleEdit}
                                 onChange={(e) => setUser({ ...user, email: e.target.value })}
@@ -199,6 +202,7 @@ export default function UserPage() {
                                         value={ null }
                                         field="password"
                                         type="password"
+                                        minLength="6"
                                         maxLength="64"
                                         editing={ editing }
                                         onEdit={ handleEdit }

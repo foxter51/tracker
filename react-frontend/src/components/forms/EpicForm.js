@@ -23,12 +23,12 @@ export default function EpicForm({productBacklogId, setShowEpicForm, addEpic}) {
     ]
 
     const storyPointsOptions = [
-        {name: '1'},
-        {name: '2'},
-        {name: '3'},
-        {name: '5'},
-        {name: '8'},
-        {name: '13'}
+        { name: 1 },
+        { name: 2 },
+        { name: 3 },
+        { name: 5 },
+        { name: 8 },
+        { name: 13 }
     ]
 
     const statusOptions = [
