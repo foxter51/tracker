@@ -72,8 +72,10 @@ async function setNextSprint(projectId) {
 
         if(nextSprintIndex !== -1) {  // if there is a next sprint
             const scheduledTime = nextSprint.duration * 7 * 24 * 60 * 60 * 1000
-            scheduledDate = new Date(nextSprint.startDate.getTime() + scheduledTime)
-            // scheduledDate = new Date((new Date()).getTime() + 60 * 1000)  // only for testing
+            const currentDate = new Date()
+            await updateSprintStartDate(nextSprint.id, currentDate)
+            scheduledDate = new Date(currentDate.getTime() + scheduledTime)
+            // scheduledDate = new Date(currentDate.getTime() + 60 * 1000)  // only for testing
             nodeSchedule.scheduleJob(scheduledDate, () => {  // scheduling the next sprint
                 setNextSprint(projectId)
             })
@@ -151,6 +153,16 @@ async function findAllSprintTasksByStatus(sprintId, assigneeId, status) {
 async function destroy(sprintId) {
     try {
         await Sprint.destroy({
+            where: { id: sprintId }
+        })
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+async function updateSprintStartDate(sprintId, startDate) {
+    try {
+        await Sprint.update({ startDate }, {
             where: { id: sprintId }
         })
     } catch (err) {

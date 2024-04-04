@@ -9,7 +9,8 @@ async function findOne(userId) {
         const user = await User.findByPk(userId, {
             include: [
                 { model: Team }
-            ]
+            ],
+            attributes: { exclude: ['password'] }
         })
 
         if(!user){
@@ -59,9 +60,13 @@ async function update(patchedUser, userId) {
             throw new Error('Email is already taken')
         }
 
+        if(patchedUser.password === " "){
+            delete patchedUser.password
+        }
+
         const updatedUser = await User.update(patchedUser, {
             where: { id: userId },
-            individualHooks: true
+            individualHooks: patchedUser.hasOwnProperty('password')
         })
 
         if(updatedUser === 0){
