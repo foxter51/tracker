@@ -20,11 +20,11 @@ export default function LoginForm() {
             <div className="text-danger">{ error }</div>
             <div className="form-outline mb-2">
                 <label className="form-label" htmlFor="loginName">Username</label>
-                <input type="text" id="loginName" name="username" className="form-control" maxLength="32" required onChange={(e) => setUsername(e.target.value)}/>
+                <input type="text" id="loginName" name="username" className="form-control" minLength="3" maxLength="32" required onChange={(e) => setUsername(e.target.value)}/>
             </div>
             <div className="form-outline mb-2">
                 <label className="form-label" htmlFor="loginPassword">Password</label>
-                <input type="password" id="loginPassword" name="password" className="form-control" maxLength="64" required onChange={(e) => setPassword(e.target.value)}/>
+                <input type="password" id="loginPassword" name="password" className="form-control" minLength="6" maxLength="64" required onChange={(e) => setPassword(e.target.value)}/>
             </div>
             <button type="submit" className="btn btn-primary">Sign in</button>
         </form>

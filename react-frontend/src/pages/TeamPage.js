@@ -42,8 +42,8 @@ export default function TeamPage() {
     const onSubmitDelete = async () => {
         try {
             setShowConfirmModal(false)
-            setUserToLeave(0)
             await teamService.removeUserFromTeam(team.id, userToLeave)
+            setUserToLeave(0)
         } catch (error) {
             setError(error.response.data.message)
         }
@@ -64,9 +64,9 @@ export default function TeamPage() {
 
     return (
         <div>
-            <div className="text-danger">{ error }</div>
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center justify-content-between ">
                 <div className="h2 me-2">Team: { team.name }</div>
+                <div className="text-danger">{ error }</div>
                 <div>
                     { isUserPresentInTeam &&
                         <Link to=""

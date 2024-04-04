@@ -65,6 +65,7 @@ class AuthService {
     logout() {
         Cookies.remove("auth_token")
         Cookies.remove("user_id")
+        window.location.reload()
     }
 
     getAuthToken() {

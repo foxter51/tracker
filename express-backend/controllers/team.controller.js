@@ -46,6 +46,7 @@ async function removeUserFromTeam(req, res) {
 
     try{
         await teamService.removeUserFromTeam(teamId, userId)
+        res.json({ message: 'User removed from team' })
     } catch (err) {
         res.status(400).json({ message: err.message })
     }

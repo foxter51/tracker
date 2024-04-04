@@ -60,22 +60,64 @@ async function destroy(teamId) {
 
 async function removeUserFromTeam(teamId, userId) {
     try{
-        await UserRole.destroy({
-            where: { TeamId: teamId, UserId: userId }
-        })
-
         const team = await Team.findByPk(teamId, {
             include: [
                 { model: UserRole, as: 'userRoles' }
             ]
         })
-        
-        const teamUserRoles = team.userRoles
 
-        if(teamUserRoles.length === 0){
+        await checkConsistency(team.userRoles, userId)
+
+        await UserRole.destroy({
+            where: { TeamId: teamId, UserId: userId }
+        })
+
+        if (team.userRoles.length === 0) {
             await Team.destroy({
                 where: { id: teamId }
             })
+        }
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+async function checkConsistency(teamUserRoles, removableUserId) {
+    try{
+        let productOwnersCount = 0
+        let scrumMastersCount = 0
+        let developersCount = 0
+
+        for (const entry of teamUserRoles) {
+            const { UserId, RoleId } = entry
+
+            if (UserId === +removableUserId) continue
+
+            const user = await User.findByPk(UserId)
+            const role = await Role.findByPk(RoleId)
+
+            if (!user) {
+                throw new Error('User not found')
+            }
+            if (!role) {
+                throw new Error('Role not found')
+            }
+
+            if (role.scrumRole === 'Product Owner') {
+                productOwnersCount++
+            }
+
+            if (role.scrumRole === 'Scrum Master') {
+                scrumMastersCount++
+            }
+
+            if (role.scrumRole === 'Developer') {
+                developersCount++
+            }
+        }
+
+        if (developersCount < 1 || productOwnersCount < 1 || scrumMastersCount < 1) {
+            throw new Error('At least 1 of each role is required')
         }
     } catch (err) {
         throw new Error(err.message)

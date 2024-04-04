@@ -36,6 +36,7 @@ async function destroy(req, res) {
 
     try{
         await userService.destroy(id)
+        res.json({ message: 'User deleted' })
     } catch (err) {
         res.status(400).json({ message: err.message })
     }
