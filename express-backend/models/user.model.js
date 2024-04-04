@@ -40,6 +40,11 @@ module.exports = (sequelize) => {
             validate: {
                 len: [3, 32]
             }
+        },
+        isThirdPartyAuth: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         }
     }, {
         hooks: {

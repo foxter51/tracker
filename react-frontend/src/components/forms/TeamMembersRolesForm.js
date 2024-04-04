@@ -37,7 +37,7 @@ export default function TeamMembersRolesForm({ selectedUsers, selectedUserRoles,
         <div>
             <div className="h2">Selected Team Members</div>
             {selectedUsers.map(user => (
-                <div className="card mb-1">
+                <div className="card mb-1" key={user.id}>
                     <div className="card-body">
                         <div className="row">
                             <div className="col">{user.username}</div>
@@ -61,7 +61,8 @@ export default function TeamMembersRolesForm({ selectedUsers, selectedUserRoles,
                         </div>
                     </div>
                 </div>
-            ))}
+            ))
+            }
             { selectedUsers.length === selectedUserRoles.length &&
                 <button className="btn btn-primary me-2" onClick={ onSubmit }>Save</button>
             }

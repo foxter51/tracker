@@ -19,16 +19,12 @@ class AuthService {
         }
     }
 
-     async register(firstname, lastname, username, email, password) {
+     async register(user) {
         try {
             const response = await request(
                 "POST",
                 "/register",
-                {  firstname: firstname,
-                        lastname: lastname,
-                        username: username,
-                        email: email,
-                        password: password }
+                user
             )
             this.setAuthUserId(response.data.id)
             this.setAuthToken(response.data.token)

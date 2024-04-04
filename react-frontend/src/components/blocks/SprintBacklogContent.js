@@ -6,6 +6,7 @@ import { useParams } from "react-router"
 import UserService from "../../services/UserService"
 import AuthService from "../../services/AuthService"
 import ProjectService from "../../services/ProjectService"
+import { socket } from "../../utils/socket"
 
 export default function SprintBacklogContent({sprint}) {
 
@@ -37,6 +38,28 @@ export default function SprintBacklogContent({sprint}) {
         }
         fetchUserStories()
     }, [id, sprint.id])
+
+    useEffect(() => {
+        socket.on('task update', (data) => {
+            const updatedUserStory = userStories.find(us => us.id === data.userStoryId)
+            if (updatedUserStory) {
+                updatedUserStory.status = data.userStoryStatus
+
+                setUserStories(prevUserStories => {
+                    return prevUserStories.map(us => {
+                        if (us.id === updatedUserStory.id) {
+                            return updatedUserStory
+                        }
+                        return us
+                    })
+                })
+            }
+
+            return () => {
+                socket.off('user story update')
+            }
+        })
+    })
 
     const addUserStories = (newUserStories) => {
         setUserStories([...userStories, ...newUserStories])

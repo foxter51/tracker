@@ -61,7 +61,7 @@ export default function ProjectPage() {
                     <div className="row">
                         <div className="col">Github Repository</div>
                         <div className="col">
-                            <a className="text-decoration-none d-flex align-items-center" href={project.githubLink}>
+                            <a className="text-decoration-none d-flex align-items-center" href={ project.githubLink } target="_blank" rel="noreferrer">
                                 <FontAwesomeIcon icon={faGithub} className="me-1"/>
                                 {project.githubRepoName}
                             </a>

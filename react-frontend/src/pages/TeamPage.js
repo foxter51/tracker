@@ -50,8 +50,8 @@ export default function TeamPage() {
     }
 
     const onCancelDelete = () => {
-        setUserToLeave(-1)
         setShowConfirmModal(false)
+        setUserToLeave(-1)
     }
 
     if (userToLeave === 0) {
@@ -84,7 +84,7 @@ export default function TeamPage() {
             <div>
                 <div className="h4">Team Members</div>
                 {team.userRoles.map(teamMember => (
-                    <div className="card mb-1">
+                    <div className="card mb-1" key={teamMember.User.id}>
                         <div className="card-body">
                             <div className="row">
                                 <Link to={`/users/${teamMember.User.id}`} className="col text-decoration-none">{teamMember.User.username}</Link>

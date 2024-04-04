@@ -43,7 +43,11 @@ export default function ScrumBoard({ project }) {
                 setInReviewTasks(inReviewResponse.data.tasks)
                 setDoneTasks(doneResponse.data.tasks)
                 setCurrentUser(userResponse.data.user)
-                if (project.currentSprint) setCurrentSprintEndDate(new Date((new Date(project.currentSprint.startDate)).getTime() + project.currentSprint.duration * 7 * 24 * 60 * 60 * 1000))
+                if (project.currentSprint){
+                    const currentSprintStartDate = (new Date(project.currentSprint.startDate)).getTime()
+                    const currentSprintDuration = project.currentSprint.duration * 7 * 24 * 60 * 60 * 1000
+                    setCurrentSprintEndDate(new Date(currentSprintStartDate + currentSprintDuration))
+                }
             } catch (error) {
                 setError(error.response.data.message)
             }
@@ -84,7 +88,7 @@ export default function ScrumBoard({ project }) {
         if (!destination) return
 
         // restrict drag on conditions
-        const draggedTask = getList(source.droppableId)[source.index]
+        const draggedTask = getTasksListByStatus(source.droppableId)[source.index]
         const isCurrentUserDeveloper = project.Team.userRoles.some(role => {
             return role.UserId === currentUser.id && role.RoleId === 3
         })
@@ -94,14 +98,14 @@ export default function ScrumBoard({ project }) {
         ) return
 
         if (source.droppableId === destination.droppableId) {
-            reorderList(source, destination)
+            reorderTasksList(source, destination)
         } else {
             moveBetweenLists(source, destination)
         }
     }
 
     const moveBetweenLists = (source, destination) => {
-        const sourceList = getList(source.droppableId)
+        const sourceList = getTasksListByStatus(source.droppableId)
         const [draggedItem] = sourceList.splice(source.index, 1)
 
         if(destination.droppableId !== 'toDo') {
@@ -121,7 +125,7 @@ export default function ScrumBoard({ project }) {
             draggedItem.status = 'TO DO'
         }
 
-        const destinationList = getList(destination.droppableId)
+        const destinationList = getTasksListByStatus(destination.droppableId)
         destinationList.splice(destination.index, 0, draggedItem);
 
         (async () => {
@@ -129,8 +133,8 @@ export default function ScrumBoard({ project }) {
         })()
     }
 
-    const reorderList = (source, destination) => {
-        const list = getList(source.droppableId)
+    const reorderTasksList = (source, destination) => {
+        const list = getTasksListByStatus(source.droppableId)
 
         const newList = [...list]
 
@@ -147,7 +151,7 @@ export default function ScrumBoard({ project }) {
         }
     }
 
-    const getList = (status) => {
+    const getTasksListByStatus = (status) => {
         // eslint-disable-next-line default-case
         switch (status) {
             case 'toDo': return toDoTasks
@@ -207,7 +211,7 @@ export default function ScrumBoard({ project }) {
                             </div>
                             <Timer
                                 expiryTimestamp={currentSprintEndDate}
-                                // expiryTimestamp={new Date((new Date()).getTime() + 60 * 1000)}  // for testing
+                                // expiryTimestamp={ new Date((new Date(project.currentSprint.startDate)).getTime() + 60 * 1000)}  // for testing
                             />
                         </div>
                     }

@@ -8,13 +8,7 @@ export default function RegisterForm() {
     const onSubmitRegister = async (e) => {
         e.preventDefault()
         try{
-            await AuthService.register(
-                user.firstname,
-                user.lastname,
-                user.username,
-                user.email,
-                user.password
-            )
+            await AuthService.register({ ...user })
         } catch (error) {
             setError(error.response.data.message)
         }

@@ -6,7 +6,7 @@ const { Op } = require("sequelize")
 const dns = require('dns')
 
 async function registerUser(userData) {
-    const { username, email, password, lastname, firstname } = userData
+    const { firstname, lastname, username, email, password } = userData
 
     try {
         let user
@@ -113,6 +113,7 @@ async function approveGoogleLogin(code) {
                 email: userData.email,
                 lastname: userData.family_name,
                 firstname: userData.given_name,
+                isThirdPartyAuth: true
             })
         }
 

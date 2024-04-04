@@ -61,13 +61,13 @@ export default function UserPage() {
         try {
             if (!equal(originalUser, user)){
                 const response = await userService.updateUser(user)
-                setUser(response.data.user)
+                setOriginalUser(response.data.user)
                 setError("OK")
             }
             else setError("Everything is up-to-date")
         } catch (error) {
             setError(error.response.data.message)
-            setUser(originalUser)
+            setOriginalUser(originalUser)
         }
     }
 
@@ -85,8 +85,8 @@ export default function UserPage() {
     }
 
     const onCancelDelete = () => {
-        setUserToRemove(0)
         setShowConfirmModal(false)
+        setUserToRemove(0)
     }
 
     if(loading) {
@@ -102,7 +102,7 @@ export default function UserPage() {
             <div className="card col-8">
                 <div className="card-header">
                     <div className="d-flex justify-content-between">
-                        <div className="h2">{user.lastname} {user.firstname}'s Profile</div>
+                        <div className="h2">{ originalUser.lastname } { originalUser.firstname }'s Profile</div>
                         {isSelf && !editingEnabled &&
                             <button className="btn btn-primary" onClick={() => setEditingEnabled(true)}>Edit</button>
                         }
@@ -114,7 +114,7 @@ export default function UserPage() {
                 <div className="card-body">
                     <div className="row align-items-center">
                         <div className="col">Fullname</div>
-                        <div className="col"><strong>{user.firstname} {user.lastname}</strong></div>
+                        <div className="col"><strong>{ originalUser.firstname } { originalUser.lastname }</strong></div>
 
                         {editingEnabled &&
                             <>
@@ -149,7 +149,7 @@ export default function UserPage() {
 
                     <div className="row align-items-center">
                         <div className="col">Username</div>
-                        <div className="col-6">{user.username}</div>
+                        <div className="col-6">{ originalUser.username }</div>
 
                         {editingEnabled &&
                             <EditableField
@@ -170,9 +170,9 @@ export default function UserPage() {
 
                     <div className="row align-items-center">
                         <div className="col">E-mail</div>
-                        <div className="col-6">{user.email}</div>
+                        <div className="col-6">{ originalUser.email }</div>
 
-                        {user.password && editingEnabled &&
+                        {!originalUser.isThirdPartyAuth && editingEnabled &&
                             <EditableField
                                 value={user.email}
                                 field="email"
@@ -189,14 +189,14 @@ export default function UserPage() {
 
                     <hr/>
 
-                    {user.password && isSelf &&
+                    {!originalUser.isThirdPartyAuth && isSelf &&
                         <>
                             <div className="row d-flex justify-content-between align-items-center">
                                 <div className="col-2">Password</div>
 
                                 { editingEnabled &&
                                     <EditableField
-                                        value=""
+                                        value={ null }
                                         field="password"
                                         type="password"
                                         maxLength="64"
@@ -215,9 +215,9 @@ export default function UserPage() {
                     <div className="row">
                         <div className="col">Teams</div>
                         <div className="col-6">
-                            {user.Teams.length > 0 ?
-                                user.Teams.map(team => 
-                                    <div>
+                            {originalUser.Teams.length > 0 ?
+                                originalUser.Teams.map(team => 
+                                    <div key={team.id}>
                                         <Link to={ `/teams/${team.id}` } key={ team.id } className="text-primary text-decoration-none">
                                             { team.name }
                                         </Link>
@@ -235,7 +235,7 @@ export default function UserPage() {
                             <Link to=""
                                 className="text-danger text-decoration-none float-end"
                                 onClick={ () => {
-                                    setUserToRemove(user.id)
+                                    setUserToRemove(originalUser.id)
                                     setShowConfirmModal(true)
                                 } }
                             >

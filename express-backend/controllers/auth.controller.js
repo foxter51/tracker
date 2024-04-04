@@ -1,15 +1,15 @@
 const authService = require('../services/auth.service')
 
 async function register(req, res) {
-    const { username, email, password, lastname, firstname } = req.body
+    const { firstname, lastname, username, email, password } = req.body
 
     try {
         const userData = {
+            firstname,
+            lastname,
             username,
             email,
-            password,
-            lastname,
-            firstname,
+            password
         }
         const registeredUserToken = await authService.registerUser(userData)
         res.json(registeredUserToken)

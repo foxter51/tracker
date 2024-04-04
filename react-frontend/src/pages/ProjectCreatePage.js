@@ -12,12 +12,7 @@ export default function ProjectCreatePage() {
     const onSubmitProject = async (e) => {
         e.preventDefault()
         try{
-            const response = await ProjectService.createProject({
-                name: project.name,
-                description: project.description,
-                teamId: project.teamId,
-                githubLink: project.githubLink
-            })
+            const response = await ProjectService.createProject({ ...project })
             setProject(response.data.project)
             setSave(true)
         } catch (error) {
