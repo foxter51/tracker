@@ -55,7 +55,7 @@ export default function TeamCreatePage() {
 
             {team && <div>Team created: {team.name}</div>}
 
-            <div className="text-danger">{ error }</div>
+            <div className="text-danger mb-5">{ error }</div>
 
             {team &&
                 <TeamMembersForm

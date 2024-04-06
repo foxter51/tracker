@@ -45,8 +45,8 @@ export default function EpicModal({epic, show, onClose}) {
                         <div className="h6">Story Points</div>
                     </div>
                     <div className="col">
-                        <div className="h6 d-inline-block">
-                            <div className="border rounded-circle border-danger p-1">{epic.storyPoints}</div>
+                        <div className="d-flex border rounded-pill border-danger p-2 align-items-center justify-content-center" style={ { width: '24px', height: '24px' } }>
+                            { epic.storyPoints }
                         </div>
                     </div>
                 </div>
