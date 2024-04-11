@@ -66,7 +66,8 @@ async function removeUserFromTeam(teamId, userId) {
             ]
         })
 
-        await checkConsistency(team.userRoles, userId)
+        const userRolesAfterDeletion = team.userRoles.filter(userRole => userRole.UserId !== userId)
+        await checkConsistency(userRolesAfterDeletion)
 
         await UserRole.destroy({
             where: { TeamId: teamId, UserId: userId }
@@ -82,7 +83,16 @@ async function removeUserFromTeam(teamId, userId) {
     }
 }
 
-async function checkConsistency(teamUserRoles, removableUserId) {
+async function addUsersToTeam(teamId, userRolesData, authUserId) {
+    try{
+        await userRoleService.create(teamId, userRolesData, authUserId)
+        return await findOne(teamId)
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+async function checkConsistency(teamUserRoles) {
     try{
         let productOwnersCount = 0
         let scrumMastersCount = 0
@@ -90,8 +100,6 @@ async function checkConsistency(teamUserRoles, removableUserId) {
 
         for (const entry of teamUserRoles) {
             const { UserId, RoleId } = entry
-
-            if (UserId === +removableUserId) continue
 
             const user = await User.findByPk(UserId)
             const role = await Role.findByPk(RoleId)
@@ -129,5 +137,6 @@ module.exports = {
     findAll,
     findOne,
     destroy,
-    removeUserFromTeam
+    removeUserFromTeam,
+    addUsersToTeam
 }

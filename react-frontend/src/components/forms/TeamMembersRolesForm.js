@@ -64,9 +64,9 @@ export default function TeamMembersRolesForm({ selectedUsers, selectedUserRoles,
             ))
             }
             { selectedUsers.length === selectedUserRoles.length &&
-                <button className="btn btn-primary me-2" onClick={ onSubmit }>Save</button>
+                <button className="btn btn-primary me-2 mt-2 mb-3" onClick={ onSubmit }>Save</button>
             }
-            <button className="btn btn-danger" onClick={onCancel}>Cancel</button>
+            <button className="btn btn-danger mt-2 mb-3" onClick={onCancel}>Cancel</button>
         </div>
     )
 }

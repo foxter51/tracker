@@ -14,12 +14,12 @@ class UserService {
         }
     }
 
-    async getAllUsers() {
+    async getAllUsers(exceptUserIds = []) {
         try{
+            const queryParams = exceptUserIds.length > 0 ? `?exceptUserIds=${exceptUserIds.join(",")}` : ""
             return await request(
                 "GET",
-                "/users",
-                {}
+                `/users${queryParams}`
             )
         } catch (err) {
             console.log(err)
