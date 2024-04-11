@@ -62,11 +62,20 @@ async function removeUserFromTeam(teamId, userId) {
     try{
         const team = await Team.findByPk(teamId, {
             include: [
-                { model: UserRole, as: 'userRoles' }
+                {
+                    model: UserRole,
+                    as: 'userRoles',
+                    include: [
+                        { model: User },
+                        { model: Role }
+                    ] 
+                }
             ]
         })
 
-        const userRolesAfterDeletion = team.userRoles.filter(userRole => userRole.UserId !== userId)
+        const userRolesAfterDeletion = team.userRoles.filter(userRole => userRole.User.id !== +userId)
+        console.log("🚀 ~ removeUserFromTeam ~ userRolesAfterDeletion:", userRolesAfterDeletion.length)
+        console.log("🚀 ~ removeUserFromTeam ~ team.userRoles:", team.userRoles.length)
         await checkConsistency(userRolesAfterDeletion)
 
         await UserRole.destroy({
