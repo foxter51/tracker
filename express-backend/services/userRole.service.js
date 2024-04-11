@@ -28,8 +28,6 @@ async function create(teamId, userRolesData, authUserId) {
         throw new Error('Invalid number of team members')
     }
 
-    console.log(userRolesData.length + team.userRoles?.length)
-
     if (!userRolesData.some(user => user.userId === authUserId) && !team.userRoles?.some(user => user.UserId === authUserId)) {
         throw new Error('You cannot create a team without yourself as a member')
     }
