@@ -74,8 +74,6 @@ async function removeUserFromTeam(teamId, userId) {
         })
 
         const userRolesAfterDeletion = team.userRoles.filter(userRole => userRole.User.id !== +userId)
-        console.log("🚀 ~ removeUserFromTeam ~ userRolesAfterDeletion:", userRolesAfterDeletion.length)
-        console.log("🚀 ~ removeUserFromTeam ~ team.userRoles:", team.userRoles.length)
         await checkConsistency(userRolesAfterDeletion)
 
         await UserRole.destroy({
