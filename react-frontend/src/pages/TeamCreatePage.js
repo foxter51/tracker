@@ -62,16 +62,18 @@ export default function TeamCreatePage() {
                     selectedUsers={selectedUsers}
                     setSelectedUsers={setSelectedUsers}
                     setSelectedUserRoles={setSelectedUserRoles}
-                    />
+                    teamToUpdate={null}
+                />
             }
 
             {selectedUsers.length > 0 &&
-                <TeamMembersRolesForm selectedUsers={selectedUsers}
-                                      selectedUserRoles={selectedUserRoles}
-                                      setSelectedUserRoles={setSelectedUserRoles}
-                                      onCancel={onCancel}
-                                      onSubmit={onSubmitTeam}
-                                      />
+                <TeamMembersRolesForm
+                    selectedUsers={selectedUsers}
+                    selectedUserRoles={selectedUserRoles}
+                    setSelectedUserRoles={setSelectedUserRoles}
+                    onCancel={onCancel}
+                    onSubmit={onSubmitTeam}
+                />
             }
         </div>
     )

@@ -2,30 +2,43 @@ const db = require('../models')
 const UserRole = db.userRole
 
 const User = db.user
-const Team = db.team
 const Role = db.role
+const Team = db.team
 
 async function create(teamId, userRolesData, authUserId) {
 
-    if(userRolesData.length > 8 || userRolesData.length < 3){
-        throw new Error('Invalid number of team members')
-    }
-
-    const team = await Team.findByPk(teamId)
+    const team = await Team.findByPk(teamId, {
+        include: [
+            {
+                model: UserRole,
+                as: 'userRoles',
+                include: [
+                    { model: User },
+                    { model: Role }
+                ]
+            }
+        ]
+    })
 
     if (!team) {
         throw new Error('Team not found')
     }
 
-    if (!userRolesData.some(user => user.userId === authUserId)) {
+    if (userRolesData.length + team.userRoles?.length > 8 || userRolesData.length + team.userRoles?.length < 3){
+        throw new Error('Invalid number of team members')
+    }
+
+    console.log(userRolesData.length + team.userRoles?.length)
+
+    if (!userRolesData.some(user => user.userId === authUserId) && !team.userRoles?.some(user => user.UserId === authUserId)) {
         throw new Error('You cannot create a team without yourself as a member')
     }
 
     const createdUserRoles = []
     try{
-        let productOwnersCount = 0
-        let scrumMastersCount = 0
-        let developersCount = 0
+        let productOwnersCount = team.userRoles?.filter(userRole => userRole.Role.scrumRole === 'Product Owner').length
+        let scrumMastersCount = team.userRoles?.filter(userRole => userRole.Role.scrumRole === 'Scrum Master').length
+        let developersCount = team.userRoles?.filter(userRole => userRole.Role.scrumRole === 'Developer').length
 
         for (const entry of userRolesData) {
             const { userId, roleId } = entry

@@ -3,17 +3,28 @@ import { Multiselect } from "multiselect-react-dropdown"
 import UserService from "../../services/UserService"
 import getStyledMultiselect from "../../utils/multiselect_style"
 
-export default function TeamMembersForm({ selectedUsers, setSelectedUsers, setSelectedUserRoles }) {
+export default function TeamMembersForm({ selectedUsers, setSelectedUsers, setSelectedUserRoles, teamToUpdate }) {
 
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
+    const [teamToUpdateUsersCount, setTeamToUpdateUsersCount] = useState(0)
+
     useEffect(() => {
         const getAllUsers = async () => {
             try{
                 setLoading(true)
-                const response = await UserService.getAllUsers()
+
+                let response
+
+                if (teamToUpdate !== null) {
+                    const teamMembersIds = teamToUpdate.userRoles.map(userRole => userRole.User.id)
+                    setTeamToUpdateUsersCount(teamMembersIds.length)
+
+                    response = await UserService.getAllUsers(teamMembersIds)
+                } else response = await UserService.getAllUsers()
+
                 setUsers(response.data.users)
             } catch (error) {
                 setError(error.response.data.message)
@@ -43,7 +54,7 @@ export default function TeamMembersForm({ selectedUsers, setSelectedUsers, setSe
             <Multiselect
                 options={users}
                 selectedValues={selectedUsers}
-                selectionLimit="8"
+                selectionLimit={8 - teamToUpdateUsersCount}
                 loading={loading}
                 onSelect={onUserSelect}
                 onRemove={onUserRemove}

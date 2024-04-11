@@ -1,4 +1,5 @@
 const db = require('../models')
+const { Op } = require("sequelize")
 const { checkDomain } = require('./auth.service')
 const User = db.user
 
@@ -26,6 +27,21 @@ async function findOne(userId) {
 async function findAll() {
     try{
         const users = await User.findAll()
+        return { users }
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+async function findAllExcept(userIds) {
+    try{
+        const users = await User.findAll({
+            where: {
+                id: {
+                    [Op.notIn]: userIds
+                }
+            }
+        })
         return { users }
     } catch (err) {
         throw new Error(err.message)
@@ -96,6 +112,7 @@ async function destroy(userId) {
 module.exports = {
     findOne,
     findAll,
+    findAllExcept,
     update,
     destroy
 }

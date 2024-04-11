@@ -12,8 +12,11 @@ async function findOne(req, res) {
 }
 
 async function findAll(req, res) {
+    let { exceptUserIds } = req.query
+    exceptUserIds = exceptUserIds?.split(',') ?? []
+
     try{
-        const users = await userService.findAll()
+        const users = exceptUserIds.length === 0 ? await userService.findAll() : await userService.findAllExcept(exceptUserIds)
         res.json(users)
     } catch (err) {
         res.status(400).json({ message: err.message })

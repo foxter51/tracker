@@ -63,6 +63,19 @@ class TeamService {
             throw err
         }
     }
+
+    async addTeamMembers(teamId, userRolesData, authUserId) {
+        try {
+            return await request(
+                "PUT",
+                `/teams/${teamId}`,
+                { userRolesData, authUserId }
+            )
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
 }
 
 const teamService = new TeamService()

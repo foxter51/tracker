@@ -52,10 +52,23 @@ async function removeUserFromTeam(req, res) {
     }
 }
 
+async function addUsersToTeam(req, res) {
+    const { teamId } = req.params
+    const { userRolesData, authUserId } = req.body
+
+    try{
+        const team = await teamService.addUsersToTeam(teamId, userRolesData, authUserId)
+        res.json(team)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
     create,
     findAll,
     findOne,
     destroy,
-    removeUserFromTeam
+    removeUserFromTeam,
+    addUsersToTeam
 }
