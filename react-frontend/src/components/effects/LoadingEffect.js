@@ -3,7 +3,7 @@ import React from "react"
 
 export default function LoadingEffect() {
     return (
-        <div style={{textAlign: 'center'}}>
+        <div className="d-flex justify-content-center align-items-center">
             <BeatLoader color="#0c69cc" />
         </div>
     )
