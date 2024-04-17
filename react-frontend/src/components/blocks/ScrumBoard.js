@@ -17,6 +17,7 @@ export default function ScrumBoard({ project }) {
     const [doneTasks, setDoneTasks] = useState([])
 
     const [currentUser, setCurrentUser] = useState(null)
+    const [currentUserRole, setCurrentUserRole] = useState(null)
     const [assigneeId, setAssigneeId] = useState(null)
 
     const [currentSprintEndDate, setCurrentSprintEndDate] = useState(null)
@@ -36,13 +37,17 @@ export default function ScrumBoard({ project }) {
                 const inProgressResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "IN PROGRESS", storedAssigneeId)
                 const inReviewResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "IN REVIEW", storedAssigneeId)
                 const doneResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "DONE", storedAssigneeId)
-                const userResponse = await UserService.getUser(AuthService.getAuthUserId())
+                const currUserId = AuthService.getAuthUserId()
+                const userResponse = await UserService.getUser(currUserId)
+
+                const currUserRole = project.Team.userRoles.find(role => role.UserId === currUserId).Role.scrumRole
 
                 setToDoTasks(toDoResponse.data.tasks)
                 setInProgressTasks(inProgressResponse.data.tasks)
                 setInReviewTasks(inReviewResponse.data.tasks)
                 setDoneTasks(doneResponse.data.tasks)
                 setCurrentUser(userResponse.data.user)
+                setCurrentUserRole(currUserRole)
                 if (project.currentSprint){
                     const currentSprintStartDate = (new Date(project.currentSprint.startDate)).getTime()
                     const currentSprintDuration = project.currentSprint.duration * 7 * 24 * 60 * 60 * 1000
@@ -89,13 +94,18 @@ export default function ScrumBoard({ project }) {
 
         // restrict drag on conditions
         const draggedTask = getTasksListByStatus(source.droppableId)[source.index]
-        const isCurrentUserDeveloper = project.Team.userRoles.some(role => {
-            return role.UserId === currentUser.id && role.RoleId === 3
-        })
 
-        if((draggedTask.assignee && (currentUser.id !== draggedTask.assignee.id))
-            || !isCurrentUserDeveloper
-        ) return
+        if (currentUserRole !== "Scrum Master" && currentUserRole !== "Developer") {
+            return
+        }
+
+        if (currentUserRole === "Developer" && (draggedTask.assignee && draggedTask.assignee.id !== currentUser.id)) {
+            return
+        }
+        
+        if (currentUserRole === "Scrum Master" && !draggedTask.assignee) {
+            return
+        }
 
         if (source.droppableId === destination.droppableId) {
             reorderTasksList(source, destination)
@@ -109,8 +119,10 @@ export default function ScrumBoard({ project }) {
         const [draggedItem] = sourceList.splice(source.index, 1)
 
         if(destination.droppableId !== 'toDo') {
-            draggedItem.assigneeId = currentUser.id
-            draggedItem.assignee = currentUser
+            if (currentUserRole !== "Scrum Master") {
+                draggedItem.assigneeId = currentUser.id
+                draggedItem.assignee = currentUser
+            }
 
             if(destination.droppableId === 'done') {
                 draggedItem.status = 'DONE'
@@ -129,7 +141,7 @@ export default function ScrumBoard({ project }) {
         destinationList.splice(destination.index, 0, draggedItem);
 
         (async () => {
-            await updateTaskStatus(draggedItem.id, destination.droppableId, currentUser.id)
+            await updateTaskStatus(draggedItem.id, destination.droppableId, draggedItem.assigneeId)
         })()
     }
 
