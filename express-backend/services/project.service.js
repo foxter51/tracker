@@ -128,13 +128,13 @@ async function findAllByUser(userId) {
 
 async function getGithubRepoNameByLink(githubLink) {
     try {
-        const githubRegex = /((git|ssh|http(s)?)|(git@[\w.]+))(:(\/\/)?)([\w.@:/\-~]+)(\.git)?(\/)?/
+        const githubRegex = /((http|git|ssh|http(s)|file|\/?)|(git@[\w\.]+))(:(\/\/)?)([\w\.@\:/\-~]+)(\.git)(\/)?/
 
         if (!githubRegex.test(githubLink)) {
             throw new Error('Invalid Github Link')
         }
 
-        const repoName = githubLink.split('/')[4].replace('.git', '')
+        const repoName = githubLink.split('/').at(-1).replace('.git', '')
         return { repoName }
     } catch (err) {
         throw new Error(err.message)

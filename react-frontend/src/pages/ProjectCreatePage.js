@@ -41,8 +41,8 @@ export default function ProjectCreatePage() {
                 </div>
                 <div className="form-outline mb-5">
                     <label className="form-label" htmlFor="github">Github Repository Link</label>
-                    <input type="url" id="github" name="githubLink" className="form-control" maxLength="2048" required
-                        placeholder='https://github.com/user/repo or https://github.com/user/repo.git'
+                    <input type="text" id="github" name="githubLink" className="form-control" maxLength="2048" required
+                        placeholder='https://github.com/user/repo.git'
                         onChange={(e) => setProject({ ...project, githubLink: e.target.value })}/>
                 </div>
                 <ProjectTeamForm project={project} setProject={setProject} />
