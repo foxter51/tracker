@@ -85,6 +85,7 @@ db.userStory.beforeDestroy(async userStory => await updateEpicStatus(userStory, 
 const updateUserStoryStatus = async (task, skip = false) => {
     const userStoryId = task.UserStoryId
     const userStory = await db.userStory.findByPk(userStoryId)
+    console.log("🚀 ~ updateUserStoryStatus ~ userStory:", userStory)
 
     let storyTasks = await userStory.getTasks()
     if(skip) storyTasks = storyTasks.filter(t => t.id !== task.id)
@@ -104,7 +105,7 @@ const updateUserStoryStatus = async (task, skip = false) => {
         await userStory.update({ status: 'DONE' })
     }
 
-    io.emit('task update', { userStoryId, userStoryStatus: userStory.status, taskId: task.id, taskStatus: task.status })
+    io.emit('task update', { userStoryId, userStoryStatus: userStory.status, taskId: task.id, taskStatus: task.status, sprintBacklogId: userStory.SprintBacklogId })
 }
 
 const updateEpicStatus = async (userStory, skip = false) => {

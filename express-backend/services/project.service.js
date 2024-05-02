@@ -7,6 +7,7 @@ const UserRole = db.userRole
 const Role = db.role
 const User = db.user
 const Sprint = db.sprint
+const SprintBacklog = db.sprintBacklog
 
 async function create(projectData) {
     const { name, description, teamId, githubLink } = projectData
@@ -87,7 +88,12 @@ async function findOne(projectId) {
                         }
                     ],
                 },
-                { model: Sprint, as: 'currentSprint' }
+                { 
+                    model: Sprint, as: 'currentSprint',
+                    include: {
+                        model: SprintBacklog
+                    }
+                }
             ]
         })
 

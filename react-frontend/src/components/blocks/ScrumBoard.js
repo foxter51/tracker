@@ -8,6 +8,7 @@ import UserService from "../../services/UserService"
 import TaskService from "../../services/TaskService"
 import DevelopersListTab from "./DevelopersListTab"
 import Timer from "./Timer"
+import { socket } from "../../utils/socket"
 
 export default function ScrumBoard({ project }) {
 
@@ -25,29 +26,39 @@ export default function ScrumBoard({ project }) {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
+    const getStoredAssigneeId = () => {
+        return window.localStorage.getItem(`project${project.id}BoardUserFilter`)
+    }
+
+    const fetchTasks = async(currentSprintId, storedAssigneeId) => {
+        const toDoResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "TO DO", storedAssigneeId)
+        const inProgressResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "IN PROGRESS", storedAssigneeId)
+        const inReviewResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "IN REVIEW", storedAssigneeId)
+        const doneResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "DONE", storedAssigneeId)
+
+        setToDoTasks(toDoResponse.data.tasks)
+        setInProgressTasks(inProgressResponse.data.tasks)
+        setInReviewTasks(inReviewResponse.data.tasks)
+        setDoneTasks(doneResponse.data.tasks)
+    }
+
     useEffect(() => {
-        const fetchTasks = async () => {
+        const fetchProjectInfo = async () => {
             try {
-                const storedAssigneeId = window.localStorage.getItem(`project${project.id}BoardUserFilter`)
+                const storedAssigneeId = getStoredAssigneeId()
                 setAssigneeId(storedAssigneeId)
 
                 const currentSprintId = project.currentSprint?.id ?? -1
 
-                const toDoResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "TO DO", storedAssigneeId)
-                const inProgressResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "IN PROGRESS", storedAssigneeId)
-                const inReviewResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "IN REVIEW", storedAssigneeId)
-                const doneResponse = await SprintService.findAllSprintTasksByStatus(currentSprintId, "DONE", storedAssigneeId)
                 const currUserId = AuthService.getAuthUserId()
                 const userResponse = await UserService.getUser(currUserId)
 
                 const currUserRole = project.Team.userRoles.find(role => role.UserId === currUserId).Role.scrumRole
 
-                setToDoTasks(toDoResponse.data.tasks)
-                setInProgressTasks(inProgressResponse.data.tasks)
-                setInReviewTasks(inReviewResponse.data.tasks)
-                setDoneTasks(doneResponse.data.tasks)
+                await fetchTasks(currentSprintId, storedAssigneeId)
                 setCurrentUser(userResponse.data.user)
                 setCurrentUserRole(currUserRole)
+                
                 if (project.currentSprint){
                     const currentSprintStartDate = (new Date(project.currentSprint.startDate)).getTime()
                     const currentSprintDuration = project.currentSprint.duration * 7 * 24 * 60 * 60 * 1000
@@ -58,8 +69,23 @@ export default function ScrumBoard({ project }) {
             }
             setLoading(false)
         }
-        fetchTasks()
-    }, [project.currentSprint, project.currentSprint?.duration, project.currentSprint?.id, project.currentSprint?.startDate, project.id])
+        fetchProjectInfo()
+    }, [project.id])
+
+    useEffect(() => {
+        const handleTaskUpdate = async (data) => {
+            if (project.currentSprint?.SprintBacklog?.id === data.sprintBacklogId) {
+                console.log('gg')
+                await fetchTasks(project.currentSprint?.id, getStoredAssigneeId())
+            }
+        }
+
+        socket.on('task update', (data) => handleTaskUpdate(data))
+
+        return () => {
+            socket.off('task update', handleTaskUpdate)
+        }
+    }, [project.currentSprint?.id])
 
     const updateTaskStatus = async (taskId, rawStatus, assigneeId) => {
         let status
