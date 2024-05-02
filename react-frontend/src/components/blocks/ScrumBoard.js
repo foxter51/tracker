@@ -75,7 +75,6 @@ export default function ScrumBoard({ project }) {
     useEffect(() => {
         const handleTaskUpdate = async (data) => {
             if (project.currentSprint?.SprintBacklog?.id === data.sprintBacklogId) {
-                console.log('gg')
                 await fetchTasks(project.currentSprint?.id, getStoredAssigneeId())
             }
         }
