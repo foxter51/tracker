@@ -101,6 +101,25 @@ export default function TeamPage() {
                     }
                 </div>
             </div>
+            { editingEnabled &&
+                <div className="mb-2">
+                    <TeamMembersForm
+                        selectedUsers={ usersToAdd }
+                        setSelectedUsers={ setUsersToAdd }
+                        setSelectedUserRoles={ setUsersToAddRoles }
+                        teamToUpdate={ team }
+                    />
+                    { usersToAdd.length > 0 &&
+                        <TeamMembersRolesForm
+                            selectedUsers={ usersToAdd }
+                            selectedUserRoles={ usersToAddRoles }
+                            setSelectedUserRoles={ setUsersToAddRoles }
+                            onCancel={ () => setEditingEnabled(false) }
+                            onSubmit={ onUpdateTeam }
+                        />
+                    }
+                </div>
+            }
             <div>
                 <div className="d-flex justify-content-between align-items-center mb-2">
                     <div className="h4">Team Members</div>
@@ -115,25 +134,6 @@ export default function TeamPage() {
                         </Fragment>
                     }
                 </div>
-                { editingEnabled &&
-                    <div className="mb-2">
-                        <TeamMembersForm
-                            selectedUsers={ usersToAdd }
-                            setSelectedUsers={ setUsersToAdd }
-                            setSelectedUserRoles={ setUsersToAddRoles }
-                            teamToUpdate={ team }
-                        />
-                        { usersToAdd.length > 0 &&
-                            <TeamMembersRolesForm
-                                selectedUsers={ usersToAdd }
-                                selectedUserRoles={ usersToAddRoles }
-                                setSelectedUserRoles={ setUsersToAddRoles }
-                                onCancel={ () => setEditingEnabled(false) }
-                                onSubmit={ onUpdateTeam }
-                            />
-                        }
-                    </div>
-                }
                 {team.userRoles.map(teamMember => (
                     <div className="card mb-1" key={teamMember.User.id}>
                         <div className="card-body">

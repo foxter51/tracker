@@ -104,7 +104,7 @@ const updateUserStoryStatus = async (task, skip = false) => {
         await userStory.update({ status: 'DONE' })
     }
 
-    io.emit('task update', { userStoryId, userStoryStatus: userStory.status, taskId: task.id, taskStatus: task.status })
+    io.emit('task update', { userStoryId, userStoryStatus: userStory.status, taskId: task.id, taskStatus: task.status, sprintBacklogId: userStory.SprintBacklogId })
 }
 
 const updateEpicStatus = async (userStory, skip = false) => {
