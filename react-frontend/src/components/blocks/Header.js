@@ -2,16 +2,27 @@ import * as React from "react"
 import AuthService from "../../services/AuthService"
 import {Link} from "react-router-dom"
 import { ThemeContext } from "../effects/Theme"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMoon } from "@fortawesome/free-solid-svg-icons/faMoon"
 import { faSun } from "@fortawesome/free-solid-svg-icons/faSun"
+import UserService from 'services/UserService'
 
 export default function Header(props) {
 
     const { theme, toggleTheme } = useContext(ThemeContext)
 
     const isAuthenticated = AuthService.isAuthenticated()
+
+    const [authUsername, setAuthUsername] = useState("")
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            UserService.getUser(AuthService.getAuthUserId()).then((response) => {
+                setAuthUsername(response.data.user.username)
+            })
+        }
+    })
 
     return (
         <div className={`App-header ${theme} shadow-sm rounded mb-5 ms-1 me-1 mt-1`}>
@@ -29,9 +40,10 @@ export default function Header(props) {
                 </li>
                 {isAuthenticated && (
                     <>
-                        <li className="nav-item rounded me-1">
-                            <Link to={`/users/${AuthService.getAuthUserId()}`} className="nav-link">My Profile</Link>
-                        </li>
+                        <Link to={ `/users/${AuthService.getAuthUserId()}` } className="profile-badge rounded me-1 text-decoration-none">
+                            <span className="nav-link">My Profile</span>
+                            <span className="badge badge-pill badge-info">{ authUsername }</span>
+                        </Link>
                         <li className="nav-item rounded me-1">
                             <Link to={`/projects/my/${AuthService.getAuthUserId()}`} className="nav-link">My Projects</Link>
                         </li>
@@ -43,7 +55,8 @@ export default function Header(props) {
                 <li className="nav-item border rounded">
                     { isAuthenticated ?
                         <a href="/" onClick={AuthService.logout} className="nav-link active">Logout</a>
-                        : <Link to="/auth" className="nav-link active">Login</Link> }
+                        :
+                        <Link to="/auth" className="nav-link active">Login</Link> }
                 </li>
                 <li>
                     <div className="d-flex align-items-center ms-3">

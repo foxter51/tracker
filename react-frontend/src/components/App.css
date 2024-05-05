@@ -77,6 +77,30 @@
     background-color: #d94743 !important;
 }
 
+.profile-badge {
+    position: relative;
+}
+
+.badge-info {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: bottom 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    background-color: #96a7a7;
+}
+
+.profile-badge:hover .nav-link {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+.profile-badge:hover .badge-info {
+    bottom: calc(25%);
+    opacity: 1;
+}
+
 html, body {
     height: 100%;
 }
