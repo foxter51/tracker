@@ -2,11 +2,11 @@ import { Modal } from "react-bootstrap"
 import classNames from "classnames"
 import statusColor from "../../utils/status_color"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faGripLines } from "@fortawesome/free-solid-svg-icons/faGripLines"
 import priorityColor from "../../utils/priority_color"
 import { Link } from "react-router-dom"
 import { useContext } from "react"
 import { ThemeContext } from "../effects/Theme"
+import { faDownload, faGripLines } from '@fortawesome/free-solid-svg-icons'
 
 export default function TaskModal({task, show, onClose}) {
 
@@ -28,6 +28,14 @@ export default function TaskModal({task, show, onClose}) {
                     </div>
                     <div className="col">
                         <div className="h6">{task.description}</div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <div className="h6">Attachment</div>
+                    </div>
+                    <div className="col">
+                        <a href={ task.attachmentLink } target="__blank"><FontAwesomeIcon icon={faDownload}/></a>
                     </div>
                 </div>
                 <div className="row">

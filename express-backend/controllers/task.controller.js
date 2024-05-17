@@ -2,7 +2,7 @@ const taskService = require('../services/task.service')
 
 async function create(req, res) {
     const { userStoryId } = req.params
-    const { title, description, priority, storyPoints, status } = req.body
+    const { title, description, priority, storyPoints, status, attachmentLink } = req.body
 
     try {
         const taskData = {
@@ -11,6 +11,7 @@ async function create(req, res) {
             priority,
             storyPoints,
             status,
+            attachmentLink,
             userStoryId
         }
         const task = await taskService.create(taskData)

@@ -6,6 +6,7 @@ import getStyledMultiselect from "../../utils/multiselect_style"
 export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
 
     const [task, setTask] = useState(null)
+    const [taskAttachment, setTaskAttachment] = useState(null)
     const [error, setError] = useState(null)
     const [save, setSave] = useState(false)
 
@@ -41,8 +42,11 @@ export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
     const onSubmitTask = async (e) => {
         e.preventDefault()
         try{
+            const attachmentLinkResponse = await TaskService.getAttachmentCloudLink(taskAttachment)
+            const attachmentLinkJson = await attachmentLinkResponse.json()
             const response = await TaskService.createTask({
                 ...task,
+                attachmentLink: attachmentLinkJson.data.downloadPage,
                 userStoryId
             })
             addTask(response.data.task)
@@ -51,7 +55,7 @@ export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
             setError(error.response.data.message)
         }
     }
-
+    
     return (
         <div className="mb-3">
             <div>
@@ -66,6 +70,12 @@ export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
                 <div className="mb-3">
                     <label className="form-label" htmlFor="taskDescription">Task Description</label>
                     <textarea id="taskDescription" name="taskDescription" className="form-control" minLength="3" maxLength="512" required onChange={(e) => setTask({...task, description: e.target.value })}/>
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="formFile" className="form-label">Upload attachment</label>
+                    <input className="form-control" type="file" id="formFile"
+                        onChange={ (e) => setTaskAttachment(e.target.files[0]) }
+                    />
                 </div>
                 <div className="mb-3 row">
                     <div className="col">

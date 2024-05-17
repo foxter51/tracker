@@ -5,7 +5,7 @@ const UserStory = db.userStory
 const User = db.user
 
 async function create(taskData) {
-    const { title, description, priority, storyPoints, status, userStoryId } = taskData
+    const { title, description, priority, storyPoints, status, attachmentLink, userStoryId } = taskData
 
     try{
         const userStory = await UserStory.findByPk(userStoryId)
@@ -32,6 +32,7 @@ async function create(taskData) {
             priority,
             storyPoints,
             status,
+            attachmentLink,
             UserStoryId: userStoryId
         })
 
