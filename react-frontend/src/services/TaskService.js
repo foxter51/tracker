@@ -51,6 +51,21 @@ class TaskService {
             throw err
         }
     }
+
+    async getAttachmentCloudLink(file) {
+        const formData = new FormData()
+        formData.append("file", file)
+
+        try {
+            return await fetch('https://store1.gofile.io/contents/uploadfile', {
+                method: 'POST',
+                body: formData
+            })
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    }
 }
 
 const taskService = new TaskService()
