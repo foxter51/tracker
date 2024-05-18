@@ -42,11 +42,17 @@ export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
     const onSubmitTask = async (e) => {
         e.preventDefault()
         try{
-            const attachmentLinkResponse = await TaskService.getAttachmentCloudLink(taskAttachment)
-            const attachmentLinkJson = await attachmentLinkResponse.json()
+            let attachmentLink = null
+
+            if(taskAttachment) {
+                const attachmentLinkResponse = await TaskService.getAttachmentCloudLink(taskAttachment)
+                const attachmentLinkJson = await attachmentLinkResponse.json()
+                attachmentLink = attachmentLinkJson.data.downloadPage
+            }
+            
             const response = await TaskService.createTask({
                 ...task,
-                attachmentLink: attachmentLinkJson.data.downloadPage,
+                attachmentLink: attachmentLink,
                 userStoryId
             })
             addTask(response.data.task)
