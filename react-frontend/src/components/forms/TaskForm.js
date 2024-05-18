@@ -52,7 +52,7 @@ export default function TaskForm({userStoryId, setShowTaskForm, addTask}) {
             
             const response = await TaskService.createTask({
                 ...task,
-                attachmentLink: attachmentLink,
+                attachmentLink,
                 userStoryId
             })
             addTask(response.data.task)

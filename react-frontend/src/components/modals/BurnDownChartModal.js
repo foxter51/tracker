@@ -41,8 +41,6 @@ export default function BurnDownChartModal({ currentSprint, tasksCount, complete
             })
         }
 
-        console.log("🚀 ~ useEffect ~ chartDataArr:", chartDataArr)
-
         setChartData(chartDataArr)
     }, [completedTasks, currentSprint.duration, currentSprint.startDate, tasksCount])
 
