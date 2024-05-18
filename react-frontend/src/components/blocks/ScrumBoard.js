@@ -9,6 +9,9 @@ import TaskService from "../../services/TaskService"
 import DevelopersListTab from "./DevelopersListTab"
 import Timer from "./Timer"
 import { socket } from "../../utils/socket"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChartSimple } from '@fortawesome/free-solid-svg-icons'
+import BurnDownChartModal from 'components/modals/BurnDownChartModal'
 
 export default function ScrumBoard({ project }) {
 
@@ -22,6 +25,8 @@ export default function ScrumBoard({ project }) {
     const [assigneeId, setAssigneeId] = useState(null)
 
     const [currentSprintEndDate, setCurrentSprintEndDate] = useState(null)
+
+    const [showChartModal, setShowChartModal] = useState(false)
 
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -242,13 +247,16 @@ export default function ScrumBoard({ project }) {
                         </button>
                     }
                     {project.currentSprint &&
-                        <div className="d-flex">
+                        <div className="d-flex align-items-center">
+                            <div className="btn btn-link" onClick={ () => setShowChartModal(true) }>
+                                <FontAwesomeIcon icon={ faChartSimple } className='me-1' />
+                            </div>
                             <div className="me-1">
                                 Time to next sprint:
                             </div>
                             <Timer
-                                expiryTimestamp={currentSprintEndDate}
-                                // expiryTimestamp={ new Date((new Date(project.currentSprint.startDate)).getTime() + 60 * 1000)}  // for testing
+                                expiryTimestamp={ currentSprintEndDate }
+                            // expiryTimestamp={ new Date((new Date(project.currentSprint.startDate)).getTime() + 60 * 1000)}  // for testing
                             />
                         </div>
                     }
@@ -287,6 +295,15 @@ export default function ScrumBoard({ project }) {
                         </DragDropContext>
                     </div>
                 </div>
+                { showChartModal &&
+                    <BurnDownChartModal
+                        currentSprint={ project.currentSprint }
+                        tasksCount={ toDoTasks.length + inProgressTasks.length + inReviewTasks.length + doneTasks.length }
+                        completedTasks={ doneTasks }
+                        show={ showChartModal }
+                        onClose={ () => setShowChartModal(false) }
+                    />
+                }
             </div>
         </div>
     )
