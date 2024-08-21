@@ -1,0 +1,214 @@
+/*custom styles*/
+
+.App-logo{
+    height: 80px;
+}
+
+.Animated-particles{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.App-name {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    color: var(--text);
+    font-size: 32px;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.App-header{
+    background-color: var(--background-header);
+    height: 80px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.text-stroke {
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.35);
+}
+
+.nav-link {
+    color: var(--text) !important;
+}
+
+.nav-link.active {
+    background-color: var(--nav-link-active-background) !important;
+    border: var(--nav-link-active-border) 1px solid !important;
+}
+
+.nav-link.active:hover {
+    background-color: #5aaffa !important;
+    transition: background-color 1s;
+}
+
+.nav-item:hover {
+    background-color: #96ccfc !important;
+    transition: background-color 1s;
+}
+
+.btn-primary {
+    border: none !important;
+    background-color: var(--btn-primary-background) !important;
+}
+
+.btn-danger {
+    border: none !important;
+    background-color: #da6a67 !important;
+}
+
+.btn-primary:hover {
+    background-color: #027efd !important;
+    transition: background-color 1s;
+}
+
+.btn-danger:hover {
+    border: none !important;
+    background-color: #d94743 !important;
+}
+
+.profile-badge {
+    position: relative;
+}
+
+.badge-info {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: bottom 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    background-color: #96a7a7;
+}
+
+.profile-badge:hover .nav-link {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+.profile-badge:hover .badge-info {
+    bottom: calc(25%);
+    opacity: 1;
+}
+
+html, body {
+    height: 100%;
+}
+
+/*custom styles end*/
+
+/*themes switch*/
+
+:root {
+    --background-header-dark: #262929;
+    --background-header-light: #e9ecec;
+
+    --app-background-dark: var(--bs-dark);
+    --app-background-light: white;
+
+    --text-dark: white;
+    --text-light: black;
+
+    --list-group-item-border-light: #e6d3d3;
+    --list-group-item-border-dark: #96a7a7;
+
+    --card-header-background-dark: #143939;
+    --card-header-background-light: var(--bs-light);
+
+    --card-body-background-dark: #113232;
+    --card-body-background-light: white;
+
+    --card-border-dark: #e6d3d3;
+    --card-border-light: #a3d5d5;
+
+    --modal-background-dark: #303838;
+    --modal-background-light: white;
+
+    --switcher-icons-color-dark: white;
+    --switcher-icons-color-light: black;
+
+    --nav-link-active-background-dark: #346b6b;
+    --nav-link-active-background-light: #96ccfc;
+    
+    --nav-link-active-border-dark: #f1fdfd;
+    --nav-link-active-border-light: #beb2f9;
+
+    --btn-primary-background-dark: #264e4e;
+    --btn-primary-background-light: #5bacff;
+}
+
+.light {
+    --background-header: var(--background-header-light);
+    --app-background: var(--app-background-light);
+    --text: var(--text-light);
+    --list-group-item-border-color: var(--list-group-item-border-light);
+    --card-header-background: var(--card-header-background-light);
+    --card-body-background: var(--card-body-background-light);
+    --card-border-color: var(--card-border-light);
+    --modal-background: var(--modal-background-light);
+    --switcher-icons-color: var(--switcher-icons-color-light);
+    --nav-link-active-background: var(--nav-link-active-background-light);
+    --nav-link-active-border: var(--nav-link-active-border-light);
+    --btn-primary-background: var(--btn-primary-background-light);
+}
+
+.dark {
+    --background-header: var(--background-header-dark);
+    --app-background: var(--app-background-dark);
+    --text: var(--text-dark);
+    --list-group-item-border-color: var(--list-group-item-border-dark);
+    --card-header-background: var(--card-header-background-dark);
+    --card-body-background: var(--card-body-background-dark);
+    --card-border-color: var(--card-border-dark);
+    --modal-background: var(--modal-background-dark);
+    --switcher-icons-color: var(--switcher-icons-color-dark);
+    --nav-link-active-background: var(--nav-link-active-background-dark);
+    --nav-link-active-border: var(--nav-link-active-border-dark);
+    --btn-primary-background: var(--btn-primary-background-dark);
+}
+
+.app {
+    color: var(--text);
+    background-color: var(--app-background);
+}
+
+.modal-content {
+    color: var(--text) !important;
+    background-color: var(--modal-background) !important;
+}
+
+.card {
+    color: var(--text) !important;
+    background-color: var(--card-body-background) !important;
+    border-color: var(--card-border-color) !important;
+}
+
+.card-header {
+    background-color: var(--card-header-background) !important;
+}
+
+.list-group-item {
+    background-color: var(--card-body-background) !important;
+    border-color: var(--list-group-item-border-color) !important;
+}
+
+input:not(#themeSwitcher), textarea {
+    color: var(--text) !important;
+    background-color: var(--card-body-background) !important;
+}
+
+.switcherIcons {
+    color: var(--switcher-icons-color);
+}
+
+/*themes switch end*/
